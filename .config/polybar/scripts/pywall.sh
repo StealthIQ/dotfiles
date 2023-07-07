@@ -3,7 +3,7 @@
 # Color files Polybar
 Polybar="$HOME/.config/polybar/colors.ini"
 # Color files Overall
-Xcolor="$HOME/.Xresources.d/.Xcolors"
+Xcolor="$HOME/.config/Xresources/Xcolors"
 Kitty="$HOME/.config/kitty/current-theme.conf"
 Conky="$HOME/.config/conky/rings-v1.2.1.lua"
 Cava="$HOME/.config/cava/config"
@@ -131,7 +131,7 @@ EOFE
         bspc config focused_border_color    "${SH14}"
         bspc config presel_feedback_color   "${SH2}"
 
-	xrdb merge ~/.Xresources &
+	xrdb merge ~/.config/Xresources/Xresources
 }
 
 

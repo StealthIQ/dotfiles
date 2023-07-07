@@ -2,7 +2,7 @@
 
 # File paths
 polybarColorsFile="$HOME/.config/polybar/colors.ini"
-xresourcesFile="$HOME/.Xresources.d/.Xcolors"
+xresourcesFile="$HOME/.config/Xresources/Xcolors"
 kittyThemeFile="$HOME/.config/kitty/current-theme.conf"
 conkyConfigFile="$HOME/.config/conky/rings-v1.2.1.lua"
 cavaConfigFile="$HOME/.config/cava/config"
@@ -109,7 +109,7 @@ EOF
     bspc config focused_border_color    "${themeSecondary}"
     bspc config presel_feedback_color   "${themeTertiary}"
 
-    xrdb merge "$HOME/.Xresources" &
+    xrdb merge ~/.config/Xresources/Xresources
 }
 
 # Extract colors from Pywal and apply the theme
