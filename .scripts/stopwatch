@@ -1,0 +1,19 @@
+#!/bin/bash
+# ----- Quick Stopwatch w/t notify -----
+
+clear
+echo ""
+
+start_time=$(date +%s)
+interval=1  # change according to your req, when u want to see the notif
+
+while true; do
+    current_time=$(date +%s)
+    time_elapsed=$((current_time - start_time))
+
+    echo -ne "Time Elapsed - $(date -u --date @$time_elapsed +%H:%M:%S)\r"
+
+    if ((time_elapsed % interval == 0)); then
+        dunstify -i /usr/share/icons/kora/apps/scalable/clock.svg -r 1 "Time Elapsed - $(date -u --date @$time_elapsed +%H:%M:%S)"
+    fi
+done

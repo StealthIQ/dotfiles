@@ -1,0 +1,28 @@
+[Configuration]
+LastActiveMode=THUNAR_RENAMER_MODE_BOTH
+LastActiveRenamer=ThunarSbrReplaceRenamer
+
+[ThunarSbrRemoveRenamer]
+StartOffset=0
+EndOffset=25
+EndOffsetMode=THUNAR_SBR_OFFSET_MODE_LEFT
+StartOffsetMode=THUNAR_SBR_OFFSET_MODE_LEFT
+
+[ThunarSbrInsertRenamer]
+Offset=0
+Text=Season 5 -\ 
+Mode=THUNAR_SBR_INSERT_MODE_INSERT
+OffsetMode=THUNAR_SBR_OFFSET_MODE_LEFT
+
+[ThunarSbrNumberRenamer]
+TextMode=THUNAR_SBR_TEXT_MODE_TN
+Text=
+Mode=THUNAR_SBR_NUMBER_MODE_123
+Start=1
+
+[ThunarSbrReplaceRenamer]
+CaseSensitive=FALSE
+Replacement=
+Pattern=Pasted image\ 
+Regexp=FALSE
+

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1649938409839256-1</unique-id>
+	<command>kitty %F</command>
+	<description>Example for a custom action</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>code</icon>
+	<name>Open with VsCode</name>
+	<unique-id>1650900525284406-1</unique-id>
+	<command>code %F</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>meld</icon>
+	<name>Compare using meld</name>
+	<unique-id>1650904889792303-1</unique-id>
+	<command>meld %F</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+	<text-files/>
+</action>
+<action>
+	<icon>mpv</icon>
+	<name>Open folder  in MPV</name>
+	<unique-id>1652145451326507-1</unique-id>
+	<command>mpv --save-position-on-quit %f</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>mega</icon>
+	<name>Backup file to MEGAsync</name>
+	<unique-id>1650902379742464-3</unique-id>
+	<command>cp %f ~/MEGAsync/Back-Arch/</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>fr.romainvigier.MetadataCleaner</icon>
+	<name>Remove Metadata</name>
+	<unique-id>1650905313089427-2</unique-id>
+	<command>exifcleaner</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>bleachbit</icon>
+	<name>Shred with bleachbit</name>
+	<unique-id>1650901741048933-2</unique-id>
+	<command>bleachbit --shred %F</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>copyq</icon>
+	<name>Copy relative path</name>
+	<unique-id>1650950571198598-1</unique-id>
+	<command>xclip -sel clip %f %d</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>user-trash-full</icon>
+	<name>Empty Trash</name>
+	<unique-id>1653992342534973-1</unique-id>
+	<command>bleachbit -s ~/.local/share/Trash</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>

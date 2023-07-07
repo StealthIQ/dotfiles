@@ -1,0 +1,11 @@
+tint2 &
+picom --experimental-backends &
+nitrogen --restore &
+bash -c ~/.config/aether/kill-ui &> /dev/null
+~/.config/aether/startup &> /dev/null
+xfce4-power-manager &
+lxpolkit &
+aq-qt &
+sxhkd &
+xfce4-clipman &
+#kdeconnect-indicator &

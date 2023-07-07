@@ -1,0 +1,41 @@
+Xft.antialias:	1
+Xft.hinting:	1
+Xft.autohint:	0
+Xft.hintstyle:	hintslight
+Xft.rgba:	rgb
+Xft.lcdfilter:	lcddefault
+
+! window padding
+st.borderpx: 18
+
+!-- values between 0.1  - 1.0 --! 
+st.alpha: .9
+st.font:           JetBrains Mono:style:medium:pixelsize=20
+
+! Colors for Xresources
+#include ".Xresources.d/.Xcolors"
+! Colors Ref - https://github.com/LukeSmithxyz/st/blob/master/Xdefaults
+
+! Urxvt Settings
+URxvt.scrollBar: false
+URxvt.scrollBar_right: false
+URxvt*depth: 32
+URxvt.background: #010301
+URxvt*internalBorder: 50
+urxvt.iso14755: false
+urxvt.keysym.Shift-Control-V: eval:paste_clipboard
+urxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+
+! Just Set it to your cursor theme
+Xcursor.theme: Volantes_Light_Curser
+
+! just remove this if you dont use my tabbed
+
+tabbed.selfgcolor:   #bfc0bf
+tabbed.selbgcolor:   #010301
+
+tabbed.normfgcolor:  #1293A2
+tabbed.normbgcolor:  #808180

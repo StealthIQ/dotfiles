@@ -1,0 +1,1 @@
+/home/StealthIQ/.zsh/.zshrc

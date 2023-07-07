@@ -1,0 +1,77 @@
+# Window Customization
+window:
+  opacity: 0.98
+  dimensions:
+    columns: 140
+    lines: 38
+  padding:
+    x: 10
+    y: 10
+  decorations: full 
+scrolling:
+  history: 3000
+  multiplier: 3
+window.dynamic_title: true
+
+# Font Customization
+font:
+  normal:
+    family: iosevka
+    style: Regular
+  bold:
+    family: iosevka
+    style: Bold
+  italic:
+    family: iosevka
+    style: Italic
+  size: 10
+  offset:
+    x: 0
+    y: 0
+  glyph_offset:
+    x: 0
+    y: 0
+  # use_thin_strokes: false
+  debug:
+    persistent_logging: false
+draw_bold_text_with_bright_colors: true
+
+colors:
+  name: 3024 (dark)
+  author: Chris Kempson
+  primary:
+    background: "#090300"
+    foreground: "#a5a2a2"
+  cursor:
+    text: "#090300"
+    cursor: "#a5a2a2"
+  normal:
+    black: "#090300"
+    red: "#db2d20"
+    green: "#01a252"
+    yellow: "#fded02"
+    blue: "#01a0e4"
+    magenta: "#a16a94"
+    cyan: "#b5e4f4"
+    white: "#a5a2a2"
+  bright:
+    black: "#5c5855"
+    red: "#db2d20"
+    green: "#01a252"
+    yellow: "#fded02"
+    blue: "#01a0e4"
+    magenta: "#a16a94"
+    cyan: "#b5e4f4"
+    white: "#f7f7f7"
+
+cursor:
+  style:
+    shape: Beam
+    blinking: off
+    blink-interval: 750
+    unfocused_hollow: true
+
+key_bindings:
+  - { key: N, mods: Control, action: SpawnNewInstance }
+theme: 3024.dark
+

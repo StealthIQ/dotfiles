@@ -1,0 +1,98 @@
+conky.config = {
+	background = true,
+	update_interval = 1,
+
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	temperature_unit = 'celsius',
+
+	double_buffer = true,
+	no_buffers = true,
+	text_buffer_size = 2048,
+
+	gap_x = 1,
+	gap_y = 1,
+
+	minimum_height = 620,
+	minimum_width = 520,
+	maximum_width = 520,
+
+	own_window = true,
+	own_window_class = 'Conky',
+	own_window_type = 'desktop',
+	own_window_argb_visual = true,
+	own_window_argb_value = 0,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	border_inner_margin = 0,
+	border_outer_margin = 0,
+	alignment = 'middle_right',
+
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = false,
+
+	override_utf8_locale = true,
+	use_xft = true,
+	xftalpha = 0.9,
+	uppercase = false,
+
+	default_color = '#E5E5E5',
+	color1 = '#E5E5E5',
+	color2 = '#E5E5E5',
+	color3 = '#888888',
+	color4 = '#fae4df',
+	color5 = '#e6d5ec',
+	color6 = '#FFFFFF',
+
+	lua_load = '~/.config/conky/rings-v1.2.1.lua',
+	lua_draw_hook_post = 'conky_main'
+}
+
+conky.text = [[
+${font Play:normal:size=10}${voffset 3}${color1}${goto 120}${freq_g} Ghz${alignr 330}
+${font Play:normal:size=8}${voffset 0}${goto 120}${color1}CPU 1 ${alignr 330}${color1}${cpu cpu0}%
+${font Play:normal:size=8}${voffset 2}${goto 120}${color1}CPU 2${alignr 330}${color1}${cpu cpu1}%
+${font Play:normal:size=8}${voffset 2}${goto 120}${color1}CPU 3${alignr 330}${color1}${cpu cpu2}%
+${font Play:normal:size=8}${voffset 2}${goto 120}${color1}CPU 4${alignr 330}${color1}${cpu cpu3}%
+${goto 50}${voffset 9}${font Play:normal:size=9}${goto 80}${color1}${top name 1}${alignr 306}${top cpu 1}%
+${goto 50}${font Play:normal:size=9}${goto 80}${color1}${top name 2}${alignr 306}${top cpu 2}%
+${goto 50}${font Play:normal:size=9}${goto 80}${color1}${top name 3}${alignr 306}${top cpu 3}%
+${font Michroma:bold:size=10}${color1}${goto 66}${voffset 4}CPU 
+${font Michroma:bold:size=10}${color1}${goto 394}${voffset 37}MEMORY
+${goto 324}${voffset -6}${font Play:normal:size=9}${color1}${top_mem name 1}${alignr 40}${top_mem mem 1}%
+${goto 324}${font Play:normal:size=8}${color1}${top_mem name 2}${alignr 40}${top_mem mem 2}%
+${goto 324}${font Play:normal:size=8}${color1}${top_mem name 3}${alignr 40}${top_mem mem 3}%
+${font Play:normal:size=9}${voffset 9}${goto 348}${color1}SWAP${alignr 40}${color1}${swap} / ${color1}${swapmax}
+${font Play:normal:size=9}${voffset 2}${goto 348}${color1}RAM ${alignr 40}${color1}${mem} / ${color1}${memmax}
+${font Play:normal:size=8}${goto 80}${voffset -70}Root${color1}${alignr 310}${fs_used /} / ${fs_size /}
+${font Play:normal:size=8}${goto 80}${voffset 0}Home${alignr 310}${color1}${fs_used /home} / ${fs_size /home}
+${font Play:normal:size=8}${goto 80}${voffset 0}Usr${alignr 310}${color1}${fs_used /usr} / ${fs_size /usr}
+${font Michroma:bold:size=10}${color1}${goto 66}${voffset 10}HARD  DRIVE
+${font Michroma:bold:size=10}${color1}${voffset 26}${goto 324}INTERNET  INFO
+
+#${font Play:normal:size=8}${goto 80}${voffset -30}Date${color1}${alignr 310}${time %d-%m-%Y}}
+#${font Play:normal:size=8}${goto 80}${voffset 0}Time${alignr 310}${color1}${time %H:%M:%S}
+${font Play:normal:size=8}${goto 80}${voffset -25}Battery ${alignr 310}${color1}${battery_percent BAT0}%
+${font Play:normal:size=8}${goto 80}${voffset 0}Time left${alignr 310}${color1}${battery_time BAT0}
+${font Michroma:bold:size=10}${color1}${goto 66}${voffset 5}BATTERY
+
+${font Michroma:bold:size=12}${color6}${voffset -395}${alignr 600}${goto 275}${exec whoami}
+${font Michroma:size=9}${color6}${voffset 2}${goto 320}${distribution} - ${exec uname -m}
+${font Play:bold:size=8}${voffset 12}${goto 300}${alignr 40}${color1} To-Do List
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 head -n 1 ~/.scripts/tasks.txt}
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +2 -n +2 ~/.scripts/tasks.txt | head -n 1}
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +3 -n +3 ~/.scripts/tasks.txt | head -n 1}
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +4 -n +4 ~/.scripts/tasks.txt | head -n 1}
+
+# ------ Change your wlan0 name below ------
+# |--wlp0s20f3
+${if_existing /proc/net/route wlp0s20f3}${font Play:normal:size=8}${color1}${goto 394}${alignr 40}${voffset 191}Connected  ${color1}${wireless_essid wlp0s20f3}
+${font Play:normal:size=8}${color1}${goto 324}Up${goto 394}${alignr 40}${voffset 0}${color1}${totalup wlp0s20f3} / ${color1}${upspeed wlp0s20f3}
+${font Play:normal:size=8}${goto 324}${color1}Down${goto 394}${alignr 40}${voffset 0}${color1}${totaldown wlp0s20f3} / ${color1}${downspeed wlp0s20f3}
+${font Play:normal:size=8}${goto 324}Local IP${goto 394}${alignr 40}${voffset 0}${addr wlp0s20f3}
+#${font Play:normal:size=8}${goto 324}Outgoing${goto 394}${alignr 40}${voffset 0}${execi 60 netstat -nt | awk '$6 == "SYN_SENT" {print $5}' | awk -F: '{print $1}' | sort | uniq}
+
+]];
+
+
