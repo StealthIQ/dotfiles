@@ -116,6 +116,7 @@ pgrep -x sxhkd >/dev/null || sxhkd &                                        # Re
 # xfce4-power-manager &
 # numlockx on &
 # /usr/bin/dunst &
+# battery-monitor &                                                         # https://github.com/maateen/battery-monitor 
 
 # Cursor Theme
 xsetroot -PearDarkCursors left_ptr &
