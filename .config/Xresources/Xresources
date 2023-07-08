@@ -13,7 +13,7 @@ st.alpha: .9
 st.font:           JetBrains Mono:style:medium:pixelsize=20
 
 ! Colors for Xresources
-#include ".Xresources.d/.Xcolors"
+#include "/home/StealthIQ/.config/Xresources/Xcolors"
 ! Colors Ref - https://github.com/LukeSmithxyz/st/blob/master/Xdefaults
 
 ! Urxvt Settings
