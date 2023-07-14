@@ -4,13 +4,17 @@ green="#02fc34"
 red="#fc0202"
 
 vpn_connect() {
-    if kitty wg-quick up wg0 && ifconfig | grep -q "wg0: flags=209<UP,POINTOPOINT,RUNNING,NOARP>"; then
-        myip=$(curl -s ifconfig.co/)
-        country=$(curl -s ifconfig.co/country)
-        city=$(curl -s ifconfig.co/city)
-        notify-send -i $HOME/.icons/Gladient/lock.png "✅ Wireguard VPN Connected" "🔥 IP Changed - $myip \n ✰ $country - $city"
+    if kitty wg-quick up wg0 && ip link show dev wg0 &> /dev/null; then
+        if ip link show dev wg0 | grep -q "state UP" &> /dev/null; then
+            myip=$(curl -s ifconfig.co/)
+            country=$(curl -s ifconfig.co/country)
+            city=$(curl -s ifconfig.co/city)
+            notify-send -i $HOME/.icons/Gladient/lock.png "✅ Wireguard VPN Connected" "🔥 IP Changed - $myip \n ✰ $country - $city"
+        else
+            notify-send -i $HOME/.icons/Papirus-Dark-Custom/48x48@2x/statusdialog-warning.svg "🔥 Wireguard VPN Not Connected" "⚠️ Please Either Manually Check by typing [ sudo wg ] or check your IP"
+        fi
     else
-        notify-send -i $HOME/.icons/Papirus-Dark-Custom/48x48@2x/statusdialog-warning.svg "🔥 Wireguard VPN Not Connected" "⚠️ Please Either Manually Check by typing [ sudo wg ] or check your IP"
+        notify-send -i $HOME/.icons/Papirus-Dark-Custom/48x48@2x/statusdialog-warning.svg "🔥 Wireguard VPN Not Connected" "⚠️ Device wg0 does not exist"
     fi
 }
 
@@ -23,12 +27,18 @@ vpn_disconnect() {
 }
 
 vpn_status() {
-    if ifconfig | grep -q "wg0"; then
-        echo "%{F$green}"
-    elif ifconfig | grep -q "tun0"; then
-        echo "%{F$green}󰯄"
-    elif ifconfig | grep -q "utun420"; then
-        echo "%{F$green}󰕥"
+    if ip link show dev wg0 &> /dev/null; then
+        if ip link show dev wg0 | grep -q "state UP" &> /dev/null; then
+            echo "%{F$green}"
+        else
+            echo "%{F$green}󰯄"
+        fi
+    elif ip link show dev tun0 &> /dev/null; then
+        if ip link show dev tun0 | grep -q "state UP" &> /dev/null; then
+            echo "%{F$green}󰯄"
+        else
+            echo "%{F$green}󰕥"
+        fi
     else
         echo "%{F$red}ﱾ"
     fi

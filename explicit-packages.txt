@@ -195,7 +195,6 @@ pypy3
 python-pywalfox
 python-uncompyle6
 python-virtualenv
-python38
 pywal-16-colors
 qemu-base
 qogir-gtk-theme-git

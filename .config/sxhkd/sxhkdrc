@@ -172,7 +172,8 @@ super + shift + KP_Enter
 
 # Dmenu
 super + shift + d
-   $HOME/.config/sxhkd/scripts/dmenu.sh
+    bash ~/.config/sxhkd/scripts/dmenu.sh
+	# dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
 
 #################################################################
 # SUPER + FUNCTION KEYS
@@ -478,19 +479,19 @@ super + s
 
 #Raises volume
 XF86AudioRaiseVolume
-    ~/.config/leftwm/themes/current/scripts/pavolume.sh --up
+    ~/.config/polybar/scripts/pavolume.sh --up
 
 #Lowers volume
 XF86AudioLowerVolume
-    ~/.config/leftwm/themes/current/scripts/pavolume.sh --down
+    ~/.config/polybar/scripts/pavolume.sh --down
 
 #Mute
 XF86AudioMute
-    ~/.config/leftwm/themes/current/scripts/pavolume.sh --togmute
+    ~/.config/polybar/scripts/pavolume.sh --togmute
 
 # Volume Mute control
 XF86AudioMute
-    amixer set Capture toggle && amixer get Capture | grep '\[off\]' && notify-send "MIC switched OFF" || notify-send "MIC switched ON"
+    bash ~/.config/sxhkd/scripts/mic-toggle.sh
 	
 # Music control
 XF86Audio{Play,Stop,Prev,Next}

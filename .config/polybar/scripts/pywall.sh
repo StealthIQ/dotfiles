@@ -12,6 +12,7 @@ Bashtop="$HOME/.config/bashtop/themes/embark.theme"
 Discord="$HOME/.config/BetterDiscord/themes/ClearVision_v6.theme.css"
 Dmenu="$HOME/.config/sxhkd/scripts/dmenu.sh"
 wallpapersDir="$HOME/Pictures/Wallpapers"
+Rolfi_polybar_2="$HOME/.config/rofi/colors/custom.rasi"
 
 # Gets random wallpaper
 randomWallpaper=$(find "$wallpapersDir" -type f \( -name "*.jpg" -o -name "*.png" \) -print | shuf -n 1)
@@ -33,16 +34,16 @@ change_theme_polybar() {
 	sed -i -e "s/themes = #.*/themes = $SH14/g" $Polybar
 	
 	# rofi
-	cat > $Rolfi-1 <<- EOF
+	cat > $Rolfi_polybar_2 <<- EOF
 	/* colors */
 
 	* {
-	  al:    ${FG}FF;
-	  bg:    ${BG}FF;
-	  bga:   ${BG}FF;
-	  fg:   ${SH15}FF;
-	  ac:   ${SH14}FF;
-	  se:    ${SH14}FF;
+    background:     ${BG}FF;
+    background-alt: ${SH0}FF;
+    foreground:     ${SH12}FF;
+    selected:       ${SH14}FF;
+    active:         ${SH8}FF;
+    urgent:         ${SH8}FF;
 	}
 	EOF
 	polybar-msg cmd restart
@@ -53,10 +54,6 @@ change_theme_overall() {
 
       # Changes conky color
       sed -i "/current1 = 0x/c current1 = 0x${CONKY}" $Conky
-
-      # Dmenu
-      sed -i -e "s/BG=#.*/BG=${BG}/g" $Dmenu
-      sed -i -e "s/FG=#.*/FG=${SH14}/g" $Dmenu
 
       # Changes cava gradient
       sed -i "/gradient_color_1 = '/c gradient_color_1 = '${SH14}'" $Cava
@@ -72,7 +69,16 @@ change_theme_overall() {
   
       # Changes Glava theme
       sed -i "/#define COLOR (#/c #define COLOR (${SH14} * GRADIENT)" $Glava
- 
+
+      # Dmenu 
+      cat > $Dmenu <<- EOF
+#!/bin/bash
+
+# Demenu run
+dmenu_run -i -nb '${BG}' -nf '${SH14}' -sb '${SH14}' -sf '${SH0}' -fn 'NotoMonoRegular:bold:pixelsize=14'
+}
+EOF
+
       # Changes Kitty theme
       cat > $Kitty <<- EOFE
 background            ${BG}

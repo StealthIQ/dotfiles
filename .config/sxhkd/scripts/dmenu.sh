@@ -1,8 +1,5 @@
-#! /bin/bash
+#!/bin/bash
 
-# Made a script to change colors according to pywall
-
-FG=
-BG=
-
-dmenu_run -i -nb $BG -nf $FG -sb $FG -sf $BG -fn 'NotoMonoRegular:bold:pixelsize=15'
+# Demenu run
+dmenu_run -i -nb '#1A170E' -nf '#E49C19' -sb '#E49C19' -sf '#1A170E' -fn 'NotoMonoRegular:bold:pixelsize=14'
+}
