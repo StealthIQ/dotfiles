@@ -4,7 +4,7 @@
 time_hr=$(date +"%H")
 
 # Tasks
-tasks=$(cat $HOME/.scripts/tasks.txt)
+tasks=$(cat $HOME/MEGAsync/StealthIQ/tasks.txt)
 # tasks=$(cat $HOME/MEGAsync/Todo/todo.txt | tail -1 | cut -b 5-15)
 
 # Remainder - Task 1
