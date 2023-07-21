@@ -1,12 +1,11 @@
 # ----- Env Variables -----
 
 # Pyenv  
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# eval "$(pyenv init -)"
 
 # Rust
 export RUST="$HOME/.cargo/bin"
-
 
 # Zoxide insted of cd
 eval "$(zoxide init zsh)"
@@ -18,4 +17,3 @@ function z () {
 
 # Spicetify
 export PATH=$PATH:/home/StealthIQ/.spicetify
-
