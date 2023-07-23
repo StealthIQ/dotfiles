@@ -58,6 +58,28 @@ bootloader_theme() {
     sudo ./install.sh
 }
 
+########## ---------- Enabling MPD service ---------- ##########
+music_player(){
+    logo "Enabling mpd service"
+    systemctl --user enable mpd.service
+    systemctl --user start mpd.service
+    printf "%s%sDone!!%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+    sleep 2
+  }
+
+########## --------- Changing shell to zsh ---------- ##########
+to_zsh(){
+    logo "Changing default shell to zsh"
+    printf "%s%sIf your shell is not zsh will be changed now.\nYour root password is needed to make the change.\n\nAfter that is important for you to reboot.\n %s\n" "${BLD}" "${CYE}" "${CNC}"
+    if [[ $SHELL != "/usr/bin/zsh" ]]; then
+      echo "Changing shell to zsh, your root pass is needed."
+      chsh -s /usr/bin/zsh
+    else
+      printf "%s%sYour shell is already zsh\nGood bye! installation finished, now reboot%s\n" "${BLD}" "${CGR}" "${CNC}"
+      zsh
+fi
+}
+
 spotify_themer(){
     # Install spicetify-cli package using paru
     paru -S --noconfirm --needed spicetify-cli
@@ -157,9 +179,10 @@ main() {
     # spotify_themer
     # nvchad_install
     # bootloader_theme
+    # music_player
+    # to_zsh
 
     echo "${green}Installation completed successfully.${reset}"
-    echo "Please restart your system or re-login for all changes to take effect."
 }
 
 main
