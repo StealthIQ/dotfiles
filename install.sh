@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Script to install dotfiles for Arch Linux
 # by StealthIQ
 
@@ -22,7 +21,7 @@ packages_file="$current_dir/misc/packages.txt"
 
 export TERM=ansi
 
-# FUNCTIONS
+# MAIN FUNCTIONS
 
 fix_locale(){
     echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/environment
@@ -30,6 +29,13 @@ fix_locale(){
     echo "LANG=en_US.UTF-8" | sudo tee -a /etc/locale.conf
     sudo locale-gen en_US.UTF-8
 }
+
+fix_time(){
+    sudo su
+    pacman -S --noconfirm --needed ntp
+    systemctl enable ntpd
+    timedatectl set-ntp 1
+  }
 
 installpkg() {
     # Use parallel processing for faster installation
@@ -149,8 +155,8 @@ main() {
     install_pkg
     # move_and_link_dotfiles
     # spotify_themer
-    # bootloader_theme
     # nvchad_install
+    # bootloader_theme
 
     echo "${green}Installation completed successfully.${reset}"
     echo "Please restart your system or re-login for all changes to take effect."
