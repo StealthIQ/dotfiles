@@ -1,0 +1,278 @@
+.dotfiles
+├── .config
+│   ├── alacritty
+│   ├── bashtop
+│   │   ├── themes
+│   │   └── user_themes
+│   ├── bspwm
+│   │   └── scripts
+│   ├── cava
+│   ├── conky
+│   ├── dunst
+│   ├── gtk-2.0
+│   ├── gtk-3.0
+│   ├── htop
+│   ├── kitty
+│   ├── leftwm
+│   │   ├── 0xfce
+│   │   │   ├── polybar
+│   │   │   │   └── scripts
+│   │   │   │       ├── anonymous
+│   │   │   │       └── rofi
+│   │   │   ├── scripts
+│   │   │   └── sxhkd
+│   │   ├── scripts
+│   │   ├── sxhkd
+│   │   └── themes
+│   │       ├── Amber
+│   │       │   ├── conf
+│   │       │   ├── eww
+│   │       │   ├── .git
+│   │       │   │   ├── hooks
+│   │       │   │   ├── info
+│   │       │   │   ├── logs
+│   │       │   │   │   └── refs
+│   │       │   │   │       ├── heads
+│   │       │   │   │       └── remotes
+│   │       │   │   │           └── origin
+│   │       │   │   ├── objects
+│   │       │   │   │   ├── info
+│   │       │   │   │   └── pack
+│   │       │   │   └── refs
+│   │       │   │       ├── heads
+│   │       │   │       ├── remotes
+│   │       │   │       │   └── origin
+│   │       │   │       └── tags
+│   │       │   ├── rofi
+│   │       │   ├── screenshots
+│   │       │   ├── scripts
+│   │       │   └── wallpapers
+│   │       ├── Bluepex
+│   │       │   ├── polybar
+│   │       │   │   └── scripts
+│   │       │   │       └── rofi
+│   │       │   │           └── rofi
+│   │       │   ├── scripts
+│   │       │   │   └── polybar-vpn-controller
+│   │       │   │       ├── fonts
+│   │       │   │       └── .git
+│   │       │   │           ├── branches
+│   │       │   │           ├── hooks
+│   │       │   │           ├── info
+│   │       │   │           ├── logs
+│   │       │   │           │   └── refs
+│   │       │   │           │       ├── heads
+│   │       │   │           │       └── remotes
+│   │       │   │           │           └── origin
+│   │       │   │           ├── objects
+│   │       │   │           │   ├── info
+│   │       │   │           │   └── pack
+│   │       │   │           └── refs
+│   │       │   │               ├── heads
+│   │       │   │               ├── remotes
+│   │       │   │               │   └── origin
+│   │       │   │               └── tags
+│   │       │   └── sxhkd
+│   │       ├── Catppuccin
+│   │       │   ├── conf
+│   │       │   ├── fonts
+│   │       │   │   ├── Comfortaa
+│   │       │   │   └── Noto_Sans
+│   │       │   ├── .git
+│   │       │   │   ├── hooks
+│   │       │   │   ├── info
+│   │       │   │   ├── logs
+│   │       │   │   │   └── refs
+│   │       │   │   │       ├── heads
+│   │       │   │   │       └── remotes
+│   │       │   │   │           └── origin
+│   │       │   │   ├── objects
+│   │       │   │   │   ├── info
+│   │       │   │   │   └── pack
+│   │       │   │   └── refs
+│   │       │   │       ├── heads
+│   │       │   │       ├── remotes
+│   │       │   │       │   └── origin
+│   │       │   │       └── tags
+│   │       │   ├── screenshots
+│   │       │   ├── scripts
+│   │       │   │   ├── misc
+│   │       │   │   └── rasi
+│   │       │   └── wallpapers
+│   │       ├── Dracula Rounded
+│   │       │   ├── .git
+│   │       │   │   ├── hooks
+│   │       │   │   ├── info
+│   │       │   │   ├── logs
+│   │       │   │   │   └── refs
+│   │       │   │   │       ├── heads
+│   │       │   │   │       └── remotes
+│   │       │   │   │           └── origin
+│   │       │   │   ├── objects
+│   │       │   │   │   ├── info
+│   │       │   │   │   └── pack
+│   │       │   │   └── refs
+│   │       │   │       ├── heads
+│   │       │   │       ├── remotes
+│   │       │   │       │   └── origin
+│   │       │   │       └── tags
+│   │       │   ├── images
+│   │       │   └── rofi
+│   │       └── Red Moon
+│   │           └── .git
+│   │               ├── hooks
+│   │               ├── info
+│   │               ├── logs
+│   │               │   └── refs
+│   │               │       ├── heads
+│   │               │       └── remotes
+│   │               │           └── origin
+│   │               ├── objects
+│   │               │   ├── info
+│   │               │   └── pack
+│   │               └── refs
+│   │                   ├── heads
+│   │                   ├── remotes
+│   │                   │   └── origin
+│   │                   └── tags
+│   ├── mpv
+│   │   └── scripts
+│   ├── neofetch
+│   │   ├── ascii_art
+│   │   ├── images
+│   │   └── scripts
+│   ├── nvim
+│   │   ├── .git
+│   │   │   ├── branches
+│   │   │   ├── hooks
+│   │   │   ├── info
+│   │   │   ├── logs
+│   │   │   │   └── refs
+│   │   │   │       ├── heads
+│   │   │   │       └── remotes
+│   │   │   │           └── origin
+│   │   │   ├── objects
+│   │   │   │   ├── info
+│   │   │   │   └── pack
+│   │   │   └── refs
+│   │   │       ├── heads
+│   │   │       ├── remotes
+│   │   │       │   └── origin
+│   │   │       └── tags
+│   │   ├── .github
+│   │   │   ├── ISSUE_TEMPLATE
+│   │   │   ├── PULL_REQUEST_TEMPLATE
+│   │   │   └── workflows
+│   │   └── lua
+│   │       ├── core
+│   │       ├── custom
+│   │       └── plugins
+│   │           └── configs
+│   ├── openbox
+│   │   ├── joyful-desktop
+│   │   └── pipe-menu
+│   ├── polybar
+│   │   └── scripts
+│   │       ├── music
+│   │       └── rofi
+│   ├── ranger
+│   │   └── plugins
+│   │       ├── __pycache__
+│   │       └── ranger_devicons
+│   │           └── __pycache__
+│   ├── rofi
+│   │   ├── applets
+│   │   │   ├── bin
+│   │   │   ├── shared
+│   │   │   ├── type-1
+│   │   │   ├── type-2
+│   │   │   ├── type-3
+│   │   │   ├── type-4
+│   │   │   └── type-5
+│   │   ├── colors
+│   │   ├── images
+│   │   ├── launchers
+│   │   │   ├── type-1
+│   │   │   │   └── shared
+│   │   │   ├── type-2
+│   │   │   │   └── shared
+│   │   │   ├── type-3
+│   │   │   │   └── shared
+│   │   │   ├── type-4
+│   │   │   │   └── shared
+│   │   │   ├── type-5
+│   │   │   ├── type-6
+│   │   │   └── type-7
+│   │   ├── powermenu
+│   │   │   ├── type-1
+│   │   │   │   └── shared
+│   │   │   ├── type-2
+│   │   │   │   └── shared
+│   │   │   ├── type-3
+│   │   │   │   └── shared
+│   │   │   ├── type-4
+│   │   │   │   └── shared
+│   │   │   ├── type-5
+│   │   │   └── type-6
+│   │   ├── rofi-json
+│   │   │   ├── examples
+│   │   │   └── .git
+│   │   │       ├── branches
+│   │   │       ├── hooks
+│   │   │       ├── info
+│   │   │       ├── logs
+│   │   │       │   └── refs
+│   │   │       │       ├── heads
+│   │   │       │       └── remotes
+│   │   │       │           └── origin
+│   │   │       ├── objects
+│   │   │       │   ├── info
+│   │   │       │   └── pack
+│   │   │       └── refs
+│   │   │           ├── heads
+│   │   │           ├── remotes
+│   │   │           │   └── origin
+│   │   │           └── tags
+│   │   ├── rofi-network-manager
+│   │   │   └── .git
+│   │   │       ├── branches
+│   │   │       ├── hooks
+│   │   │       ├── info
+│   │   │       ├── logs
+│   │   │       │   └── refs
+│   │   │       │       ├── heads
+│   │   │       │       └── remotes
+│   │   │       │           └── origin
+│   │   │       ├── objects
+│   │   │       │   ├── info
+│   │   │       │   └── pack
+│   │   │       └── refs
+│   │   │           ├── heads
+│   │   │           ├── remotes
+│   │   │           │   └── origin
+│   │   │           └── tags
+│   │   ├── Rofi-Scripts
+│   │   └── scripts
+│   ├── sxhkd
+│   │   ├── scripts
+│   │   └── sxhkd-leftwm
+│   ├── telegram
+│   │   └── awesome.tdesktop-theme_FILES
+│   ├── termite
+│   ├── Thunar
+│   ├── ulauncher
+│   ├── x11
+│   ├── Xresources
+│   └── zsh
+│       └── .oh-my-zsh
+├── .local
+│   └── bin
+└── misc
+    ├── .fonts
+    ├── .icons
+    │   ├── default
+    │   ├── Gladient
+    │   └── Papirus-Custom
+    └── .wallpapers
+
+1069 directories
