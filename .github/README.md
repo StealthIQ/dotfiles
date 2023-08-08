@@ -1,23 +1,159 @@
 ## My Arch Linux Dotfiles
 
-*These dotfiles are a hot mess in progress - an experiment in tinkering, not a production-ready setup! Use at your own risk.*
+Welcome to my experimental Arch Linux dotfiles repository! Please note that these configurations are a work in progress and not recommended for production setups. Use them at your own discretion.
+
+## Screenshots
+
+![Imgur](https://i.imgur.com/MGrVLmG.png)
+
+![Imgur](https://i.imgur.com/JlmzPOB.png)
 
 ### Setup Details
 
-- Operating System: Arch Linux
-- Window Manager: bspwm
-- Compositor: picom
-- Terminal: st (luke's fork)
-- Shell: ZSH
-- Bar: polybar
-- File Manager: ranger + ueberzug (image support for the terminal)
-- Notifications: dunst
-- Music Player: Mpd + Ncmpcpp
-- Visualizer: cava
-- Hotkey Daemon: skhd
-- Prompt: powerline10k
-- Font: iosevka
-- Pipe-like Thing: pipes.sh
+This repository contains dotfiles for a unique Arch Linux setup that includes the following components:
+
+- **Operating System**: [Arch Linux](https://archlinux.org/download/)
+- **Window Manager**: [bspwm](https://github.com/baskerville/bspwm)
+- **Compositor**: [picom](https://github.com/yshui/picom)
+- **Terminal**: [st (Luke's fork)](https://github.com/LukeSmithxyz/st)
+- **Shell**: [ZSH](https://github.com/zsh-users/zsh)
+- **Bar**: [polybar](https://github.com/polybar/polybar)
+- **File Manager**: [ranger](https://github.com/ranger/ranger) with [ueberzug](https://github.com/seebye/ueberzug)
+- **Notifications**: [dunst](https://github.com/dunst-project/dunst)
+- **Music Player**: [Mpd](https://github.com/MusicPlayerDaemon/MPD) with [Ncmpcpp](https://github.com/ncmpcpp/ncmpcpp)
+- **Visualizer**: [cava](https://github.com/karlstav/cava)
+- **Hotkey Daemon**: [skhd](https://github.com/koekeishiya/skhd)
+- **Prompt**: [powerline10k](https://github.com/romkatv/powerlevel10k)
+- **Font**: [iosevka](https://github.com/be5invis/Iosevka)
+- **Fun Element**: [pipes.sh](https://github.com/pipeseroni/pipes.sh)
+
+## Installation
+
+### Automated Script Install
+⚠️ Please note that this script is designed specifically for Arch Linux.
+
+```bash
+git clone --depth 1 https://github.com/StealthIQ/dotfiles.git
+cd dotfiles
+./install.sh
+```
+
+Additionally, check out the required packages listed in `misc/packages.txt`.
+
+### Manual Installation
+
+Before proceeding, ensure you have a functioning Arch Linux installation and an active internet connection.
+
+1. **Install and Update Essential Packages:**
+
+```bash
+sudo pacman -Syu --noconfirm --needed base-devel sof-firmware neovim
+```
+
+2. **Fix Locale Settings:**
+
+```bash
+echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/environment
+echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
+echo "LANG=en_US.UTF-8" | sudo tee -a /etc/locale.conf
+sudo locale-gen en_US.UTF-8
+```
+
+3. **Fix System Time:**
+
+```bash
+sudo pacman -S --noconfirm --needed ntp
+systemctl enable ntpd
+timedatectl set-ntp 1
+```
+
+4. **Install Bootloader Themes:**
+
+```bash
+git clone https://github.com/ChrisTitusTech/Top-5-Bootloader-Themes
+cd Top-5-Bootloader-Themes
+sudo ./install.sh
+```
+
+5. **Install and Configure `nvchad` Neovim Setup:**
+
+```bash
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+rm -rf "$HOME/.local/state/nvim/shada"
+```
+
+6. **Set Up Xfce Login Manager and Configurations:**
+
+```bash
+# Install lightdm and necessary packages
+sudo systemctl disable lightdm
+sudo pacman -S --needed --noconfirm xorg xfce4 xfce4-goodies
+# Configure login manager
+cp -r "$current_dir/.xinitrc" "$HOME" 2>/dev/null
+ln -s $HOME/.config/X11/.xinitrc $HOME
+chmod +x "$HOME/.xinitrc"
+```
+
+7. **Set Up Touchpad Gesture Support:**
+
+```bash
+paru -S --noconfirm --needed wmctrl xdotool libinput-gestures gestures
+sudo gpasswd -a $USER input
+libinput-gestures-setup autostart
+```
+
+8. **Build and Install Luke's `st` Terminal Emulator:**
+
+```bash
+git clone https://github.com/LukeSmithxyz/st
+cd st
+sudo make install
+```
+
+9. **Configure and Set Up Music Player with `mpd` and `ncmpcpp`:**
+
+```bash
+sudo pacman -S mpd mpc --noconfirm --needed
+# ...
+# (Refer to the original script for detailed steps.)
+# ...
+```
+
+10. **Set Up Zsh Shell:**
+
+```bash
+if [[ $SHELL != "/usr/bin/zsh" ]]; then
+    chsh -s /usr/bin/zsh
+fi
+```
+
+11. **Install and Configure Spotify Theming:**
+
+```bash
+paru -S --noconfirm --needed spotify spicetify-cli
+# ...
+# (Refer to the original script for detailed steps.)
+# ...
+```
+
+12. **Move and Link Dotfiles, Configurations, and Fonts:**
+
+```bash
+# ...
+# (Refer to the original script for detailed steps.)
+# ...
+```
+
+### Features
+
+- Stylish minimalist aesthetics
+- Seamless wallpaper-themed customization
+- Create personalized themes with xcolor
+- Enhanced with picom transparency and blur effects
+- Consistent theme style across the desktop
+- Customized P10K terminal prompt
+- Informative status bar for enhanced productivity
+
 
 ### Frequently Asked Questions (FAQ)
 
