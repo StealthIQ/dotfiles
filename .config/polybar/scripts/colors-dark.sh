@@ -2,12 +2,12 @@
 
 # Color files Polybar
 Polybar="$HOME/.config/polybar/colors.ini"
-Rolfi="$HOME/.config/polybar/scripts/rofi/colors.rasi"
-Rolfi-2="$HOME/.config/rofi/launchers/colorful/colors.rasi"
+# Rolfi="$HOME/.config/polybar/scripts/rofi/colors.rasi"
+# Rolfi-2="$HOME/.config/rofi/launchers/colorful/colors.rasi"
 # RFILE="$HOME/.config/polybar/cuts/scripts/rofi/colors.rasi"
 
 # Color files Overall
-Xcolor="$HOME/.Xresources.d/.Xcolors"
+Xcolor="$HOME/.config/Xresources/Xcolors"
 Kitty="$HOME/.config/kitty/current-theme.conf"
 Conky="$HOME/.config/conky/rings-v1.2.1.lua"
 Cava="$HOME/.config/cava/config"
@@ -34,26 +34,26 @@ change_color() {
 *.cursorColor: ${AC}
 *.selection_background: #131313
 *.selection_foreground: #FFFFFF
-*.foreground:  #d6dbe5
-*.background:  #131313
-*.color0:      #1f1f1f
-*.color8:      #d6dbe5
-*.color1:      #f81118
-*.color9:      #de352e
-*.color2:      #2dc55e
-*.color10:     #1dd361
-*.color3:      #ecba0f
-*.color11:     #f3bd09
+*.foreground:  #cdcdcd
+*.background:  #090909
+*.color0:      #000000
+*.color8:      #535353
+*.color1:      #d70005
+*.color9:      #fb0007
+*.color2:      #1cd915
+*.color10:     #22ff18
+*.color3:      #d9bd26
+*.color11:     #fedc2b
 *.color4:      ${AC}
-*.color12:     #1081d6
-*.color5:      #4e5ab7
-*.color13:     #5350b9
-*.color6:      #1081d6
-*.color14:     #0f7ddb
-*.color7:      #d6dbe5
+*.color12:     #9fa9ff
+*.color5:      #b052da
+*.color13:     #e09aff
+*.color6:      #50d2da
+*.color14:     #8df9ff
+*.color7:      #e0e0e0
 *.color15:     #ffffff
 	EOF
-        xrdb merge ~/.Xresources &
+	  xrdb merge ~/.config/Xresources/Xresources
 
 
     #Conky colors
@@ -80,8 +80,13 @@ change_color() {
 
 	polybar-msg cmd restart
 }
-
-if  [[ $1 = "--amber" ]]; then
+if [[ "$1" == "--custom" ]]; then
+  custom=$(xcolor)
+  AC="$custom"
+  ACC=$(printf $custom | cut -c2-)
+  ACE="0x$ACC"
+  change_color
+elif  [[ $1 = "--amber" ]]; then
 	AC="#ffb300"
 	ACE="0xffb300"
 	change_color

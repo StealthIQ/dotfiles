@@ -1,10 +1,36 @@
-#! /bin/sh
-#--------------------------------------------------------# Part - 0
-xmodmap .xmodmap-sid & # remove this 
+#!/bin/sh
+
+# Function to set up the multi-monitor configuration
+setup_multi_monitor() {
+  xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode 1920x1080 --rotate normal --below eDP-1
+  bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9
+  bspc monitor HDMI-1 -d 1 2 3 4 5 6 7 8 9 10
+}
+
+# Function to set up workspaces for media players
+setup_media_workspaces() {
+  declare -a media=(mpv Music MPlayer Lxmusic Inkscape Gimp-2.10 obs io.github.celluloid_player.Celluloid)
+  for i in "${media[@]}"; do
+    bspc rule -a "$i" desktop='^7' follow=on layer=above
+  done
+}
+
+# Part - 0: Remove the xmodmap command (no longer needed)
+
+# Check for HDMI-1 connection
+if xrandr -q | grep -q 'HDMI-1 connected'; then
+  multi_monitor=yes
+  setup_multi_monitor
+else
+  # Single monitor setup
+  bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9 10
+  setup_media_workspaces
+fi
 
 #--------------------------------------------------------# Part - 1
+
 #bspc monitor -d Home Web Work Files Mails Misc          # Monitor Names
-bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+# bspc monitor eDP-1 1 2 3 4 5 6 7 8 9 10
 # bspc monitor -d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 # bspc monitor -d I II III IV V VI VII VIII IX X
 #bspc monitor -d www term code file social
@@ -76,9 +102,11 @@ for i in ${gaming[@]}; do
    bspc rule -a $i desktop='^6' follow=on layer=above state=fullscreen border=off; done
 
 # 7 > media players
-declare -a media=(mpv Music MPlayer Lxmusic Inkscape Gimp-2.10 obs io.github.celluloid_player.Celluloid)
-for i in ${media[@]}; do
-   bspc rule -a $i desktop='^7' follow=on layer=above; done
+media_func(){
+    declare -a media=(mpv Music MPlayer Lxmusic Inkscape Gimp-2.10 obs io.github.celluloid_player.Celluloid)
+    for i in ${media[@]}; do
+       bspc rule -a $i desktop='^7' follow=on layer=above; done
+     }
 
 # 9 > social-media
 declare -a social=(Ferdium TelegramDesktop discord)

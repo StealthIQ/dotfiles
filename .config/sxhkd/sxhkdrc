@@ -2,6 +2,7 @@
 #F1
 #    ;
 
+export LANG=en_US.UTF-8
 #releasing keys, so I won't end up calling something like super + m ...
 #also it prevents from infinite loop of changing layouts
 #################################################################
@@ -91,7 +92,7 @@ super + c
 
 # killall mpv or use mpv
 super + x
-    if pgrep mpv; then killall mpv; else mpv  --osd-bar=no --save-position-on-quit --fs $HOME/Telegram\ Desktop; fi
+    if pgrep mpv; then killall mpv; else mpv  --osd-bar=no --save-position-on-quit --fs $HOME/Downloads/Telegram\ Desktop ; fi
 
 # Bleachbit
 super + shift + c
@@ -127,7 +128,7 @@ ctrl + space
 
 # Rofi script menu
 super + d
-    ~/.scripts/rofi-script-menu.sh
+    ~/MEGAsync/Arch_Private/rofi-script-menu.sh
 
 # Pavucontrol
 super + shift + v
@@ -172,7 +173,7 @@ super + shift + KP_Enter
 
 # Dmenu
 super + shift + d
-    bash ~/.config/sxhkd/scripts/dmenu.sh
+    ~/.config/sxhkd/scripts/dmenu.sh
 	# dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
 
 #################################################################
@@ -213,11 +214,11 @@ super + F4
 
 # brightness decrease
 super + F5
-    brillo -q -U 5
+    brillo -U 5
 
 # brightness increase
 super + F6
-    brillo -q -A 5
+    brillo -A 5
 
 # Vmware
 super + F7
@@ -286,11 +287,11 @@ ctrl + alt + l
 
 # Polybar Restart 
 ctrl + alt + p
-    polybar-msg cmd restart
+    bash ~/.config/polybar/launch.sh 
 
 # reloads sxhkd config
 ctrl + alt + r
-    pkill -USR1 -x sxhkd
+  pkill -USR1 -x sxhkd && notify-send -i ~/.icons/Papirus-Custom/48x48/apps/cs-keyboard.svg 'Sxhkd' 'Successfully Reloaded sxhkdrc config'
 
 # Xfce4-settings-manager
 ctrl + alt + m
@@ -302,7 +303,7 @@ ctrl + alt + u
 
 # Spotify
 ctrl + alt + s
-  if pgrep spotify; then killall spotify; else env LD_PRELOAD=/usr/lib/spotify-adblock.so spotify %U; fi
+  if pgrep spotify; then pkill -9 spotify; else env LD_PRELOAD=/usr/lib/spotify-adblock.so spotify %U; fi
 
 # alacritty
 ctrl + alt + Return
@@ -330,10 +331,7 @@ super + slash
 
 # Runs Nitroplex script
 super + z 
-    alacritty -e ~/.scripts/Nitroplex.sh
-
-# Runs Nitroplex script
-super + x
+    alacritty -e ~/MEGAsync/Arch_Private/Nitroplex.sh
     
 
 #  ------------ bspwm hotkeys ------------ # 
@@ -344,7 +342,7 @@ super + shift + r
 
 # Reload sxhkd
 alt + shift + r
-    pkill -usr1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
+  pkill -USR1 -x sxhkd && notify-send -i ~/.icons/Gladient/terminal.png  'SXHKD' 'Successfully, Reloaded config!!'
 
 # Bspwm quit
 super + shift + Delete
@@ -415,8 +413,6 @@ super + {o,i}
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0,u,i,o,p}
 	bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}' --follow
-
-# preselect ( select the direction you want the window to be opened in )
 
 # preselect the direction
 super + ctrl + {h,j,k,l}

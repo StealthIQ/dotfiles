@@ -13,7 +13,7 @@ st.alpha: .9
 st.font:           JetBrains Mono:style:medium:pixelsize=20
 
 ! Colors for Xresources
-#include "/home/StealthIQ/.config/Xresources/Xcolors"
+#include "/home/stealthiq/.config/Xresources/Xcolors"
 ! Colors Ref - https://github.com/LukeSmithxyz/st/blob/master/Xdefaults
 
 ! Urxvt Settings
@@ -31,6 +31,7 @@ URxvt.matcher.button: 1
 
 ! Just Set it to your cursor theme
 Xcursor.theme: Volantes_Light_Curser
+! Xcursor.theme: Vimix
 
 ! just remove this if you dont use my tabbed
 

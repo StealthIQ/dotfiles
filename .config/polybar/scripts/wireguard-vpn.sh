@@ -40,7 +40,7 @@ vpn_status() {
             echo "%{F$green}󰕥"
         fi
     else
-        echo "%{F$red}ﱾ"
+        echo "%{F$red}"
     fi
 }
 
@@ -50,4 +50,6 @@ elif [[ $1 = "--disconnect" ]]; then
     vpn_disconnect
 elif [[ $1 = "--status" ]]; then
     vpn_status
+else
+    echo "Avaliable commands --connect --disconnect --status"
 fi

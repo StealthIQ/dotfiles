@@ -17,7 +17,7 @@ function send_notification {
     # Make the bar with the special character ─ (it's not dash -)
     # https://en.wikipedia.org/wiki/Box-drawing_character
 #bar=$(seq -s "─" $(($volume/5)) | sed 's/[0-9]//g')
-    icon_name="/home/i0xfce/.icons/forest-icons/16x16/apps/brightnesssettings.svg"
+    icon_name="~/.icons/Gladient/mechanical.interactive.png"
     # Send the notification
     $DIR/notify-send.sh "Changing Brightness " "$brightness" -i "$icon_name" -t 1100 -h int:value:"$brightness" --replace=555
 
@@ -27,12 +27,12 @@ function send_notification {
 case $1 in
   up)
     # increase the backlight by 5%
-    brillo -q -A 1
+    brillo -A 1
     send_notification
     ;;
   down)
     # decrease the backlight by 5%
-    brillo -q -U 1
+    brillo -U 1
     send_notification
     ;;
 esac

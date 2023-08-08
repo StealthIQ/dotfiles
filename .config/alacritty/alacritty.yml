@@ -1,13 +1,13 @@
 # Window Customization
 window:
-  opacity: 0.98
+  opacity: 0.8
   dimensions:
     columns: 140
     lines: 38
   padding:
     x: 10
     y: 10
-  decorations: full 
+  decorations: full #Still won't show in a window manger, but will in a desktop environment
 scrolling:
   history: 3000
   multiplier: 3
@@ -37,32 +37,32 @@ font:
 draw_bold_text_with_bright_colors: true
 
 colors:
-  name: 3024 (dark)
-  author: Chris Kempson
+  name: astromouse
+  author: ""
   primary:
-    background: "#090300"
-    foreground: "#a5a2a2"
+    background: "#000000"
+    foreground: "#ffffff"
   cursor:
-    text: "#090300"
-    cursor: "#a5a2a2"
+    text: "#000000"
+    cursor: "#ffffff"
   normal:
-    black: "#090300"
-    red: "#db2d20"
-    green: "#01a252"
-    yellow: "#fded02"
-    blue: "#01a0e4"
-    magenta: "#a16a94"
-    cyan: "#b5e4f4"
-    white: "#a5a2a2"
+    black: "#1c1c1c"
+    red: "#d770af"
+    green: "#9acc79"
+    yellow: "#d0d26b"
+    blue: "#77b6c5"
+    magenta: "#a488d9"
+    cyan: "#7fcab3"
+    white: "#8d8d8d"
   bright:
-    black: "#5c5855"
-    red: "#db2d20"
-    green: "#01a252"
-    yellow: "#fded02"
-    blue: "#01a0e4"
-    magenta: "#a16a94"
-    cyan: "#b5e4f4"
-    white: "#f7f7f7"
+    black: "#3d3a3a"
+    red: "#d28abf"
+    green: "#8fb676"
+    yellow: "#c8bc45"
+    blue: "#8fa7b9"
+    magenta: "#bd89de"
+    cyan: "#6ec2a8"
+    white: "#dad3d3"
 
 cursor:
   style:
@@ -73,5 +73,4 @@ cursor:
 
 key_bindings:
   - { key: N, mods: Control, action: SpawnNewInstance }
-theme: 3024.dark
-
+theme: Astromouse

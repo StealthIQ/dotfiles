@@ -5,7 +5,7 @@ SDIR="$HOME/.config/polybar/scripts"
 # Launch Rofi
 MENU="$(rofi -no-config -no-lazy-grab -sep "|" -dmenu -i -p '' \
 -theme $SDIR/rofi/styles.rasi \
-<<< " amber-dark|\
+<<< " regen-color| pick-color| amber-dark|\
  blue-dark| blue-gray-dark| brown-dark| cyan-dark| deep-orange-dark|\
  deep-purple-dark| green-dark| gray-dark| indigo-dark| blue-light-dark|\
  green-light-dark| lime-dark| orange-dark| pink-dark| purple-dark| red-dark| teal-dark| yellow-dark")"
@@ -31,7 +31,9 @@ MENU="$(rofi -no-config -no-lazy-grab -sep "|" -dmenu -i -p '' \
 				# *teal) "$SDIR"/colors-light.sh --teal ;;
 				# *yellow) "$SDIR"/colors-light.sh --yellow ;;
 				## Dark Colors
-				*amber-dark) "$SDIR"/colors-dark.sh --amber ;;
+        *regen-color) cp ~/.config/polybar/colors.ini.bak ~/.config/polybar/colors.ini && polybar-msg cmd restart ;;
+				*pick-color) "$SDIR"/colors-dark.sh --custom ;;				
+        *amber-dark) "$SDIR"/colors-dark.sh --amber ;;
 				*blue-dark) "$SDIR"/colors-dark.sh --blue ;;
 				*blue-gray-dark) "$SDIR"/colors-dark.sh --blue-gray ;;
 				*brown-dark) "$SDIR"/colors-dark.sh --brown ;;

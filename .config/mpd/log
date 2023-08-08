@@ -1,0 +1,14 @@
+Aug 06 13:13 : exception: Failed to open '/home/stealthiq/.config/mpd/state': No such file or directory
+Aug 06 13:13 : client: [1] command "currentsong" during idle
+Aug 06 13:14 : exception: Failed to open '/home/stealthiq/.config/mpd/state': No such file or directory
+Aug 06 13:14 : exception: Failed to commit /home/stealthiq/.config/mpd/state: File exists
+Aug 06 13:20 : player: played "Old/111368327(2).mp3"
+Aug 06 13:22 : player: played "Old/1572349004_JADVAL (YAHYA) - Be Har Hal.mp3"
+Aug 06 13:26 : player: played "Old/2Pac - My zone.mp3"
+Aug 06 13:31 : player: played "Old/2Pac & Pishro - Sucka For Love.mp3"
+Aug 06 13:35 : player: played "Old/4_5778492280423842964.mp3"
+Aug 06 13:38 : player: played "Old/4ever Falling - No Clarity (prod. RDY Beats).mp3"
+Aug 06 13:42 : player: played "Old/Alesia Cara  – Here.mp3"
+Aug 06 13:44 : player: played "Old/Ali-Sorena-Masti.mp3"
+Aug 06 13:46 : player: played "Old/Amin Goya - Sar Dar Gom.mp3"
+Aug 06 13:48 : player: played "Old/Apashe Majesty feat Wasiu by Ismail Nagy.mp3"

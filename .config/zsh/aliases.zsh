@@ -126,7 +126,7 @@ alias rldb="killall xidlehook && killall sxhkd && bspc wm -r"
 alias window-identify="xprop | grep WM_CLASS"
 
 #files
-alias rc="vim ~/.zsh/aliases.zsh"
+alias rc="vim ~/.config/zsh/aliases.zsh"
 alias bspwmrc="vim ~/.config/bspwm/bspwmrc"
 alias sxhkdrc="vim ~/.config/sxhkd/sxhkdrc"
 alias polybar-modules="vim ~/.config/polybar/modules.ini"

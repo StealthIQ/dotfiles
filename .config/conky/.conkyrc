@@ -58,36 +58,37 @@ ${font Play:normal:size=8}${voffset 2}${goto 120}${color1}CPU 4${alignr 330}${co
 ${goto 50}${voffset 9}${font Play:normal:size=9}${goto 80}${color1}${top name 1}${alignr 306}${top cpu 1}%
 ${goto 50}${font Play:normal:size=9}${goto 80}${color1}${top name 2}${alignr 306}${top cpu 2}%
 ${goto 50}${font Play:normal:size=9}${goto 80}${color1}${top name 3}${alignr 306}${top cpu 3}%
-${font Michroma:bold:size=10}${color1}${goto 66}${voffset 4}CPU 
-${font Michroma:bold:size=10}${color1}${goto 394}${voffset 37}MEMORY
-${goto 324}${voffset -6}${font Play:normal:size=9}${color1}${top_mem name 1}${alignr 40}${top_mem mem 1}%
+${font Hack:bold:size=10}${color1}${goto 66}${voffset 4}CPU \
+
+${font Hack:bold:size=10}${color1}${goto 324}${voffset 72}MEMORY
+${goto 324}${voffset 1}${font Play:normal:size=9}${color1}${top_mem name 1}${alignr 40}${top_mem mem 1}%
 ${goto 324}${font Play:normal:size=8}${color1}${top_mem name 2}${alignr 40}${top_mem mem 2}%
 ${goto 324}${font Play:normal:size=8}${color1}${top_mem name 3}${alignr 40}${top_mem mem 3}%
-${font Play:normal:size=9}${voffset 9}${goto 348}${color1}SWAP${alignr 40}${color1}${swap} / ${color1}${swapmax}
-${font Play:normal:size=9}${voffset 2}${goto 348}${color1}RAM ${alignr 40}${color1}${mem} / ${color1}${memmax}
-${font Play:normal:size=8}${goto 80}${voffset -70}Root${color1}${alignr 310}${fs_used /} / ${fs_size /}
+${font Play:normal:size=7}${voffset 6}${goto 299}${alignr 120}${color1}SWAP${alignr 40}${color1}${swap} / ${color1}${swapmax}
+${font Play:normal:size=7}${voffset 2}${goto 299}${alignr 80}${color1}RAM ${alignr 40}${color1}${mem} / ${color1}${memmax}
+${font Play:normal:size=8}${goto 80}${voffset -60}Root${color1}${alignr 310}${fs_used /} / ${fs_size /}
 ${font Play:normal:size=8}${goto 80}${voffset 0}Home${alignr 310}${color1}${fs_used /home} / ${fs_size /home}
 ${font Play:normal:size=8}${goto 80}${voffset 0}Usr${alignr 310}${color1}${fs_used /usr} / ${fs_size /usr}
-${font Michroma:bold:size=10}${color1}${goto 66}${voffset 10}HARD  DRIVE
-${font Michroma:bold:size=10}${color1}${voffset 26}${goto 324}INTERNET  INFO
-
+${font Hack:bold:size=10}${color1}${goto 66}${voffset 10}HARD  DRIVE
+${font Hack:bold:size=10}${color1}${voffset 115}${goto 324}${exec ip addr show dev eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'}
 #${font Play:normal:size=8}${goto 80}${voffset -30}Date${color1}${alignr 310}${time %d-%m-%Y}}
 #${font Play:normal:size=8}${goto 80}${voffset 0}Time${alignr 310}${color1}${time %H:%M:%S}
-${font Play:normal:size=8}${goto 80}${voffset -25}Battery ${alignr 310}${color1}${battery_percent BAT0}%
+${font Play:normal:size=8}${goto 80}${voffset -70}Battery ${alignr 310}${color1}${battery_percent BAT0}%
 ${font Play:normal:size=8}${goto 80}${voffset 0}Time left${alignr 310}${color1}${battery_time BAT0}
-${font Michroma:bold:size=10}${color1}${goto 66}${voffset 5}BATTERY
+${font Hack:bold:size=10}${color1}${goto 66}${voffset 5}BATTERY
 
-${font Michroma:bold:size=12}${color6}${voffset -395}${alignr 600}${goto 275}${exec whoami}
-${font Michroma:size=9}${color6}${voffset 2}${goto 320}${distribution} - ${exec uname -m}
-${font Play:bold:size=8}${voffset 12}${goto 300}${alignr 40}${color1} To-Do List
-${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 head -n 1 ~/.scripts/tasks.txt}
-${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +2 -n +2 ~/.scripts/tasks.txt | head -n 1}
-${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +3 -n +3 ~/.scripts/tasks.txt | head -n 1}
-${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +4 -n +4 ~/.scripts/tasks.txt | head -n 1}
+${font Hack:bold:size=12}${color6}${voffset -400}${alignr 600}${goto 275}StealthIQ
+${font Hack:size=9}${color6}${voffset 2}${goto 320}${distribution} - ${exec uname -m}
+${font Play:bold:size=8}${voffset 9}${goto 248}${alignr 40}${color1} To-Do List
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 head -n 1 ~/MEGAsync/StealthIQ/tasks.txt}
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +2 -n +2 ~/MEGAsync/StealthIQ/tasks.txt | head -n 1}
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +3 -n +3 ~/MEGAsync/StealthIQ/tasks.txt | head -n 1}
+${font Play:normal:size=8}${voffset 0}${goto 300}${alignr 40}${color1}${execi 120 tail -n +4 -n +4 ~/MEGAsync/StealthIQ/tasks.txt | head -n 1}
 
 # ------ Change your wlan0 name below ------
 # |--wlp0s20f3
-${if_existing /proc/net/route wlp0s20f3}${font Play:normal:size=8}${color1}${goto 394}${alignr 40}${voffset 191}Connected  ${color1}${wireless_essid wlp0s20f3}
+${font Hack:bold:size=10}${color1}${voffset 200}${goto 324}INTERNET  INFO
+${if_existing /proc/net/route wlp0s20f3}${font Play:normal:size=8}${color1}${goto 200}${alignr 50}${voffset 5}Connected  ${color1}${wireless_essid wlp0s20f3}
 ${font Play:normal:size=8}${color1}${goto 324}Up${goto 394}${alignr 40}${voffset 0}${color1}${totalup wlp0s20f3} / ${color1}${upspeed wlp0s20f3}
 ${font Play:normal:size=8}${goto 324}${color1}Down${goto 394}${alignr 40}${voffset 0}${color1}${totaldown wlp0s20f3} / ${color1}${downspeed wlp0s20f3}
 ${font Play:normal:size=8}${goto 324}Local IP${goto 394}${alignr 40}${voffset 0}${addr wlp0s20f3}

@@ -18,7 +18,7 @@ picom_toggle_blur() {
   if pgrep -x "picom" &> /dev/null; then
     killall picom
   else
-    picom --blur-method kawase --blur-strength 6 -b &> /dev/null &
+    picom --blur-method dual_kawase --blur-strength 6 -b &> /dev/null &
   fi
 }
 

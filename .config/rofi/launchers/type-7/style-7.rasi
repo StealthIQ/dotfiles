@@ -58,7 +58,7 @@ mainbox {
 }
 
 listbox {
-    spacing:                     20px;
+    spacing:                     10px;
     padding:                     20px;
     background-color:            transparent;
     orientation:                 vertical;
@@ -69,7 +69,7 @@ listbox {
 inputbar {
     enabled:                     true;
     spacing:                     10px;
-    padding:                     100px 40px;
+    padding:                     90px 40px;
     background-color:            transparent;
     background-image:            url("~/.config/rofi/images/g.png", width);
     text-color:                  @foreground;
@@ -120,7 +120,7 @@ button selected {
 listview {
     enabled:                     true;
     columns:                     1;
-    lines:                       5;
+    lines:                       4;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;

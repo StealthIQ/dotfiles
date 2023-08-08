@@ -9,7 +9,7 @@ configuration {
 @import "colors.rasi"
 
 * {
-    font: "SauceCodePro Nerd Font Semibold 11";
+    font: "JetBrains Mono Nerd Font 12";
     foreground:                 @fg;
     background-color:           @bg;
     selected-foreground:        @ac;

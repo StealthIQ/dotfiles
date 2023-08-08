@@ -40,7 +40,7 @@ Changelog:
 
 -- --general colors
 
-trans1 = 0xccfaaaaa
+trans1 = 0xff000d
 black1 = 0x1A132F
 red1 = 0xff000d
 pink1 = 0xd81b60
@@ -62,7 +62,7 @@ brown1 = 0x6d4c41
 grey1 = 0x757575
 bluegray1 = 0x546e7a
 white1 = 0xf7f7f7
-current1 = 0xD0DBD7
+current1 = 0x8f8994
 
 
 --normal_temp="0xdd4522"
