@@ -133,6 +133,7 @@ xdman
 xidlehook
 xmind
 xorg-xkill
+xorg-xsetroot
 yt-dlp
 zathura
 zathura-pdf-mupdf

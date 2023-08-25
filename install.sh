@@ -53,6 +53,12 @@ install_packages() {
     fi
 }
 
+# Installing homebrew in linux
+install_brew(){
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+    brew install gcc
+}
+
 inst_pkg(){
     while read -r LINE; do
         paru -S --noconfirm --needed "$LINE"
@@ -132,6 +138,10 @@ lukes_st_build() {
   echo "Luke's st terminal emulator has been built and installed successfully."
 }
 
+
+enable_system-services() {
+    systemctl enable bluetooth.service
+}
 # bling MPD service ---------- ##########
 music_player() {
     # Install mpd and mpc packages
