@@ -136,11 +136,12 @@ paru -S --noconfirm --needed spotify spicetify-cli
 # ...
 ```
 
-12. **Move and Link Dotfiles, Configurations, and Fonts:**
+12. **Move and Link Dotfiles, Configurations, and Fonts using **GNU Stow**:**
 
 ```bash
 # ...
-# (Refer to the original script for detailed steps.)
+stow -t ~/.config .configurations
+stow -t ~/.local/bin bin
 # ...
 ```
 
