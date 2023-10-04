@@ -8,5 +8,5 @@
     "show-indicator-icon": true,
     "show-recent-apps": "6",
     "terminal-command": "st",
-    "theme-name": "Essential-Dark-Theme"
+    "theme-name": "dark"
 }
