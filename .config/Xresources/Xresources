@@ -30,7 +30,8 @@ URxvt.url-launcher: /usr/bin/xdg-open
 URxvt.matcher.button: 1
 
 ! Just Set it to your cursor theme
-Xcursor.theme: Volantes_Light_Curser
+Xcursor.theme: volantes_light_cursors
+! Xcursor.theme: Vimix-cursors
 ! Xcursor.theme: Vimix
 
 ! just remove this if you dont use my tabbed

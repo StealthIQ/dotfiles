@@ -10,11 +10,11 @@ configuration {
 
 * {
     font: "JetBrains Mono Nerd Font 12";
-    foreground:                 @fg;
-    background-color:           @bg;
-    selected-foreground:        @ac;
-    selected-background:        #b2b2b250;
-    separatorcolor:             #ff79c6;
+    foreground:                 @selected;
+    background-color:           @background;
+    selected-foreground:        @selected;
+    selected-background:        @urgent;
+    separatorcolor:             @active;
     bordercolor:                #ff79c6;
     highlightcolor:             @se;
     transparent:                #00000000;

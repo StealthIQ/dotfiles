@@ -1,5 +1,6 @@
 #! /bin/bash
 
+
 bar="▁▂▃▄▅▆▇█"
 dict="s/;//g;"
 
@@ -12,7 +13,7 @@ do
 done
 
 # make sure to clean pipe
-pipe="/tmp/cava.fifo"
+pipe="/tmp/mpd.fifo"
 if [ -p $pipe ]; then
     unlink $pipe
 fi
@@ -22,7 +23,7 @@ mkfifo $pipe
 config_file="/tmp/polybar_cava_config"
 echo "
 [general]
-bars = 30
+bars = 10
 
 [output]
 method = raw

@@ -29,6 +29,7 @@ if [[ "$drive_choice" =~ ^(sda[1-2])$ ]]; then
         # Mount the drive to the chosen mount point
         sudo mount "/dev/$drive_choice" "$mount_point"
         echo -e "\e[32mDrive /dev/$drive_choice mounted at $mount_point.\e[0m"
+        cd $mount_point
     elif [[ "$operation" = "u" ]]; then
         # Unmount the drive
         sudo umount "$mount_point"

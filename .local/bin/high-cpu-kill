@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Function to get the PID of the process with the highest CPU usage
+get_highest_cpu_pid() {
+  pid=$(ps -eo pid,%cpu --sort=-%cpu | awk 'NR==2 {print $1}')
+  echo "$pid"
+}
+
+# Function to kill the process with a given PID
+kill_process() {
+  local pid=$1
+  if [ -n "$pid" ]; then
+    echo "Killing process with PID: $pid"
+    pkill -9 "$pid"
+  else
+    echo "No process to kill."
+  fi
+}
+
+# Main script
+echo "Finding process with highest CPU usage..."
+highest_cpu_pid=$(get_highest_cpu_pid)
+echo "Process with highest CPU usage has PID: $highest_cpu_pid"
+kill_process "$highest_cpu_pid"

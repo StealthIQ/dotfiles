@@ -58,6 +58,8 @@ bspc config active_border_color         "#FFF8E5"
 #--------------------------------------------------------# Part - 6
 # Send Specific Apps to specific Desktop 
 # Command To check window name -> xprop | grep WM_CLASS
+bspc rule -add tk  state=floating border=off 
+bspc rule -add Tk  state=floating border=off 
 bspc rule -a firefox desktop=^10                         # Chromium
 bspc rule --add librewolf desktop=^10                    # Librewolf
 bspc rule --add Microsoft-edge desktop=^2                # Microsoft-edge
@@ -70,6 +72,7 @@ bspc rule --add FreeTube desktop=^8  follow=on layer=above                    # 
 #--------------------------------------------------------# Part - 7
 bspc rule --add stacer state=floating border=off         # Stacer
 bspc rule --add Windscribe2 state=floating border=off    # Windscribe Vpn
+bspc rule --add maya.py state=floating border=off    # Maya
 bspc rule --add xdman-Main state=floating border=off hidden=off   # XDM Download Manager
 bspc rule --add copyq state=tiled border=off             # CopyQ               
 bspc rule --add Ulauncher state=floating border=off      # Ulauncher
@@ -131,7 +134,7 @@ bash .config/polybar/launch.sh &                                             # l
 
 # Auto suspend when not online [ paru -Sy --noconfirm --needed xidlehook ] - (Better option is to add to .xinitrc)
 # 300s - 5m / 900s - 15m / 1800s - 30m / 3600s - 1h / 86400s -24h
-# xidlehook --not-when-audio --not-when-fullscreen --timer 600 'systemctl suspend' 'betterlockscreen -l --text "Error 404:Desktop Crashed"'  &  
+xidlehook --not-when-audio --not-when-fullscreen --timer 1200 'systemctl suspend' 'betterlockscreen -l --text "Error 404:Desktop Crashed"'  &  
 
 # Basic Wallpaer / Themes / Picom / Keybindings
 picom &                                                                     # Picom with transparency 

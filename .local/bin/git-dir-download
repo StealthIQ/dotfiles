@@ -1,0 +1,49 @@
+#!/bin/bash
+
+function download_github_directory() {
+    if [ $# -ne 2 ]; then
+        echo "Usage: download_github_directory <GitHub_URL> <directory>"
+        return 1
+    fi
+
+    local github_url="$1"
+    local directory="$2"
+
+    # Check if svn is installed
+    if ! command -v svn &>/dev/null; then
+        echo "Error: svn command not found. Please install subversion (sudo pacman -S subversion)."
+        return 1
+    fi
+
+    # Check if the given URL is a valid GitHub URL
+    if ! echo "$github_url" | grep -qE '^https?://github.com/.*'; then
+        echo "Error: Invalid GitHub URL. Please provide a valid URL (e.g., https://github.com/user/repo)."
+        return 1
+    fi
+
+    # Check if the directory is not empty
+    if [ -z "$directory" ]; then
+        echo "Error: Directory name cannot be empty."
+        return 1
+    fi
+
+    # Check if the directory starts with a slash and remove it
+    directory="${directory#/}"
+
+    # Construct the full URL to the specific directory
+    local full_url="${github_url}/trunk/${directory}"
+
+    # Download the directory using svn export
+    svn export "$full_url" || {
+        echo "Error: Failed to download the directory."
+        return 1
+    }
+
+    echo "Directory successfully downloaded from GitHub."
+    return 0
+}
+
+download_github_directory $1 $2
+
+# Usage example:
+# download_github_directory "https://github.com/user/repo" "src"

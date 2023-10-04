@@ -1,0 +1,14 @@
+#!/bin/bash
+
+git_push_function(){
+  git add .
+  git commit -m "$1"
+  git push
+}
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 'commit message'"
+  exit 1
+else
+  git_push_function "$1"
+fi

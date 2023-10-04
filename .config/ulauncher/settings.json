@@ -6,7 +6,7 @@
     "hotkey-show-app": "<Primary>space",
     "render-on-screen": "mouse-pointer-monitor",
     "show-indicator-icon": true,
-    "show-recent-apps": "8",
-    "terminal-command": "",
-    "theme-name": "dark"
+    "show-recent-apps": "6",
+    "terminal-command": "st",
+    "theme-name": "Essential-Dark-Theme"
 }

@@ -10,6 +10,9 @@ export LANG="en_US.UTF-8"
 
 # Wallpaper Restore
 # /usr/bin/nitrogen --restore &
+/usr/bin/sxhkd &
+feh --bg-fill --randomize  ~/.wallpapers/*
+
 
 /usr/bin/dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY &
 
@@ -30,12 +33,11 @@ export LANG="en_US.UTF-8"
 
 # Normal Applications
 /usr/bin/xdman &
-/usr/bin/conky &
+/usr/bin/conky --config ~/.config/conky/.conkyrc &
 /usr/bin/megasync &
 /usr/bin/aw-qt &
 /usr/bin/copyq &
 /usr/bin/ulauncher --no-window-shadow --hide-window &
-/usr/bin/sxhkd &
 /usr/bin/redshift &
 /usr/bin/safeeyes &
 /usr/bin/todoist &
@@ -44,6 +46,7 @@ export LANG="en_US.UTF-8"
 /usr/bin/mpd --kill
 /usr/bin/mpd --no-daemon --stdout --verbose &
 /usr/bin/kdeconnect-indicator &
+/usr/bin/auto-cpufreq --daemon &
 
 # battery-monitor & # https://github.com/maateen/battery-monitor
 

@@ -88,7 +88,7 @@ super + r ; p
 
 # Conky-toggle
 super + c
-    if pgrep conky; then pkill conky; else conky; fi
+    if pgrep conky; then pkill conky; else conky --config=$HOME/.config/conky/.conkyrc; fi
 
 # killall mpv or use mpv
 super + x
@@ -108,7 +108,7 @@ super + l ; l ; b
 
 # i3-lock
 super + l ; l ; i
-    i3lock-fancy -f Ubuntu --text "Error 404: Desktop Crashed"
+    i3lock-fancy -f Ubuntu --text "Cipher 46/2XT: Lock Engaged"
 
 # Rofi theme selector
 super + g ; r ; t
@@ -274,8 +274,8 @@ ctrl + alt + i
     nitrogen
 
 # user-logout
-ctrl + alt + k
-    loginctl kill-session $XDG_SESSION_ID
+# ctrl + alt + k
+    # loginctl kill-session $XDG_SESSION_ID
 
 # user-suspend
 ctrl + alt + Delete
@@ -286,7 +286,7 @@ ctrl + alt + l
     loginctl kill-session $XDG_SESSION_ID
 
 # Polybar Restart 
-ctrl + alt + p
+super + alt + p
     bash ~/.config/polybar/launch.sh 
 
 # reloads sxhkd config
@@ -448,7 +448,7 @@ super + shift + {h,j,k,l}
 
 # fullscreen screenshot save
 Print
-     flameshot full -c -p ~/Pictures/Screenshots/FlameShot/ && notify-send -i /home/i0xfce/.icons/Papirus-Custom/48x48/apps/flameshot.svg "Done!! Saved Full Screenshot" "In $HOME/Pictures/Screenshots/ - Flameshot" &
+     flameshot full -c -p ~/Pictures/Screenshots/ && notify-send -i /home/i0xfce/.icons/Papirus-Custom/48x48/apps/flameshot.svg "Done!! Saved Full Screenshot" "In $HOME/Pictures/Screenshots/ - Flameshot" &
 
 # text to image
 super + Print

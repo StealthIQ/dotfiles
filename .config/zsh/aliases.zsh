@@ -147,12 +147,17 @@ alias ncmpcpp='ncmpcpp -c ~/.config/ncmpcpp/config'
 alias rec-noaudio="ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i \$DISPLAY -c:v ffvhuff ~/Videos/Screen_Recording/Recording-\$(date +%B-%d-%Y_%H:%M:%S).mp4"
 alias rec-intaudio="ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i :0.0 -f pulse -i default -preset ultrafast -crf 18 -pix_fmt yuv420p ~/Videos/Screen_Recording/Recording_Internal-Audio\$(date +%B-%d-%Y_%H:%M:%S).mp4"
 
-
 # Terminal rickroll :)
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
 
 # Personal/Programming
 alias pi="python3 "
+
+# Conky 
+alias conky="conky --config=$HOME/.config/conky/.conkyrc"
+
+# clipboard
+alias clip='xclip -selection clipboard'
 
 # Personal/Scripts
 alias t-stream='python /home/StealthIQ/MEGAsync/Projects/Python/torrent-strm/Main/_xmain_.py'

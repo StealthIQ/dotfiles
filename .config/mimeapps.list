@@ -20,7 +20,7 @@ application/x-bittorrent=org.kde.ktorrent.desktop;org.qbittorrent.qBittorrent.de
 application/x-bzip-compressed-tar=org.gnome.FileRoller.desktop;
 application/x-cd-image=gnome-disk-image-mounter.desktop;
 application/x-compressed-tar=org.gnome.FileRoller.desktop;
-application/x-designer=designer-qt4.desktop;
+application/x-designer=neovide.desktop;designer-qt4.desktop;
 application/x-desktop=sublime_text.desktop;code-oss.desktop;visual-studio-code.desktop;
 application/x-executable=sublime_text.desktop;code-oss.desktop;visual-studio-code.desktop;
 application/x-font-otf=org.gnome.FontViewer.desktop;
@@ -42,7 +42,7 @@ application/x-xbel=sublime_text.desktop;code-oss.desktop;visual-studio-code.desk
 application/x-shellscript=neovide.desktop;sublime_text.desktop;code-oss.desktop;visual-studio-code.desktop;
 application/x-xz-compressed-tar=pamac-manager.desktop;org.gnome.FileRoller.desktop;
 application/x-yaml=sublime_text.desktop;code-oss.desktop;visual-studio-code.desktop;
-application/xml=sublime_text.desktop;code-oss.desktop;visual-studio-code.desktop;
+application/xml=neovide.desktop;sublime_text.desktop;code-oss.desktop;visual-studio-code.desktop;
 application/zip=org.gnome.FileRoller.desktop;
 audio/mp4=org.kde.kdeconnect_open.desktop;pragha.desktop;
 audio/mpeg=org.kde.kdeconnect_open.desktop;pragha.desktop;
@@ -91,3 +91,8 @@ x-scheme-handler/mailto=exo-mail-reader.desktop
 x-scheme-handler/mailto=exo-mail-reader.desktop
 x-scheme-handler/trash=exo-file-manager.desktop
 x-scheme-handler/unknown=firefox.desktop
+application/epub+zip=org.pwmt.zathura-pdf-mupdf.desktop;
+application/x-zerosize=vim.desktop;
+
+[Default Applications]
+application/x-zerosize=vim.desktop

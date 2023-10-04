@@ -1,10 +1,1 @@
-/* colors */
-
-* {
-  al:   #00000000;
-  bg:   #0a0a0aBF;
-  bga:  #0a0a0aFF;
-  fg:   #f5f5f5FF;
-  ac:   #f1cf8aFF;
-  se:   #f1cf8a1A;
-}
+/home/stealthiq/.config/rofi/launchers/type-6/shared/colors.rasi

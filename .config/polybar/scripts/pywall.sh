@@ -13,11 +13,32 @@ discord_config="$HOME/.config/BetterDiscord/themes/ClearVision_v6.theme.css"
 dmenu_config="$HOME/.config/sxhkd/scripts/dmenu.sh"
 wallpapersDir="$HOME/.wallpapers/"
 rofi_config="$HOME/.config/rofi/colors/custom.rasi"
-cache_dir="$HOME/.cache/walcache"
+cache_dir="$HOME/.wallpapers/.wall-cache"
+used_wallpapers_file="$cache_dir/used_wallpapers.txt"
+rofi_pic_config="$HOME/.config/rofi/colors/custom.rasi"
 
-# Gets random wallpaper
+
+# Define the file path
+rofi_config_file="$HOME/.config/rofi/launchers/type-6/style-1.rasi"
+
+# Get a random wallpaper that hasn't been used recently
 get_random_wallpaper() {
-    local randomWallpaper=$(find "$wallpapersDir" -type f \( -name "*.jpg" -o -name "*.png" \) -print | shuf -n 1)
+    local used_wallpapers=""
+    if [[ -f "$used_wallpapers_file" ]]; then
+        used_wallpapers=$(cat "$used_wallpapers_file")
+    fi
+
+    local randomWallpaper=""
+    while true; do
+        randomWallpaper=$(find "$wallpapersDir" -type f \( -name "*.jpg" -o -name "*.png" \) -print | shuf -n 1)
+        new_line='    background-image: url("~/$randomWallpaper", height);'
+
+        if ! echo "$used_wallpapers" | grep -q "$(basename "$randomWallpaper")"; then
+            break
+        fi
+    done
+
+    echo "$randomWallpaper" >> "$used_wallpapers_file"
     echo "$randomWallpaper"
 }
 
@@ -30,14 +51,7 @@ cache_wallpaper_colors() {
     if [[ ! -f "$cache_file" ]]; then
         wal -i "$wallpaper"
         local exit_code=$?
-
-        if [[ $exit_code -ne 0 ]]; then
-            echo "Error: Imagemagick couldn't generate a 16 color palette. Deleting the wallpaper..."
-            rm "$wallpaper"
-            exit 1
-        fi
-
-        cp "$HOME/.cache/wal/colors.sh" "$cache_file"
+        cp "$cache_dir/colors.sh" "$cache_file"  # Changed this line to use the new cache directory
     fi
     . "$cache_file"
 }
@@ -157,6 +171,9 @@ EOF
     bspc config presel_feedback_color   "${SH2}"
 
     xrdb merge "$HOME/.config/Xresources/Xresources"
+
+    #Change bg of rofi launcher
+    sed -i "57s|.*|$new_line|" "$rofi_pic_config"
 
     # Source the cached color palette
     cache_wallpaper_colors "$randomWallpaper"

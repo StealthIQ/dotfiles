@@ -1,5 +1,5 @@
 ! Colors
-*.cursorColor: #8f8994
+*.cursorColor: #f57a99
 *.selection_background: #131313
 *.selection_foreground: #FFFFFF
 *.foreground:  #cdcdcd
@@ -12,7 +12,7 @@
 *.color10:     #22ff18
 *.color3:      #d9bd26
 *.color11:     #fedc2b
-*.color4:      #8f8994
+*.color4:      #f57a99
 *.color12:     #9fa9ff
 *.color5:      #b052da
 *.color13:     #e09aff
