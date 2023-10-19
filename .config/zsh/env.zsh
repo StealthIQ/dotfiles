@@ -36,3 +36,6 @@ export PATH="$PATH:$HOME/.local/bin"
 export LANG=en_US.UTF-8
 # Spicetify
 export PATH=$PATH:/home/stealthiq/.spicetify
+
+# eval "$(ssh-agent -s)"
+# ssh-add ~/.ssh/id_ed25519

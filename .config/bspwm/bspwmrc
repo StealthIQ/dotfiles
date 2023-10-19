@@ -73,6 +73,7 @@ bspc rule --add FreeTube desktop=^8  follow=on layer=above                    # 
 bspc rule --add stacer state=floating border=off         # Stacer
 bspc rule --add Windscribe2 state=floating border=off    # Windscribe Vpn
 bspc rule --add maya.py state=floating border=off    # Maya
+bspc rule --add main.py state=floating border=off    # Maya
 bspc rule --add xdman-Main state=floating border=off hidden=off   # XDM Download Manager
 bspc rule --add copyq state=tiled border=off             # CopyQ               
 bspc rule --add Ulauncher state=floating border=off      # Ulauncher

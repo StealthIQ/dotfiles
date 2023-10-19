@@ -62,7 +62,7 @@ brown1 = 0x6d4c41
 grey1 = 0x757575
 bluegray1 = 0x546e7a
 white1 = 0xf7f7f7
-current1 = 0xAE45BE
+current1 = 0x4CDEFB
 
 
 --normal_temp="0xdd4522"
