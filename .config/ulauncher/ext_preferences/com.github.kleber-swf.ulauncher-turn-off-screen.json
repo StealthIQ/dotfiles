@@ -1,0 +1,8 @@
+{
+    "preferences": {},
+    "triggers": {
+        "turn-off-screen": {
+            "keyword": "off"
+        }
+    }
+}

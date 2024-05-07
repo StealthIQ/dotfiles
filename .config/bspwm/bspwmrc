@@ -72,8 +72,10 @@ bspc rule --add FreeTube desktop=^8  follow=on layer=above                    # 
 #--------------------------------------------------------# Part - 7
 bspc rule --add stacer state=floating border=off         # Stacer
 bspc rule --add Windscribe2 state=floating border=off    # Windscribe Vpn
-bspc rule --add maya.py state=floating border=off    # Maya
-bspc rule --add main.py state=floating border=off    # Maya
+bspc rule --add maya.py state=floating border=off desktop=^6   # Maya
+bspc rule --add main.py state=floating border=off desktop=^6   # Maya
+bspc rule --add MayaGuardianApp state=floating border=off desktop=^6  # Maya
+# bspc rule --add maya_dashboard.py state=fullscreen border=off    # Maya
 bspc rule --add xdman-Main state=floating border=off hidden=off   # XDM Download Manager
 bspc rule --add copyq state=tiled border=off             # CopyQ               
 bspc rule --add Ulauncher state=floating border=off      # Ulauncher
@@ -158,4 +160,6 @@ xsetroot -cursor_name left_ptr &
 # Enable touchpad tapping and natural scrolling
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+
+pgrep -x "aw-qt" >/dev/null 2>&1 || nohup /usr/bin/aw-qt &
 

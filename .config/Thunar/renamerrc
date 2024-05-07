@@ -1,18 +1,12 @@
 [Configuration]
 LastActiveMode=THUNAR_RENAMER_MODE_BOTH
-LastActiveRenamer=ThunarSbrNumberRenamer
+LastActiveRenamer=ThunarSbrReplaceRenamer
 
 [ThunarSbrInsertRenamer]
 Offset=0
 Text=Red_texture_
 Mode=THUNAR_SBR_INSERT_MODE_INSERT
 OffsetMode=THUNAR_SBR_OFFSET_MODE_LEFT
-
-[ThunarSbrReplaceRenamer]
-CaseSensitive=FALSE
-Replacement=
-Pattern=\ 
-Regexp=FALSE
 
 [ThunarSbrRemoveRenamer]
 StartOffset=0
@@ -25,4 +19,10 @@ TextMode=THUNAR_SBR_TEXT_MODE_NTO
 Text=-
 Mode=THUNAR_SBR_NUMBER_MODE_123
 Start=1
+
+[ThunarSbrReplaceRenamer]
+CaseSensitive=FALSE
+Replacement=
+Pattern=.jpg
+Regexp=FALSE
 

@@ -1,0 +1,10 @@
+{
+    "preferences": {
+        "terminal": "/usr/bin/st -e '/bin/zsh -c \"{command}; exec /bin/zsh\"'"
+    },
+    "triggers": {
+        "kw": {
+            "keyword": "run"
+        }
+    }
+}

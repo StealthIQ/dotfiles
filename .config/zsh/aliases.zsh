@@ -141,6 +141,7 @@ alias art="clear && /home/$USER/.config/neofetch/ascii_art/unix"
 alias kitty-themes="kitty +kitten themes"
 
 #ncmpcpp custom
+alias clear-wal-cache='echo "" > ~/.wallpapers/.wall-cache/used_wallpapers.txt'
 alias ncmpcpp='ncmpcpp -c ~/.config/ncmpcpp/config'
 
 #Screen Recording - No Audio + w/ Audio - ffmped
@@ -152,6 +153,7 @@ alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/mas
 
 # Personal/Programming
 alias pi="python3 "
+alias jav='javac "$(command ls -tr *.java | tail -n1)" && java "$(basename "$(command ls -tr *.class | tail -n1)" .class)"'
 
 # Conky 
 alias conky="conky --config=$HOME/.config/conky/.conkyrc"
@@ -160,7 +162,7 @@ alias conky="conky --config=$HOME/.config/conky/.conkyrc"
 alias clip='xclip -selection clipboard'
 
 # Personal/Scripts
-alias t-stream='python /home/StealthIQ/MEGAsync/Projects/Python/torrent-strm/Main/_xmain_.py'
+alias t-stream='python ~/MEGAsync/Projects/Python/torrent-strm/Main/_xmain_.py'
 alias pax="python3 ~/MEGAsync/Projects/Python/passfx/main.py"
 
 # Personal/Games

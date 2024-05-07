@@ -35,7 +35,7 @@ feh --bg-fill --randomize  ~/.wallpapers/*
 /usr/bin/xdman &
 /usr/bin/conky --config ~/.config/conky/.conkyrc &
 /usr/bin/megasync &
-/usr/bin/aw-qt &
+# /usr/bin/aw-qt &
 /usr/bin/copyq &
 /usr/bin/ulauncher --no-window-shadow --hide-window &
 /usr/bin/redshift &

@@ -92,7 +92,7 @@ super + c
 
 # killall mpv or use mpv
 super + x
-    if pgrep mpv; then killall mpv; else mpv  --osd-bar=no --save-position-on-quit --fs $HOME/Downloads/Telegram\ Desktop ; fi
+    bash ~/.config/sxhkd/scripts/tele_vids.sh
 
 # Bleachbit
 super + shift + c
@@ -333,7 +333,6 @@ super + slash
 super + z 
     alacritty -e ~/MEGAsync/Arch_Private/Nitroplex.sh
     
-
 #  ------------ bspwm hotkeys ------------ # 
 
 # quit/restart bspwm and sxhkd

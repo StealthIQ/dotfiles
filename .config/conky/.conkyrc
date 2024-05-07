@@ -1,52 +1,56 @@
+-- Conky configuration file
+
+-- Main configuration
 conky.config = {
-	background = true,
-	update_interval = 1,
+    background = true,                         -- Run in background
+    update_interval = 1,                       -- Update interval in seconds
 
-	cpu_avg_samples = 2,
-	net_avg_samples = 2,
-	temperature_unit = 'celsius',
+    cpu_avg_samples = 2,                       -- Number of samples for CPU averaging
+    net_avg_samples = 2,                       -- Number of samples for network averaging
+    temperature_unit = 'celsius',              -- Temperature unit
 
-	double_buffer = true,
-	no_buffers = true,
-	text_buffer_size = 2048,
+    double_buffer = true,                      -- Use double buffering
+    no_buffers = true,                         -- Don't use old buffers
+    text_buffer_size = 2048,                   -- Text buffer size
 
-	gap_x = 1,
-	gap_y = 1,
+    gap_x = 1,                                 -- Gap along x-axis
+    gap_y = 1,                                 -- Gap along y-axis
 
-	minimum_height = 620,
-	minimum_width = 520,
-	maximum_width = 520,
+    minimum_height = 620,                      -- Minimum height
+    minimum_width = 520,                       -- Minimum width
+    maximum_width = 520,                       -- Maximum width
 
-	own_window = true,
-	own_window_class = 'Conky',
-	own_window_type = 'desktop',
-	own_window_argb_visual = true,
-	own_window_argb_value = 0,
-	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
-	border_inner_margin = 0,
-	border_outer_margin = 0,
-	alignment = 'middle_right',
+    own_window = true,                         -- Use own window
+    own_window_class = 'Conky',                -- Window class
+    own_window_type = 'desktop',               -- Window type
+    own_window_argb_visual = true,             -- Use ARGB visual
+    own_window_argb_value = 0,                 -- ARGB value
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager', -- Window hints
 
-	draw_shades = false,
-	draw_outline = false,
-	draw_borders = false,
-	draw_graph_borders = false,
+    border_inner_margin = 0,                   -- Inner border margin
+    border_outer_margin = 0,                   -- Outer border margin
+    alignment = 'middle_right',                -- Alignment
 
-	override_utf8_locale = true,
-	use_xft = true,
-	xftalpha = 0.9,
-	uppercase = false,
+    draw_shades = false,                       -- Draw shades
+    draw_outline = false,                      -- Draw outline
+    draw_borders = false,                      -- Draw borders
+    draw_graph_borders = false,                -- Draw graph borders
 
-	default_color = '#E5E5E5',
-	color1 = '#E5E5E5',
-	color2 = '#E5E5E5',
-	color3 = '#888888',
-	color4 = '#fae4df',
-	color5 = '#e6d5ec',
-	color6 = '#FFFFFF',
+    override_utf8_locale = true,               -- Override UTF-8 locale
+    use_xft = true,                            -- Use XFT (anti-aliased font)
+    xftalpha = 0.9,                            -- XFT alpha
+    uppercase = false,                         -- Uppercase text
 
-	lua_load = '~/.config/conky/rings-v1.2.1.lua',
-	lua_draw_hook_post = 'conky_main'
+    default_color = '#E5E5E5',                 -- Default color
+    color1 = '#E5E5E5',                        -- Color 1
+    color2 = '#E5E5E5',                        -- Color 2
+    color3 = '#888888',                        -- Color 3
+    color4 = '#fae4df',                        -- Color 4
+    color5 = '#e6d5ec',                        -- Color 5
+    color6 = '#FFFFFF',                        -- Color 6
+
+    lua_load = '/home/stealthiq/.config/conky/rings-v2.lua', -- Path to Lua script
+    lua_draw_hook_post = 'conky_main'          -- Lua draw hook
 }
 
 conky.text = [[
@@ -70,7 +74,7 @@ ${font Play:normal:size=8}${goto 80}${voffset -60}Root${color1}${alignr 310}${fs
 ${font Play:normal:size=8}${goto 80}${voffset 0}Home${alignr 310}${color1}${fs_used /home} / ${fs_size /home}
 ${font Play:normal:size=8}${goto 80}${voffset 0}Usr${alignr 310}${color1}${fs_used /usr} / ${fs_size /usr}
 ${font Hack:bold:size=10}${color1}${goto 66}${voffset 10}HARD  DRIVE
-${font Hack:bold:size=10}${color1}${voffset 115}${goto 324}${exec ip addr show dev eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'}
+${font Hack:bold:size=10}${color1}${voffset 115}${goto 65}${exec ip addr show dev wlp0s20f3 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'}
 #${font Play:normal:size=8}${goto 80}${voffset -30}Date${color1}${alignr 310}${time %d-%m-%Y}}
 #${font Play:normal:size=8}${goto 80}${voffset 0}Time${alignr 310}${color1}${time %H:%M:%S}
 ${font Play:normal:size=8}${goto 80}${voffset -70}Battery ${alignr 310}${color1}${battery_percent BAT0}%

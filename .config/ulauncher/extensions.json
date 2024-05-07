@@ -41,14 +41,7 @@
         "last_commit": "5cb0d302500a38582e305ade7904420b830e9e60",
         "last_commit_time": "2022-05-07T22:35:10"
     },
-    "com.github.mikebarkmin.ulauncher-obsidian": {
-        "id": "com.github.mikebarkmin.ulauncher-obsidian",
-        "url": "https://github.com/mikebarkmin/ulauncher-obsidian",
-        "updated_at": "2023-08-05T03:10:33.826087",
-        "last_commit": "d1c282fb1ba57438e61e036def134917ec921f90",
-        "last_commit_time": "2023-01-22T06:30:15"
-    },
-    "com.github.nastuzzisamy.ulauncher-youtube-search": {
+        "com.github.nastuzzisamy.ulauncher-youtube-search": {
         "id": "com.github.nastuzzisamy.ulauncher-youtube-search",
         "url": "https://github.com/NastuzziSamy/ulauncher-youtube-search",
         "updated_at": "2023-08-05T03:10:36.950039",

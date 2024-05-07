@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Demenu run
-dmenu_run -i -nb '#04080F' -nf '#4CDEFB' -sb '#4CDEFB' -sf '#04080F' -fn 'NotoMonoRegular:bold:pixelsize=14'
+dmenu_run -i -nb '#02070E' -nf '#75BCC3' -sb '#75BCC3' -sf '#02070E' -fn 'NotoMonoRegular:bold:pixelsize=14'

@@ -1,0 +1,12 @@
+{
+    "preferences": {
+        "script_on_connect": "",
+        "enable_notifications": "true",
+        "hidden_type_list": "bridge"
+    },
+    "triggers": {
+        "base_keyword": {
+            "keyword": "wifi"
+        }
+    }
+}

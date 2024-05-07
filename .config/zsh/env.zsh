@@ -25,7 +25,7 @@ eval "$(zoxide init zsh)"
 # Pyenv
 eval "$(pyenv init - zsh)"
 
-unalias z
+# unalias z
 function z () {
     __zoxide_z "$@"
 }

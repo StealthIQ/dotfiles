@@ -1,0 +1,20 @@
+{
+    "preferences": {
+        "obsidian_vault": "",
+        "obsidian_quick_capture_note": ""
+    },
+    "triggers": {
+        "obsidian_search_note_vault": {
+            "keyword": "ob"
+        },
+        "obsidian_search_string_vault": {
+            "keyword": "of"
+        },
+        "obsidian_open_daily": {
+            "keyword": "od"
+        },
+        "obsidian_quick_capture": {
+            "keyword": "oc"
+        }
+    }
+}

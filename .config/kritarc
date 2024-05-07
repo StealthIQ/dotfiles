@@ -47,6 +47,8 @@ LineSmoothingTailAggressiveness=0.15
 LineSmoothingType=1
 LineSmoothingUseDelayDistance=true
 NumberOfLayersForNewImage=2
+SpecificColorSelector/HsxMode=0
+SpecificColorSelector/UseHsx=false
 SpecificColorSelector/UsePercentage=false
 baseLength=60
 canvasState=OPENGL_SUCCESS
@@ -142,6 +144,9 @@ OpenDocument=/home/stealthiq/Pictures/Screenshots
 global/itemSize=medium
 global/itemSizeCustom=32
 global/viewMode=icon
+
+[KisResourceItemChooser_paintoppresets]
+splitterState_1row=\x00\x00\x00\xff\x00\x00\x00\x01\x00\x00\x00\x02\xff\xff\xff\xff\xff\xff\xff\xff\x01\xff\xff\xff\xff\x01\x00\x00\x00\x01\x00
 
 [MainWindow]
 1920x1080 screen: Height=503
@@ -454,6 +459,7 @@ customSelectorBackgroundColor=160,160,164
 gamma=2.2
 lumaG=0.7152
 lumaR=0.2126
+minimalShadeSelectorLineConfig=0|0.2|0|0|0|0|0;1|0|1|1|0|0|0;2|0|-1|1|0|0|0
 showColorSelector=true
 useCustomColorForBackground=false
 
@@ -465,7 +471,7 @@ ColorSpaceExtensionsPlugins=\\0
 ColorSpaceExtensionsPluginsDisabled=
 ColorSpacePlugins=\\0
 ColorSpacePluginsDisabled=
-DockerPlugins=,,,,,,,,,,,,,,,,,,,,,,,,,,
+DockerPlugins=,,,,,,,,,,,,,,,,,,,,,,,,,,,
 DockerPluginsDisabled=
 FlakePlugins=\\0
 FlakePluginsDisabled=

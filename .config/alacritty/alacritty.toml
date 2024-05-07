@@ -1,0 +1,84 @@
+theme = "Astromouse"
+"window.dynamic_title" = true
+
+[colors]
+draw_bold_text_with_bright_colors = true
+# name = "astromouse"
+
+[colors.bright]
+black = "#3d3a3a"
+blue = "#8fa7b9"
+cyan = "#6ec2a8"
+green = "#8fb676"
+magenta = "#bd89de"
+red = "#d28abf"
+white = "#dad3d3"
+yellow = "#c8bc45"
+
+[colors.cursor]
+cursor = "#ffffff"
+text = "#000000"
+
+[colors.normal]
+black = "#1c1c1c"
+blue = "#77b6c5"
+cyan = "#7fcab3"
+green = "#9acc79"
+magenta = "#a488d9"
+red = "#d770af"
+white = "#8d8d8d"
+yellow = "#d0d26b"
+
+[colors.primary]
+background = "#000000"
+foreground = "#ffffff"
+
+[cursor.style]
+blink-interval = 750
+blinking = "off"
+shape = "Beam"
+unfocused_hollow = true
+
+[font.bold]
+family = "iosevka"
+style = "Bold"
+
+[font.debug]
+persistent_logging = false
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.italic]
+family = "iosevka"
+style = "Italic"
+
+[font.normal]
+family = "iosevka"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 0
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Control"
+
+[scrolling]
+history = 3000
+multiplier = 3
+
+[window]
+decorations = "full"
+opacity = 0.8
+
+[window.dimensions]
+columns = 140
+lines = 38
+
+[window.padding]
+x = 10
+y = 10
