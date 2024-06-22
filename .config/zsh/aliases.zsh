@@ -3,6 +3,7 @@
 # Root privileges
 alias doas="doas --"
 
+#hello
 # Navigation
 up () {
   local d=""
@@ -15,7 +16,7 @@ up () {
 
   for ((i=1;i<=limit;i++)); do
     d="../$d"
-  done
+  done 
 
   # perform cd. Show error if cd fails
   if ! cd "$d"; then
@@ -153,6 +154,7 @@ alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/mas
 
 # Personal/Programming
 alias pi="python3 "
+alias pipr='function myfunc_for_pip_install() { while IFS= read -r package; do if [ -n "$package" ]; then echo "Installing using uv pip installer - $package..."; uv pip install "$package"; fi; done < "$1"; }; myfunc_for_pip_install'
 alias jav='javac "$(command ls -tr *.java | tail -n1)" && java "$(basename "$(command ls -tr *.class | tail -n1)" .class)"'
 
 # Conky 
@@ -164,9 +166,14 @@ alias clip='xclip -selection clipboard'
 # Personal/Scripts
 alias t-stream='python ~/MEGAsync/Projects/Python/torrent-strm/Main/_xmain_.py'
 alias pax="python3 ~/MEGAsync/Projects/Python/passfx/main.py"
+alias yt-trans="python3 ~/MEGAsync/Projects/Python/Youtube-transcript-extractor/main.py"
 
 # Personal/Games
 alias tic-tac-toe="python3 ~/tools/Tic-Tac-Toe/tictactoe.py"
+
+# Github 
+alias gad='git add'
+alias gcm='git commit -m'
 
 # --- Alias as Functions ----
 bleachbit-cleanup() {

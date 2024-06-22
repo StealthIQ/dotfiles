@@ -22,8 +22,8 @@ export PATH="$PATH:$GOPATH/bin"
 
 # Zoxide insted of cd
 eval "$(zoxide init zsh)"
-# Pyenv
-eval "$(pyenv init - zsh)"
+# # Pyenv
+# eval "$(pyenv init - zsh)"
 
 # unalias z
 function z () {
@@ -36,6 +36,10 @@ export PATH="$PATH:$HOME/.local/bin"
 export LANG=en_US.UTF-8
 # Spicetify
 export PATH=$PATH:/home/stealthiq/.spicetify
+
+# conda openssl
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
+source .venv/bin/activate
 
 # eval "$(ssh-agent -s)"
 # ssh-add ~/.ssh/id_ed25519

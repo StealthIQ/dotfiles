@@ -148,7 +148,7 @@ super + Escape
 
 # Terminal - ST
 super + Return
-    st
+    kitty
 
 # Hide polybar
 super + y

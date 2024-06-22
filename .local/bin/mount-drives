@@ -3,15 +3,15 @@
 # Prints Information about the External Hard Drives 
 lsblk_output=$(lsblk)
 
-filtered_output=$(echo "$lsblk_output" | grep -E 'sda[0-9]+')
+filtered_output=$(echo "$lsblk_output" | grep -E 'sd[a-z][0-9]+')
 
 echo "Available drives:"
 echo "$filtered_output"
 echo
 
-read -p "Enter the drive you want to operate (e.g., sda1, sda2): " drive_choice
+read -p "Enter the drive you want to operate (e.g., sda1, sda2, sdb1, sdb2): " drive_choice
 
-if [[ "$drive_choice" =~ ^(sda[1-2])$ ]]; then
+if [[ "$drive_choice" =~ ^sd[a-z][0-9]+$ ]]; then
     mount_point="/mnt/drive-$drive_choice"
 
     # Install ntfs-3g package if not already installed

@@ -24,7 +24,7 @@ local colors = {
     grey1 = 0x757575,
     bluegray1 = 0x546e7a,
     white1 = 0xf7f7f7,
-current1 = 0x8B8797
+current1 = 0xA09DE2
 }
 
 -- General themes

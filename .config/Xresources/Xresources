@@ -10,7 +10,7 @@ st.borderpx: 18
 
 !-- values between 0.1  - 1.0 --! 
 st.alpha: .9
-st.font:           JetBrains Mono:style:medium:pixelsize=20
+st.font:           JetBrains Mono:style:medium:pixelsize=18
 
 ! Colors for Xresources
 #include "/home/stealthiq/.config/Xresources/Xcolors"
