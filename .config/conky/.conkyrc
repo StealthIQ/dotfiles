@@ -51,7 +51,7 @@ conky.config = {
 
     lua_load = '/home/stealthiq/.config/conky/rings-v2.lua', -- Path to Lua script
     lua_draw_hook_post = 'conky_main'          -- Lua draw hook
-}
+};
 
 conky.text = [[
 ${font Play:normal:size=10}${voffset 3}${color1}${goto 120}${freq_g} Ghz${alignr 330}

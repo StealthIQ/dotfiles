@@ -1,0 +1,12 @@
+{
+    "preferences": {
+        "intellij_command": "neovide",
+        "search_path": "$HOME",
+        "vscode_command": "neovide"
+    },
+    "triggers": {
+        "keyword": {
+            "keyword": "vi"
+        }
+    }
+}

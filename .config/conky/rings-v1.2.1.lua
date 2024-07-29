@@ -62,7 +62,7 @@ brown1 = 0x6d4c41
 grey1 = 0x757575
 bluegray1 = 0x546e7a
 white1 = 0xf7f7f7
-current1 = 0xfa5870
+current1 = 0x9bb4c5
 
 
 --normal_temp="0xdd4522"
@@ -70,7 +70,7 @@ current1 = 0xfa5870
 --crit_temp="0xf01f42"
 -- Un mélange des deux
 
-themes = current1
+themes = red1
 
 normal= themes
 warn="0xff7200"

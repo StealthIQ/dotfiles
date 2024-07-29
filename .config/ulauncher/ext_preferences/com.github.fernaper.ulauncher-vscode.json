@@ -1,0 +1,11 @@
+{
+    "preferences": {
+        "home_input": "$HOME/",
+        "show_hidden": "False"
+    },
+    "triggers": {
+        "vs_kw": {
+            "keyword": "code"
+        }
+    }
+}

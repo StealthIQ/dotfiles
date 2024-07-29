@@ -17,6 +17,7 @@
 
 # No database connection strings
 *.db
+*.dat
 *.sqlite
 *.db-config
 

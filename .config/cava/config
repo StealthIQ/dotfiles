@@ -12,14 +12,14 @@ method = ncurses
 [color]
 gradient = 1
 gradient_count = 8
-gradient_color_1 = '#A09DE2'
-gradient_color_2 = '#5BA6EC'
-gradient_color_3 = '#B25FD3'
-gradient_color_4 = '#5C60DD'
-gradient_color_5 = '#B25FD3'
-gradient_color_6 = '#5C60DD'
-gradient_color_7 = '#4146C4'
-gradient_color_8 = '#5457A3'
+gradient_color_1 = '#ED0322'
+gradient_color_2 = '#FD0213'
+gradient_color_3 = '#FC020E'
+gradient_color_4 = '#A60C27'
+gradient_color_5 = '#FC020E'
+gradient_color_6 = '#A60C27'
+gradient_color_7 = '#493043'
+gradient_color_8 = '#283745'
 
 [smoothing]
 

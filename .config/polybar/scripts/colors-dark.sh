@@ -9,7 +9,7 @@ Polybar="$HOME/.config/polybar/colors.ini"
 # Color files Overall
 Xcolor="$HOME/.config/Xresources/Xcolors"
 Kitty="$HOME/.config/kitty/current-theme.conf"
-Conky="$HOME/.config/conky/rings-v1.2.1.lua"
+Conky="$HOME/.config/conky/rings-v2.lua"
 Cava="$HOME/.config/cava/config"
 Glava="$HOME/.config/glava/bars.glsl"
 Bashtop="$HOME/.config/bashtop/themes/embark.theme"

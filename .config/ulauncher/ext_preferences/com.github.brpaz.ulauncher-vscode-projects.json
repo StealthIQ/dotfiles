@@ -1,0 +1,14 @@
+{
+    "preferences": {
+        "code_executable_path": "codium",
+        "config_path": "~/.config/VSCodium/",
+        "include_project_manager": "true",
+        "include_recent_workspaces": "true",
+        "projects_file_path": "~/.config/VSCodium/User/globalStorage/alefragnani.project-manager/"
+    },
+    "triggers": {
+        "kw": {
+            "keyword": "vs"
+        }
+    }
+}

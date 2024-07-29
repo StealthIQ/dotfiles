@@ -8,12 +8,12 @@
   "enable_application_mode": true,
   "grab_mouse_pointer": true,
   "jump_keys": "1234567890abcdefghijklmnopqrstuvwxyz",
-  "max_recent_apps": 6,
+  "max_recent_apps": 8,
   "raise_if_started": false,
   "render_on_screen": "mouse-pointer-monitor",
   "show_recent_apps": "6",
   "show_tray_icon": true,
-  "terminal_command": "st",
-  "theme_name": "dark",
+  "terminal_command": "kitty",
+  "theme_name": "dracula",
   "tray_icon_name": "ulauncher-indicator-symbolic"
 }

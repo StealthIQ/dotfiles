@@ -1,0 +1,12 @@
+{
+    "preferences": {
+        "default_filebrowser": "thunar",
+        "directory_list": "Downloads, Downloads/Telegram\\ Desktop/, Documents, MEGAsync, MEGAsync/Projects/,  Pictures, Videos",
+        "root_dir": "~/"
+    },
+    "triggers": {
+        "f": {
+            "keyword": "cd"
+        }
+    }
+}

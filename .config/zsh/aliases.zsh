@@ -29,11 +29,11 @@ alias vim="nvim"
 alias code="codium \$(pwd)"
 
 # Changing "ls" to "exa"
-alias l='ls'
-alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-alias ll='exa -l --color=always --group-directories-first'  # long format
-alias lt='exa -aT --color=always --group-directories-first' # tree listing
+alias l='ls --hyperlink'
+alias ls='exa -al --color=always --hyperlink --group-directories-first' # my preferred listing
+alias la='exa -a --color=always --hyperlink --group-directories-first'  # all files and dirs
+alias ll='exa -l --color=always --hyperlink --group-directories-first'  # long format
+alias lt='exa -aT --color=always --hyperlink --group-directories-first' # tree listing
 
 # Pacman and Paru - (package manager)
 alias pakages="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
@@ -170,6 +170,13 @@ alias yt-trans="python3 ~/MEGAsync/Projects/Python/Youtube-transcript-extractor/
 
 # Personal/Games
 alias tic-tac-toe="python3 ~/tools/Tic-Tac-Toe/tictactoe.py"
+
+# Todolist - using Taskwarrior + taskwarrior-tui
+alias t='task'
+alias tui="taskwarrior-tui"
+
+# Disk analyzer
+alias disk-analyzer='ncdu'
 
 # Github 
 alias gad='git add'

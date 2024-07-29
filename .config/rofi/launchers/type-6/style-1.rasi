@@ -39,7 +39,7 @@ window {
     enabled:                     true;
     border-radius:               15px;
     cursor:                      "default";
-    background-color:            @background;
+    background-color:            @bg;
 }
 
 /*****----- Main Box -----*****/
@@ -77,8 +77,8 @@ inputbar {
     spacing:                     10px;
     padding:                     15px;
     border-radius:               10px;
-    background-color:            @background-alt;
-    text-color:                  @foreground;
+    background-color:            @bga;
+    text-color:                  @fg;
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
 textbox-prompt-colon {
@@ -102,18 +102,18 @@ mode-switcher{
     enabled:                     true;
     spacing:                     20px;
     background-color:            transparent;
-    text-color:                  @foreground;
+    text-color:                  @fg;
 }
 button {
     padding:                     15px;
     border-radius:               10px;
-    background-color:            @background-alt;
+    background-color:            @bga;
     text-color:                  inherit;
     cursor:                      pointer;
 }
 button selected {
-    background-color:            @selected;
-    text-color:                  @foreground;
+    background-color:            @al;
+    text-color:                  @fg;
 }
 
 /*****----- Listview -----*****/
@@ -131,7 +131,7 @@ listview {
     
     spacing:                     10px;
     background-color:            transparent;
-    text-color:                  @foreground;
+    text-color:                  @fg;
     cursor:                      "default";
 }
 
@@ -142,7 +142,7 @@ element {
     padding:                     8px;
     border-radius:               10px;
     background-color:            transparent;
-    text-color:                  @foreground;
+    text-color:                  @fg;
     cursor:                      pointer;
 }
 element normal.normal {
@@ -150,24 +150,24 @@ element normal.normal {
     text-color:                  inherit;
 }
 element normal.urgent {
-    background-color:            @urgent;
-    text-color:                  @foreground;
+    background-color:            @ac;
+    text-color:                  @fg;
 }
 element normal.active {
-    background-color:            @active;
-    text-color:                  @foreground;
+    background-color:            @ac;
+    text-color:                  @fg;
 }
 element selected.normal {
-    background-color:            @selected;
-    text-color:                  @foreground;
+    background-color:            @ac;
+    text-color:                  @fg;
 }
 element selected.urgent {
-    background-color:            @urgent;
-    text-color:                  @foreground;
+    background-color:            @ac;
+    text-color:                  @fg;
 }
 element selected.active {
-    background-color:            @urgent;
-    text-color:                  @foreground;
+    background-color:            @ac;
+    text-color:                  @fg;
 }
 element-icon {
     background-color:            transparent;
@@ -190,14 +190,14 @@ message {
 textbox {
     padding:                     15px;
     border-radius:               10px;
-    background-color:            @background-alt;
-    text-color:                  @foreground;
+    background-color:            @bga;
+    text-color:                  @fg;
     vertical-align:              0.5;
     horizontal-align:            0.0;
 }
 error-message {
     padding:                     15px;
     border-radius:               20px;
-    background-color:            @background;
-    text-color:                  @foreground;
+    background-color:            @bg;
+    text-color:                  @fg;
 }

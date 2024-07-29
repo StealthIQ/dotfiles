@@ -137,4 +137,5 @@ xorg-xsetroot
 yt-dlp
 zathura
 zathura-pdf-mupdf
-zoom
+pipr
+uv

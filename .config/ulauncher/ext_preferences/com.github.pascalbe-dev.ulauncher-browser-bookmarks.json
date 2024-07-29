@@ -1,0 +1,10 @@
+{
+    "preferences": {
+        "triggers": {
+            "keyword": {
+                "keyword": "book"
+            }
+        }
+    },
+    "triggers": {}
+}

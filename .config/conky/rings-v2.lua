@@ -1,5 +1,6 @@
 -- Improved Lua code for Conky
 
+require('cairo_xlib')
 -- Color definitions
 local colors = {
     trans1 = 0xff000d,
@@ -24,7 +25,7 @@ local colors = {
     grey1 = 0x757575,
     bluegray1 = 0x546e7a,
     white1 = 0xf7f7f7,
-current1 = 0xA09DE2
+current1 = 0xffffff
 }
 
 -- General themes

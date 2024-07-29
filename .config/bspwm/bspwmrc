@@ -70,7 +70,7 @@ bspc rule --add Spotify desktop=^8  follow=on layer=above                    # S
 bspc rule --add FreeTube desktop=^8  follow=on layer=above                    # Spotify
 
 #--------------------------------------------------------# Part - 7
-bspc rule --add stacer state=floating border=off         # Stacer
+bspc rule --add feh state=floating border=off         # feh - Image Viewer
 bspc rule --add Windscribe2 state=floating border=off    # Windscribe Vpn
 bspc rule --add maya.py state=floating border=off desktop=^6   # Maya
 bspc rule --add main.py state=floating border=off desktop=^6   # Maya
@@ -85,7 +85,7 @@ bspc rule --add MEGAsync state=floating border=off        # MEGAsync
 bspc rule --add Emojione-picker state=floating border=off # Emojione-picker              
 bspc rule --add flameshot state=floating border=off       #flameshot
 bspc rule --add Zathura state=fullscreen border=off       # Zatura PDF
-bspc rule --add feh state=fullscreen layer=above border=off           # Feh Image Viewer
+# bspc rule --add feh state=fullscreen layer=above border=off           # Feh Image Viewer
 
 # 2 > web browsers
 declare -a web=(Chromium Brave-browser Brave-browser-beta)
@@ -164,5 +164,5 @@ xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled
 # Java Netbens Blank Screen Fix 
 wmname LG3D &
 
-pgrep -x "aw-qt" >/dev/null 2>&1 || nohup /usr/bin/aw-qt &
+# pgrep -x "aw-qt" >/dev/null 2>&1 || nohup /usr/bin/aw-qt &
 
