@@ -26,7 +26,7 @@ up () {
 
 # Code Editor - Vim, Codium
 alias vim="nvim"
-alias code="codium \$(pwd)"
+alias code="codium"
 
 # Changing "ls" to "exa"
 alias l='ls --hyperlink'
@@ -135,7 +135,7 @@ alias xinitrc="vim ~/.xinitrc"
 alias picomrc="vim ~/.config/picom/picom.conf"
 
 # File Manager
-alias thunar="thunar \$(pwd)"
+# alias thunar="thunar \$(pwd)"
 alias r="ranger"
 alias k="killall"
 alias art="clear && /home/$USER/.config/neofetch/ascii_art/unix"

@@ -103,7 +103,7 @@ super + l ; l ; s
     systemctl suspend
 
 # Betterlockscreen
-super + l ; l ; b
+super + alt + b
     betterlockscreen -l --text "Error 404:Desktop Crashed"
 
 # i3-lock
@@ -331,7 +331,7 @@ super + slash
 
 # Runs Nitroplex script
 super + z 
-    alacritty -e ~/MEGAsync/Arch_Private/Nitroplex.sh
+    kitty -e $HOME/MEGAsync/Arch_Private/Nitroplex.sh
     
 #  ------------ bspwm hotkeys ------------ # 
 

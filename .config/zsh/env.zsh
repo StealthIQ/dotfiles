@@ -14,11 +14,11 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
 
 #brew    
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Go
-export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
+# export GOPATH="$HOME/go"
+# export PATH="$PATH:$GOPATH/bin"
 
 # Zoxide insted of cd
 eval "$(zoxide init zsh)"
@@ -35,7 +35,7 @@ export PATH="$PATH:$HOME/.local/bin"
 # Lang
 export LANG=en_US.UTF-8
 # Spicetify
-export PATH=$PATH:/home/stealthiq/.spicetify
+# export PATH=$PATH:/home/stealthiq/.spicetify
 
 # conda openssl
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1

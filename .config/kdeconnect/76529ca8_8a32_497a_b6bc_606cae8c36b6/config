@@ -1,2 +1,3 @@
 [Plugins]
+kdeconnect_notificationsEnabled=false
 kdeconnect_screensaver_inhibitEnabled=true
