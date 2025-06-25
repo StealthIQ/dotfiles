@@ -1,0 +1,14 @@
+{
+    "preferences": {
+        "display_char": "no",
+        "emoji_style": "apple",
+        "fallback_emoji_style": "noto",
+        "search_limit": "8",
+        "skin_tone": "\ud83d\udc4c default"
+    },
+    "triggers": {
+        "emoji_kw": {
+            "keyword": "em"
+        }
+    }
+}

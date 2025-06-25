@@ -33,3 +33,7 @@ source ~/.config/zsh/git.zsh
 . "$HOME/.cargo/env"
 
 export LD_LIBRARY_PATH=/home/stealthiq/.local/lib/arch-mojo:$LD_LIBRARY_PATH
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc

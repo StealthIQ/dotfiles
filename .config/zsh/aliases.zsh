@@ -24,6 +24,11 @@ up () {
   fi
 }
 
+# Safe alias 
+if [ -f "$HOME/.ssh/aliases.sh" ]; then
+  source "$HOME/.ssh/aliases.sh"
+fi
+
 # Code Editor - Vim, Codium
 alias vim="nvim"
 alias code="codium"
@@ -189,3 +194,4 @@ bleachbit --list | grep --color=auto -E "[a-z0-9_\-]+\.[a-z0-9_\-]+" | xargs ble
 wifi-range() {
 watch -n1 "awk 'NR==3 {printf(\"WiFi Signal Strength = %.0f%%\\n\",\$3*10/7)}' /proc/net/wireless"
 }
+
