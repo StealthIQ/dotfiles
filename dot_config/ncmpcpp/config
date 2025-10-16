@@ -1,0 +1,132 @@
+#---- song format [ for song format you can use: ] ----- [HELP]
+
+# %l - length
+# %f - short filename
+# %F - full filename
+# %a - artist
+# %t - title
+# %b - album
+# %y - year
+# %n - track number
+# %g - genre
+# %c - composer
+# %p - performer
+# %d - disc
+# %C - comment
+# %r - begin right align
+
+#-------------------------------------------------------
+# Start Config
+ncmpcpp_directory = ~/.config/ncmpcpp
+mpd_music_dir = "~/Music/Music - Nostic/"
+
+[playlist]
+#song_columns_list_format = (50)[blue]{ar} (50)[green]{t}
+
+[header]
+header_visibility = no
+
+[library]
+media_library_primary_tag = album_artist
+
+[statusbar]
+#statusbar_visibility = yes
+#progressbar_color = black
+#progressbar_elapsed_color = red
+
+[Song Status Format]
+#song_status_format = {$b$6%t$9$/b by $b$4%a$9$/b}
+song_status_format = "$b$7♫ $2%a $4⟫$3⟫ $8%t $4⟫$3⟫ "
+
+[Custom song prrefix]
+#current_item_prefix = $(yellow)$r
+current_item_suffix = $/r$(end)
+current_item_prefix = "$/b$(blue)契 "
+
+[global]
+main_window_color = "default"
+titles_visibility = yes
+
+[Progress bar look]
+#progressbar_look = "▃▃"
+#progressbar_look = "▄▄"
+#progressbar_look = "_⊙ "
+#progressbar_look = "__"
+#progressbar_look = "━━─"
+#progressbar_look = "⟫⟩"
+#progressbar_look = "▶▷"
+#progressbar_look = "――"
+#progressbar_look = "»»"
+progressbar_look = "━━"
+
+
+# Display song artwork in terminal
+#display_song_information_as = alternate
+#song_list_format = "{5}{%a}|{%t}{5}{[%l:%02n]}{5}"
+
+[Song Colum List format]
+# song_columns_list_format = " (40)[yellow]♫ {t} (25)[blue]{a} (20)[cyan]{g} (6)[blue]{l}"
+song_columns_list_format = " (40)[yellow]-> {t} (25)[blue]@ {a} (20)[cyan]* {b} (6)[blue]# {l}"
+#song_columns_list_format = { "{<%a>|%t}|%l|Album: <%b>|%y" }
+
+[Song List Format]
+song_list_format = " $7%t$9 $R$3%a                      "
+#song_list_format = {%t $8by$9 }{$4(%20a)$9}$R{$3(%20b)$9}
+
+[Song title Format]
+song_window_title_format = " ♬ {%a}  {%t}"
+
+[Scipt Excution]
+# execute_on_song_change="~/.ncmpcpp/albumart"
+# execute_on_player_state_change = "~/.config/ncmpcpp/notify.sh"
+
+# [ Visualizer ]
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_in_stereo = "yes"
+visualizer_type = "ellipse"
+# [ Looks ]
+# visualizer_look = ●●
+# visualizer_look = ▇█
+# visualizer_look = ◢◣
+# visualizer_look = ◤◥
+visualizer_look = ○●
+
+# [ FPS ]
+visualizer_fps = "60"
+
+# [ Color ]
+# visualizer_color = "33,39,63,75,81,99,117,153,189"
+# visualizer_color = "17,34,51,68,85,102,119,136,153"
+
+# visualizer_color = blue , cyan, green, yellow, magenta, red
+
+# Cool Breeze
+# visualizer_color = "1,51,102,153,204,204,153,102,51"
+
+# Sunset Vibes
+# visualizer_color = "255,179,71,252,109,2,216,61,8"
+
+# Midnight Serenade
+# visualizer_color = "30,39,46,50,65,84,117,153,189"
+
+# Pastel Dream
+# visualizer_color = "240,148,209,191,199,236,208,152,223"
+
+# Neon Lights
+# visualizer_color = "255,246,255,246,255,255,246,255,246"
+
+# Enchanted Forest
+# visualizer_color = "1,75,1,120,87,120,87,120,87"
+
+# Ocean Depths
+# visualizer_color = "1,18,64,18,64,18,64,18,64"
+
+# Retro Vibes
+# visualizer_color = "255,36,1,255,156,1,255,219,1"
+
+# Monochrome Minimal
+# visualizer_color = "1,1,1,50,50,50,100,100,100"
+
+# Electric Shock
+# visualizer_color = "51,1,51,102,1,102,153,1,153"
