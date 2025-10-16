@@ -1,0 +1,32 @@
+{
+    "preferences": {
+        "as": "No",
+        "asname": "No",
+        "city": "Yes",
+        "continent": "No",
+        "continentCode": "No",
+        "country": "Yes",
+        "countryCode": "Yes",
+        "currency": "Yes",
+        "district": "No",
+        "isp": "Yes",
+        "lat": "Yes",
+        "lon": "No",
+        "message": "Yes",
+        "mobile": "Yes",
+        "org": "Yes",
+        "proxy": "Yes",
+        "query": "Yes",
+        "region": "No",
+        "regionName": "Yes",
+        "reverse": "No",
+        "status": "No",
+        "timezone": "No",
+        "zip": "Yes"
+    },
+    "triggers": {
+        "iplik": {
+            "keyword": "ip"
+        }
+    }
+}

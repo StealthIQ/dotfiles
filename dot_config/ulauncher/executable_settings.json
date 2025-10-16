@@ -1,0 +1,21 @@
+{
+    "arrow-key-aliases": "hjkl",
+    "base-width": 750,
+    "blacklisted-desktop-dirs": "/usr/share/locale:/usr/share/app-install:/usr/share/kservices5:/usr/share/fk5:/usr/share/kservicetypes5:/usr/share/applications/screensavers:/usr/share/kde4:/usr/share/mimelnk",
+    "clear-previous-query": true,
+    "close-on-focus-out": true,
+    "daemonless": false,
+    "disable-desktop-filters": true,
+    "enable-application-mode": true,
+    "grab-mouse-pointer": true,
+    "hotkey-show-app": "<Alt>space",
+    "jump-keys": "1234567890abcdefghijklmnopqrstuvwxyz",
+    "max-recent-apps": 8,
+    "raise-if-started": false,
+    "render-on-screen": "mouse-pointer-monitor",
+    "show-recent-apps": "8",
+    "show-tray-icon": true,
+    "terminal-command": "kitty",
+    "theme-name": "Essential-Dark-Theme",
+    "tray-icon-name": "ulauncher-indicator-symbolic"
+}

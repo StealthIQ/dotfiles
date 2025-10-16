@@ -1,0 +1,93 @@
+{
+    "com.github.hoaper.ulauncher-zh0per": {
+        "id": "com.github.hoaper.ulauncher-zh0per",
+        "url": "https://github.com/Hoaper/ulauncher-zh0per",
+        "updated_at": "2025-07-15T21:49:06.743158",
+        "last_commit": "037f87bfe40ce8012896ccd9089bf7116b25b1de",
+        "last_commit_time": "2024-11-07T15:25:05"
+    },
+    "com.github.jyvern.ulauncher-ssh": {
+        "id": "com.github.jyvern.ulauncher-ssh",
+        "url": "https://github.com/jyvern/ulauncher-ssh",
+        "updated_at": "2023-08-05T03:10:25.583271",
+        "last_commit": "47168e6ea45878787536ae5670612509f5dddced",
+        "last_commit_time": "2021-08-29T16:30:14"
+    },
+    "com.github.devkleber.ulauncher-open-link": {
+        "id": "com.github.devkleber.ulauncher-open-link",
+        "url": "https://github.com/DevKleber/ulauncher-open-link",
+        "updated_at": "2025-07-15T21:49:12.353667",
+        "last_commit": "de9b7e6144d974c06a7f218596a2db80b667fd5b",
+        "last_commit_time": "2023-12-29T17:33:50"
+    },
+    "com.github.kleber-swf.ulauncher-turn-off-screen": {
+        "id": "com.github.kleber-swf.ulauncher-turn-off-screen",
+        "url": "https://github.com/kleber-swf/ulauncher-turn-off-screen",
+        "updated_at": "2025-07-15T21:49:19.536490",
+        "last_commit": "a461b89706008fcb5605b6e800fec29308b70a04",
+        "last_commit_time": "2020-11-18T20:05:35"
+    },
+    "com.github.glovecc.ulauncher-github-search": {
+        "id": "com.github.glovecc.ulauncher-github-search",
+        "url": "https://github.com/Glovecc/ulauncher-github-search",
+        "updated_at": "2025-07-15T21:49:24.934504",
+        "last_commit": "ee3ea43e905cf184449c328f0dadaa4395f3ec0c",
+        "last_commit_time": "2022-01-14T13:46:35"
+    },
+    "com.github.friday.ulauncher-clipboard": {
+        "id": "com.github.friday.ulauncher-clipboard",
+        "url": "https://github.com/friday/ulauncher-clipboard",
+        "updated_at": "2025-07-15T21:49:26.623862",
+        "last_commit": "73420cf4816f925321db15379c9c981c8f28c6fe",
+        "last_commit_time": "2022-08-03T20:22:13"
+    },
+    "com.github.rkarami.ulauncher-password-generator": {
+        "id": "com.github.rkarami.ulauncher-password-generator",
+        "url": "https://github.com/rkarami/ulauncher-password-generator",
+        "updated_at": "2025-07-15T21:49:29.243949",
+        "last_commit": "dd835041f81a0821e6398d3ab817847d93af615f",
+        "last_commit_time": "2019-09-27T21:34:17"
+    },
+    "com.github.ulauncher.ulauncher-emoji": {
+        "id": "com.github.ulauncher.ulauncher-emoji",
+        "url": "https://github.com/Ulauncher/ulauncher-emoji",
+        "updated_at": "2025-07-15T21:49:34.389787",
+        "last_commit": "af5806625e361ca4519b99755ccf0a557c1e894a",
+        "last_commit_time": "2025-06-03T19:05:58"
+    },
+    "com.github.ural89.batterystatus": {
+        "id": "com.github.ural89.batterystatus",
+        "url": "https://github.com/ural89/BatteryStatus",
+        "updated_at": "2025-08-04T07:04:59.967537",
+        "last_commit": "9dd6ed60bde1ad682c9f46770e5caad39de9673f",
+        "last_commit_time": "2025-04-28T09:17:33"
+    },
+    "com.github.vanguard478.ulauncher-zoxide": {
+        "id": "com.github.vanguard478.ulauncher-zoxide",
+        "url": "https://github.com/vanguard478/ulauncher-zoxide",
+        "updated_at": "2025-09-19T02:05:29.226529",
+        "last_commit": "377db8ebfdacb25b35ca96303d07ba23bdfd6f76",
+        "last_commit_time": "2025-05-09T09:00:38"
+    },
+    "com.github.mikebarkmin.ulauncher-obsidian": {
+        "id": "com.github.mikebarkmin.ulauncher-obsidian",
+        "url": "https://github.com/mikebarkmin/ulauncher-obsidian",
+        "updated_at": "2025-08-04T07:21:09.516337",
+        "last_commit": "a419cdc5e73453e4b284bb4905448ca60e4a3864",
+        "last_commit_time": "2023-09-12T10:42:25"
+    },
+    "com.github.iboyperson.ulauncher-system": {
+        "id": "com.github.iboyperson.ulauncher-system",
+        "url": "https://github.com/iboyperson/ulauncher-system",
+        "updated_at": "2025-08-04T07:21:30.977298",
+        "last_commit": "7dedd992709fa2297735cddf852404144d4da47c",
+        "last_commit_time": "2023-11-14T16:53:20"
+    },
+    "com.github.isacikgoz.ukill": {
+        "id": "com.github.isacikgoz.ukill",
+        "url": "https://github.com/isacikgoz/ukill",
+        "updated_at": "2025-08-05T01:30:10.682424",
+        "last_commit": "bc50d9f41d46b6813a5aeebddd15734dcdb9d8db",
+        "last_commit_time": "2019-05-28T18:30:00"
+    }
+}
