@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CHEZ="$HOME/.local/share/chezmoi"
+WANTED="${WANTED:-$HOME/wanted_dotconfigs.txt}"
+
+# Default wanted list if file missing
+read -r -d '' DEFAULT <<'LIST' || true
+alacritty
+astro
+autostart
+bashtop
+bleachbit
+btop
+cava
+conky
+copyq
+dunst
+fastfetch
+fish
+gestures
+htop
+hypr
+hyprpaper
+kitty
+mpd
+mpv
+ncmpcpp
+neofetch
+nvim
+quickshell
+ranger
+rofi
+thunar
+vlc
+xresources
+ulauncher
+X11
+zsh
+user-dirs.dirs
+user-dirs.locale
+LIST
+
+# 1) add wanted configs
+if [[ -f "$WANTED" ]]; then
+  mapfile -t items < <(grep -v '^\s*#' "$WANTED" | sed '/^\s*$/d')
+else
+  mapfile -t items < <(printf '%s\n' "$DEFAULT")
+fi
+
+for name in "${items[@]}"; do
+  [[ -e "$HOME/.config/$name" ]] && chezmoi add "$HOME/.config/$name" || true
+done
+
+# 4) apply (ensures symlinks/files are current)
+chezmoi apply
+
+# 5) commit + push if there are changes
+cd "$CHEZ"
+chezmoi git -- add -A
+if ! chezmoi git -- diff-index --quiet HEAD; then
+  msg="auto: $(hostname) $(date '+%F %T')"
+  chezmoi git -- commit -m "$msg"
+  chezmoi git -- push
+fi

@@ -50,6 +50,9 @@ alias free "free -m"
 # Navigation (Zoxide)
 alias cd "z"
 
+# Shows top 12 apps with highest memory usage 
+alias memory_usage_top "ps -eo pid,comm,%mem,%cpu --sort=-%mem | head -n 15"
+
 # -------------------------------------------------------
 # ls -> eza
 function ls; exa -al --color=always --hyperlink --group-directories-first $argv; end
@@ -88,6 +91,20 @@ alias polybar-modules "vim ~/.config/polybar/modules.ini"
 alias xinitrc "vim ~/.xinitrc"
 alias picomrc "vim ~/.config/picom/picom.conf"
 alias xres "vim ~/.Xresources"
+
+#----
+# yt-dlp aliases for Fish shell
+
+# Extract audio using the best available format
+alias yta-best='yt-dlp --extract-audio --audio-format best'
+# Extract audio as MP3 (most compatible format)
+alias yta-mp3='yt-dlp --extract-audio --audio-format mp3'
+# Download best available video + audio quality
+alias ytv-best='yt-dlp -f bestvideo+bestaudio'
+# Download full playlist as MP4 (includes all videos)
+alias ytv-list='yt-dlp -i -f mp4 --yes-playlist'
+# Download a single video as MP4
+alias ytv-mp4='yt-dlp -i -f mp4'
 
 # -------------------------------------------------------
 alias r "ranger"
