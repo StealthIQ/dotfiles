@@ -1,6 +1,21 @@
 require "nvchad.options"
 
--- add yours here!
+-- cursorline
+-- vim.opt.cursorlineopt = "both"
 
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+-- snacks notifications
+vim.schedule(function()
+  local ok, snacks = pcall(require, "snacks")
+  if ok and snacks.notify then
+    local snacks_notify = snacks.notify
+    vim.notify = function(msg, level, opts)
+      if type(opts) ~= "table" then
+        return snacks_notify(msg, level, opts)
+      end
+      return snacks_notify(msg, {
+        title = opts and opts.title,
+        level = level,
+      })
+    end
+  end
+end)
