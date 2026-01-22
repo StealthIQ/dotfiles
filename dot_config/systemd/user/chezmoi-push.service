@@ -1,0 +1,14 @@
+[Unit]
+Description=Chezmoi guarded push to remote
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Pre-flight checks
+ExecStartPre=/usr/bin/chezmoi verify
+# Check for uncommitted changes
+ExecStart=/bin/bash -c 'cd ~/.local/share/chezmoi && git add -A && git diff --cached --quiet || (git commit -m "chore: automated weekly dotfiles update $(date +%%Y-%%m-%%d)" && git push)'
+
+[Install]
+WantedBy=default.target

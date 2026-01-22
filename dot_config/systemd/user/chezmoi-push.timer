@@ -1,0 +1,12 @@
+[Unit]
+Description=Weekly chezmoi push timer
+Requires=chezmoi-push.service
+
+[Timer]
+# Run every Sunday at 3:00 AM (after pull)
+OnCalendar=Sun *-*-* 03:00:00
+# Run on boot if missed
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=Chezmoi pull and apply dotfiles
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/chezmoi git pull -- --autostash --rebase
+ExecStart=/usr/bin/chezmoi apply
+
+[Install]
+WantedBy=default.target

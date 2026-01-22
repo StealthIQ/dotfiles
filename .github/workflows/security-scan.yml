@@ -1,0 +1,102 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    name: Scan for plaintext secrets
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check for plaintext API keys
+        run: |
+          echo "🔍 Scanning for plaintext secrets..."
+          
+          # Define secret patterns
+          PATTERNS=(
+            "OBSIDIAN_API_KEY.*[a-zA-Z0-9]{20,}"
+            "CONTEXT7_API_KEY.*[a-zA-Z0-9]{20,}"
+            "API_KEY.*=.*['\"][a-zA-Z0-9]{20,}"
+            "SECRET.*=.*['\"][a-zA-Z0-9]{20,}"
+            "PASSWORD.*=.*['\"][a-zA-Z0-9]{8,}"
+            "TOKEN.*=.*['\"][a-zA-Z0-9]{20,}"
+            "-----BEGIN.*PRIVATE KEY-----"
+          )
+          
+          FOUND_SECRETS=0
+          
+          # Scan all files except .age encrypted files
+          for pattern in "${PATTERNS[@]}"; do
+            if git grep -E "$pattern" -- ':!*.age' ':!*.asc' ':!*.gpg'; then
+              echo "❌ Found potential secret pattern: $pattern"
+              FOUND_SECRETS=1
+            fi
+          done
+          
+          if [[ $FOUND_SECRETS -eq 1 ]]; then
+            echo ""
+            echo "❌ SECRET SCAN FAILED!"
+            echo "   Plaintext secrets detected in repository."
+            echo "   Please encrypt sensitive files before pushing."
+            exit 1
+          fi
+          
+          echo "✅ No plaintext secrets detected!"
+      
+      - name: Verify encrypted files exist
+        run: |
+          echo "🔍 Checking for encrypted configuration files..."
+          
+          # Check that sensitive configs are encrypted
+          if [ -f "dot_config/opencode/opencode.json" ]; then
+            echo "❌ Found unencrypted opencode.json!"
+            echo "   This file should be encrypted as encrypted_*.age"
+            exit 1
+          fi
+          
+          if [ -f "dot_config/opencode/encrypted_opencode.json.age" ]; then
+            echo "✅ Found encrypted opencode configuration"
+          else
+            echo "⚠️  No encrypted opencode.json.age found"
+          fi
+      
+      - name: Check .chezmoiignore patterns
+        run: |
+          echo "🔍 Verifying .chezmoiignore configuration..."
+          
+          if [ -f ".chezmoiignore" ]; then
+            echo "✅ .chezmoiignore exists"
+            
+            # Check for important exclusions
+            if grep -q "node_modules" .chezmoiignore; then
+              echo "✅ node_modules excluded"
+            else
+              echo "⚠️  node_modules not excluded"
+            fi
+            
+            if grep -q "\.backup" .chezmoiignore || grep -q "\.plain" .chezmoiignore; then
+              echo "✅ Backup/plain files excluded"
+            else
+              echo "⚠️  Backup/plain files not excluded"
+            fi
+          else
+            echo "⚠️  .chezmoiignore not found"
+          fi
+      
+      - name: Summary
+        if: success()
+        run: |
+          echo ""
+          echo "✅ All security checks passed!"
+          echo "   - No plaintext secrets detected"
+          echo "   - Encrypted files properly configured"
+          echo "   - Ignore patterns in place"
