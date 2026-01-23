@@ -26,11 +26,21 @@ create_webapp() {
     
     # Download icon if provided
     if [[ -n "$icon_url" ]]; then
-        echo "Downloading icon..."
-        if command -v curl >/dev/null 2>&1; then
-            curl -s -o "$icon_path" "$icon_url"
-        elif command -v wget >/dev/null 2>&1; then
-            wget -q -O "$icon_path" "$icon_url"
+        if command -v gum >/dev/null 2>&1 && [[ -t 1 ]]; then
+            gum spin --spinner dot --title "Downloading icon..." -- sh -c "
+                if command -v curl >/dev/null 2>&1; then
+                    curl -s -o \"$icon_path\" \"$icon_url\"
+                elif command -v wget >/dev/null 2>&1; then
+                    wget -q -O \"$icon_path\" \"$icon_url\"
+                fi
+            "
+        else
+            echo "Downloading icon..."
+            if command -v curl >/dev/null 2>&1; then
+                curl -s -o "$icon_path" "$icon_url"
+            elif command -v wget >/dev/null 2>&1; then
+                wget -q -O "$icon_path" "$icon_url"
+            fi
         fi
     fi
     
@@ -85,30 +95,104 @@ list_webapps() {
     done
 }
 
+# TUI function using Gum
+tui() {
+    if ! command -v gum >/dev/null 2>&1; then
+        echo "Error: gum not found. Please install charmbracelet/gum for TUI mode."
+        exit 1
+    fi
+
+    gum style --border rounded --padding "1 2" --margin "1 0" << 'EOF'
+DWM Web App Manager
+
+Create and manage web app desktop entries
+EOF
+
+    local action=$(gum choose --header "Choose an action:" "Create Web App" "Remove Web App" "List Web Apps" "Help")
+
+    case "$action" in
+        "Create Web App")
+            echo "Name:"
+            local name=$(gum input --placeholder "App Name (e.g., Gmail)")
+            [[ -z "$name" ]] && { echo "Name is required."; exit 1; }
+            echo "URL:"
+            local url=$(gum input --placeholder "https://example.com")
+            [[ -z "$url" ]] && { echo "URL is required."; exit 1; }
+            echo "Icon URL (optional):"
+            local icon_url=$(gum input --placeholder "https://icon.url/icon.png")
+            echo "Browser (default: webapp-launcher):"
+            local browser=$(gum input --placeholder "webapp-launcher")
+            [[ -z "$browser" ]] && browser="webapp-launcher"
+
+            create_webapp "$name" "$url" "$icon_url" "$browser"
+            ;;
+        "Remove Web App")
+            # Get list of apps
+            local apps=()
+            for desktop_file in "$APPS_DIR"/*.desktop; do
+                if [[ -f "$desktop_file" ]] && grep -q "Categories=.*WebApp" "$desktop_file" 2>/dev/null; then
+                    local name=$(grep "^Name=" "$desktop_file" | cut -d'=' -f2-)
+                    apps+=("$name")
+                fi
+            done
+
+            if [[ ${#apps[@]} -eq 0 ]]; then
+                echo "No web apps found to remove."
+                return
+            fi
+
+            local app_to_remove=$(gum choose --header "Select web app to remove:" "${apps[@]}")
+            [[ -z "$app_to_remove" ]] && return
+
+            remove_webapp "$app_to_remove"
+            ;;
+        "List Web Apps")
+            list_webapps
+            ;;
+        "Help"|*)
+            echo "DWM Web App Manager"
+            echo ""
+            echo "Usage:"
+            echo "  webapp create 'App Name' 'https://url.com' 'icon_url' [browser]"
+            echo "  webapp remove 'App Name'"
+            echo "  webapp list"
+            echo ""
+            echo "Examples:"
+            echo "  webapp create 'Gmail' 'https://gmail.com' 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/gmail.png'"
+            echo "  webapp create 'GitHub' 'https://github.com' 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/github.png' firefox"
+            echo "  webapp remove 'Gmail'"
+            ;;
+    esac
+}
+
 # Main script logic
-case "${1:-help}" in
-    create)
-        shift
-        create_webapp "$@"
-        ;;
-    remove)
-        shift
-        remove_webapp "$@"
-        ;;
-    list)
-        list_webapps
-        ;;
-    help|*)
-        echo "DWM Web App Manager"
-        echo ""
-        echo "Usage:"
-        echo "  webapp create 'App Name' 'https://url.com' 'icon_url' [browser]"
-        echo "  webapp remove 'App Name'"
-        echo "  webapp list"
-        echo ""
-        echo "Examples:"
-        echo "  webapp create 'Gmail' 'https://gmail.com' 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/gmail.png'"
-        echo "  webapp create 'GitHub' 'https://github.com' 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/github.png' firefox"
-        echo "  webapp remove 'Gmail'"
-        ;;
-esac
+if [[ $# -eq 0 ]] || [[ "$1" == "tui" ]]; then
+    tui
+else
+    case "$1" in
+        create)
+            shift
+            create_webapp "$@"
+            ;;
+        remove)
+            shift
+            remove_webapp "$@"
+            ;;
+        list)
+            list_webapps
+            ;;
+        help|*)
+            echo "DWM Web App Manager"
+            echo ""
+            echo "Usage:"
+            echo "  webapp create 'App Name' 'https://url.com' 'icon_url' [browser]"
+            echo "  webapp remove 'App Name'"
+            echo "  webapp list"
+            echo ""
+            echo "Examples:"
+            echo "  webapp create 'Gmail' 'https://gmail.com' 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/gmail.png'"
+            echo "  webapp create 'GitHub' 'https://github.com' 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/github.png' firefox"
+            echo "  webapp remove 'Gmail'"
+            ;;
+    esac
+fi

@@ -24,38 +24,17 @@ Item { // Notification item area
     property var parentDragIndex: qmlParent?.dragIndex ?? -1
     property var parentDragDistance: qmlParent?.dragDistance ?? 0
     property var dragIndexDiff: Math.abs(parentDragIndex - index)
-    property real xOffset: dragIndexDiff == 0 ? Math.max(0, parentDragDistance) : 
-        parentDragDistance > dragConfirmThreshold ? 0 :
-        dragIndexDiff == 1 ? Math.max(0, parentDragDistance * 0.3) :
-        dragIndexDiff == 2 ? Math.max(0, parentDragDistance * 0.1) : 0
+    property real xOffset: dragIndexDiff == 0 ? parentDragDistance : 
+        Math.abs(parentDragDistance) > dragConfirmThreshold ? 0 :
+        dragIndexDiff == 1 ? (parentDragDistance * 0.3) :
+        dragIndexDiff == 2 ? (parentDragDistance * 0.1) : 0
 
     implicitHeight: background.implicitHeight
 
-    function processNotificationBody(body, appName) {
-        let processedBody = body
-        
-        // Clean Chromium-based browsers notifications - remove first line
-        if (appName) {
-            const lowerApp = appName.toLowerCase()
-            const chromiumBrowsers = [
-                "brave", "chrome", "chromium", "vivaldi", "opera", "microsoft edge"
-            ]
-
-            if (chromiumBrowsers.some(name => lowerApp.includes(name))) {
-                const lines = body.split('\n\n')
-
-                if (lines.length > 1 && lines[0].startsWith('<a')) {
-                    processedBody = lines.slice(1).join('\n\n')
-                }
-            }
-        }
-        
-        return processedBody
-    }
-
-    function destroyWithAnimation() {
+    function destroyWithAnimation(left = false) {
         root.qmlParent.resetDrag()
         background.anchors.leftMargin = background.anchors.leftMargin; // Break binding
+        destroyAnimation.left = left;
         destroyAnimation.running = true;
     }
 
@@ -67,12 +46,13 @@ Item { // Notification item area
 
     SequentialAnimation { // Drag finish animation
         id: destroyAnimation
+        property bool left: true
         running: false
 
         NumberAnimation {
             target: background.anchors
             property: "leftMargin"
-            to: root.width + root.dismissOvershoot
+            to: (root.width + root.dismissOvershoot) * (destroyAnimation.left ? -1 : 1)
             duration: Appearance.animation.elementMove.duration
             easing.type: Appearance.animation.elementMove.type
             easing.bezierCurve: Appearance.animation.elementMove.bezierCurve
@@ -107,8 +87,8 @@ Item { // Notification item area
         }
 
         onDragReleased: (diffX, diffY) => {
-            if (diffX > root.dragConfirmThreshold)
-                root.destroyWithAnimation();
+            if (Math.abs(diffX) > root.dragConfirmThreshold)
+                root.destroyWithAnimation(diffX < 0);
             else 
                 dragManager.resetDrag();
         }
@@ -194,12 +174,13 @@ Item { // Notification item area
                     maximumLineCount: 1
                     textFormat: Text.StyledText
                     text: {
-                        return processNotificationBody(notificationObject.body, notificationObject.appName || notificationObject.summary).replace(/\n/g, "<br/>")
+                        return NotificationUtils.processNotificationBody(notificationObject.body, notificationObject.appName || notificationObject.summary).replace(/\n/g, "<br/>")
                     }
                 }
             }
 
             ColumnLayout { // Expanded content
+                id: expandedContentColumn
                 Layout.fillWidth: true
                 opacity: root.expanded ? 1 : 0
                 visible: opacity > 0
@@ -216,8 +197,8 @@ Item { // Notification item area
                     elide: Text.ElideRight
                     textFormat: Text.RichText
                     text: {
-                        return `<style>img{max-width:${300 /* binding to notificationBodyText.width would cause a binding loop */}px;}</style>` + 
-                            `${processNotificationBody(notificationObject.body, notificationObject.appName || notificationObject.summary).replace(/\n/g, "<br/>")}`
+                        return `<style>img{max-width:${expandedContentColumn.width}px;}</style>` + 
+                            `${NotificationUtils.processNotificationBody(notificationObject.body, notificationObject.appName || notificationObject.summary).replace(/\n/g, "<br/>")}`
                     }
 
                     onLinkActivated: (link) => {
@@ -279,7 +260,7 @@ Item { // Notification item area
                                 }
 
                                 contentItem: MaterialSymbol {
-                                    iconSize: Appearance.font.pixelSize.large
+                                    iconSize: Appearance.font.pixelSize.larger
                                     horizontalAlignment: Text.AlignHCenter
                                     color: (notificationObject.urgency == NotificationUrgency.Critical) ? 
                                         Appearance.m3colors.m3onSurfaceVariant : Appearance.m3colors.m3onSurface
@@ -291,6 +272,8 @@ Item { // Notification item area
                                 id: actionRepeater
                                 model: notificationObject.actions
                                 NotificationActionButton {
+                                    id: notifAction
+                                    required property var modelData
                                     Layout.fillWidth: true
                                     buttonText: modelData.text
                                     urgency: notificationObject.urgency
@@ -323,7 +306,7 @@ Item { // Notification item area
 
                                 contentItem: MaterialSymbol {
                                     id: copyIcon
-                                    iconSize: Appearance.font.pixelSize.large
+                                    iconSize: Appearance.font.pixelSize.larger
                                     horizontalAlignment: Text.AlignHCenter
                                     color: (notificationObject.urgency == NotificationUrgency.Critical) ? 
                                         Appearance.m3colors.m3onSurfaceVariant : Appearance.m3colors.m3onSurface

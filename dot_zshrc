@@ -107,3 +107,8 @@ source $ZSH/oh-my-zsh.sh
 export PATH="$PATH:/home/stealthiq/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+# opencode
+export PATH=/home/stealthiq/.opencode/bin:$PATH
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

@@ -1,0 +1,16 @@
+# Ignore generated/temporary files that shouldn't be in dotfiles repo
+
+# OpenCode node_modules and generated files
+.config/opencode/.opencode/node_modules/
+.config/opencode/.opencode/bun.lock
+.config/opencode/.opencode/package.json
+.config/opencode/bun.lock
+
+# Neovim git index (changes frequently)
+.config/nvim/.git/index
+
+# Application logs and temporary files
+.config/ncmpcpp/error.log
+
+# Any other log files
+**/*.log

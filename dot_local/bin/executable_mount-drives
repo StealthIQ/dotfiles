@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Function to mount or unmount a drive
+mount_drive() {
+    local drive_choice="$1"
+    local operation="$2"
+
+    if [[ ! "$drive_choice" =~ ^sd[a-z][0-9]+$ ]]; then
+        echo -e "\e[31mInvalid drive choice: $drive_choice\e[0m"
+        return 1
+    fi
+
+    local mount_point="/mnt/drive-$drive_choice"
+
+    # Install ntfs-3g package if not already installed
+    paru -S --needed --noconfirm ntfs-3g
+
+    # Attempt to fix the NTFS filesystem
+    sudo ntfsfix "/dev/$drive_choice"
+
+    # Create the mount point directory if it doesn't exist
+    sudo mkdir -p "$mount_point"
+
+    if [[ "$operation" = "m" ]]; then
+        # Mount the drive to the chosen mount point
+        sudo mount "/dev/$drive_choice" "$mount_point"
+        echo -e "\e[32mDrive /dev/$drive_choice mounted at $mount_point.\e[0m"
+        cd "$mount_point"
+    elif [[ "$operation" = "u" ]]; then
+        # Unmount the drive
+        sudo umount "$mount_point"
+        echo -e "\e[32mDrive /dev/$drive_choice unmounted from $mount_point.\e[0m"
+    else
+        echo -e "\e[31mInvalid operation choice: $operation. Use 'm' for mount or 'u' for unmount.\e[0m"
+        return 1
+    fi
+}
+
+# TUI function using Gum
+tui() {
+    if ! command -v gum >/dev/null 2>&1; then
+        echo "Error: gum not found. Please install charmbracelet/gum for TUI mode."
+        exit 1
+    fi
+
+    gum style --border rounded --padding "1 2" --margin "1 0" << 'EOF'
+Drive Manager
+
+Mount or unmount external drives
+EOF
+
+    # Get available drives
+    lsblk_output=$(lsblk)
+    filtered_output=$(echo "$lsblk_output" | grep -E 'sd[a-z][0-9]+')
+
+    echo "Available drives:"
+    echo "$filtered_output"
+    echo
+
+    # Extract drive names
+    drives=()
+    while IFS= read -r line; do
+        drive=$(echo "$line" | awk '{print $1}')
+        drives+=("$drive")
+    done <<< "$filtered_output"
+
+    if [[ ${#drives[@]} -eq 0 ]]; then
+        echo "No drives found."
+        return
+    fi
+
+    local drive_choice=$(gum choose --header "Select a drive:" "${drives[@]}")
+    [[ -z "$drive_choice" ]] && return
+
+    local operation=$(gum choose --header "Choose operation:" "Mount" "Unmount")
+    [[ -z "$operation" ]] && return
+
+    case "$operation" in
+        "Mount") operation="m" ;;
+        "Unmount") operation="u" ;;
+    esac
+
+    mount_drive "$drive_choice" "$operation"
+}
+
+# Main script logic
+if [[ $# -eq 0 ]]; then
+    tui
+elif [[ $# -eq 2 ]]; then
+    mount_drive "$1" "$2"
+else
+    echo "Usage: $0 [drive operation]"
+    echo "  drive: e.g., sda1, sda2"
+    echo "  operation: m (mount) or u (unmount)"
+    echo "  Run without arguments for TUI mode."
+    exit 1
+fi

@@ -17,14 +17,17 @@ Singleton {
     property bool osdBrightnessOpen: false
     property bool osdVolumeOpen: false
     property bool oskOpen: false
+    property bool overlayOpen: false
     property bool overviewOpen: false
-    property bool wallpaperSelectorOpen: false
+    property bool regionSelectorOpen: false
+    property bool searchOpen: false
     property bool screenLocked: false
     property bool screenLockContainsCharacters: false
     property bool screenUnlockFailed: false
     property bool sessionOpen: false
     property bool superDown: false
     property bool superReleaseMightTrigger: true
+    property bool wallpaperSelectorOpen: false
     property bool workspaceShowNumbers: false
 
     onSidebarRightOpenChanged: {
@@ -32,14 +35,6 @@ Singleton {
             Notifications.timeoutAll();
             Notifications.markAllRead();
         }
-    }
-
-    property real screenZoom: 1
-    onScreenZoomChanged: {
-        Quickshell.execDetached(["hyprctl", "keyword", "cursor:zoom_factor", root.screenZoom.toString()]);
-    }
-    Behavior on screenZoom {
-        animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
     }
 
     GlobalShortcut {
@@ -53,16 +48,4 @@ Singleton {
             root.superDown = false
         }
     }
-
-    IpcHandler {
-		target: "zoom"
-
-		function zoomIn() {
-            screenZoom = Math.min(screenZoom + 0.4, 3.0)
-        }
-
-        function zoomOut() {
-            screenZoom = Math.max(screenZoom - 0.4, 1)
-        } 
-	}
 }

@@ -33,7 +33,7 @@ function z () {
     __zoxide_z "$@"
 }
 # Local Scripts
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin/"
 
 # Lang
 export LANG=en_US.UTF-8

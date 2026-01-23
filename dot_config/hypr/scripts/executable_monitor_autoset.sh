@@ -1,31 +1,42 @@
 #!/usr/bin/env bash
-# Emulates your xrandr logic using Hyprland monitor keywords and workspace mapping.
-# External 4K DisplayPort + internal eDP split; else internal only.
-
-set -euo pipefail
+# Ported from your bspwm auto-monitor script to Hyprland
+# Supports 3 monitors: eDP-1, DP-1, HDMI-1
 
 INTERNAL="eDP-1"
-# Check real connector names: hyprctl monitors
-EXTERNAL_CANDIDATES=$(hyprctl monitors -j | jq -r '.[].name' | grep -E 'DP|HDMI|USB-C' || true)
+DP="DP-1"
+HDMI="HDMI-1"
 
-if [ -n "$EXTERNAL_CANDIDATES" ]; then
-  EXT=$(echo "$EXTERNAL_CANDIDATES" | head -n1)
-  # 4K external to the right, primary
-  hyprctl keyword monitor "$EXT,3840x2160@60,1920x0,1"
+# Detect monitors
+mapfile -t outputs < <( hyprctl monitors -j | jq -r '.[].name' )
+
+# 3 monitor setup check
+if printf '%s\n' "${outputs[@]}" | grep -qx "$DP" && printf '%s\n' "${outputs[@]}" | grep -qx "$HDMI"; then
+  # 3 monitor setup: eDP-1 (left), DP-1 (center), HDMI-1 (right)
   hyprctl keyword monitor "$INTERNAL,1920x1080@60,0x0,1"
-  # Workspace to monitor mapping (Hyprland persistent mapping)
-  hyprctl keyword workspace "1,monitor:$EXT"
-  hyprctl keyword workspace "2,monitor:$EXT"
-  hyprctl keyword workspace "3,monitor:$EXT"
-  hyprctl keyword workspace "4,monitor:$EXT"
-  hyprctl keyword workspace "5,monitor:$EXT"
-  hyprctl keyword workspace "6,monitor:$INTERNAL"
-  hyprctl keyword workspace "7,monitor:$INTERNAL"
-  hyprctl keyword workspace "8,monitor:$INTERNAL"
-  hyprctl keyword workspace "9,monitor:$INTERNAL"
-  hyprctl keyword workspace "10,monitor:$INTERNAL"
+  hyprctl keyword monitor "$DP,2560x1440@60,1920x0,1"
+  hyprctl keyword monitor "$HDMI,3840x2160@60,4480x0,1"
+  
+  # Workspace mapping
+  hyprctl keyword workspace "1,monitor:$INTERNAL"
+  for ws in {2..5}; do hyprctl keyword workspace "\$ws,monitor:$DP"; done
+  for ws in {6..10}; do hyprctl keyword workspace "\$ws,monitor:$HDMI"; done
+
+elif printf '%s\n' "${outputs[@]}" | grep -qx "$DP"; then
+  # 2 monitor setup (DP-1)
+  hyprctl keyword monitor "$INTERNAL,1920x1080@60,0x0,1"
+  hyprctl keyword monitor "$DP,2560x1440@60,1920x0,1"
+  hyprctl keyword workspace "1,monitor:$INTERNAL"
+  for ws in {2..10}; do hyprctl keyword workspace "\$ws,monitor:$DP"; done
+
+elif printf '%s\n' "${outputs[@]}" | grep -qx "$HDMI"; then
+  # 2 monitor setup (HDMI-1)
+  hyprctl keyword monitor "$INTERNAL,1920x1080@60,0x0,1"
+  hyprctl keyword monitor "$HDMI,3840x2160@60,1920x0,1"
+  hyprctl keyword workspace "1,monitor:$INTERNAL"
+  for ws in {2..10}; do hyprctl keyword workspace "\$ws,monitor:$HDMI"; done
+
 else
+  # Internal only
   hyprctl keyword monitor "$INTERNAL,1920x1080@60,0x0,1"
-  # All 1..10 on internal
-  for ws in {1..10}; do hyprctl keyword workspace "$ws,monitor:$INTERNAL"; done
+  for ws in {1..10}; do hyprctl keyword workspace "\$ws,monitor:$INTERNAL"; done
 fi

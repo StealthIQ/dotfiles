@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre", -- uncomment for format on save
+    event = "BufWritePre",
     opts = require "configs.conform",
   },
 
@@ -12,54 +12,129 @@ return {
     end,
   },
 
+  -- Markview.nvim (DO NOT lazy load)
   {
-    "nvim-treesitter/nvim-treesitter",
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+  },
+  -- Copilot
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {
+        panel = {
+          enabled = true,
+          auto_refresh = true,
+          keymap = {
+            jump_prev = "[[",
+            jump_next = "]]",
+            accept = "<CR>",
+            refresh = "gr",
+            open = "<M-CR>",
+          },
+          layout = {
+            position = "bottom",
+            ratio = 0.4,
+          },
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = "<Tab>", -- ONLY Copilot owns Tab
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = {
+          yaml = true,
+          markdown = true,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          ["."] = false,
+        },
+        copilot_node_command = "node",
+      }
+    end,
+  },
+  -- blink (already present)
+  { import = "nvchad.blink.lazyspec" },
+
+  {
+    "nvim-tree/nvim-tree.lua",
     opts = {
-      ensure_installed = {
-        "vim", "lua", "vimdoc",
-        "html", "css"
+      filters = {
+        dotfiles = false, -- Set to false to show .gitignore and other dotfiles
+        git_ignored = false, -- Set to false to show files ignored by git
       },
     },
   },
 
   {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    build = "cd app && npm install",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
-    ft = { "markdown" },
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim",
+        "lua",
+        "vimdoc",
+        "markdown",
+        "markdown_inline",
+        "yaml",
+        "html",
+        "css",
+      },
+    },
   },
-
-  {
-    "github/copilot.vim",
-    lazy = false,
-    config = function()
-      vim.g.copilot_no_tab_map = true
-      vim.g.copilot_assume_mapped = true
-    end,
-  },
-
-  {
-    "SmiteshP/nvim-navic",
-    dependencies = "neovim/nvim-lspconfig",
-  },
-
   {
     "folke/snacks.nvim",
+    lazy = false, -- image should be available immediately
     priority = 1000,
-    lazy = false,
     opts = {
-      bigfile = { enabled = true },
-      dashboard = { enabled = true },
-      indent = { enabled = true },
-      input = { enabled = true },
-      notifier = { enabled = true },
-      quickfile = { enabled = true },
-      scroll = { enabled = true },
-      statuscolumn = { enabled = true },
-      words = { enabled = true },
+      image = {
+        enabled = true,
+
+        -- you said: no markdown, no inline
+        doc = {
+          enabled = false,
+          inline = false,
+          float = true,
+        },
+      },
+
+      notifier = {
+        enabled = true,
+      },
+
+      input = {
+        enabled = true,
+      },
+      scope = {
+        enabled = true,
+      },
+      scroll = {
+        enabled = true,
+      },
+      quickfile = {
+        enabled = true,
+      },
     },
+  },
+
+  {
+    "NickvanDyke/opencode.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
+    },
+    config = function()
+      require "configs.opencode"
+    end,
   },
 }
