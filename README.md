@@ -28,8 +28,8 @@ chezmoi init https://github.com/StealthIQ/dotfiles.git
 chezmoi diff
 chezmoi apply
 
-# 3. oh-my-zsh is not vendored in this repo; install it into ZDOTDIR
-ZSH="$HOME/.config/zsh/.oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+# 3. oh-my-zsh is not vendored in this repo; .zshrc loads it from ~/.oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 ```
 
 The illogical-impulse Quickshell shell has its own installer and dependencies: see [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland). This repo only carries my configured copy.
