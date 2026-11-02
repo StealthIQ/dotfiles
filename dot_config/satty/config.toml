@@ -1,0 +1,35 @@
+[general]
+fullscreen = false
+early-exit = true
+
+# Start with rectangle tool
+initial-tool = "rectangle"
+
+annotation-size-factor = 2
+corner-roundness = 2
+
+copy-command = "wl-copy"
+save-after-copy = true
+disable-notifications = false
+
+default-fill-shapes = false
+primary-highlighter = "block"
+
+# MUST be an array of strings
+actions-on-right-click = ["save-to-clipboard"]
+
+[keybinds]
+pointer = "p"
+crop = "c"
+brush = "b"
+line = "i"
+arrow = "z"
+rectangle = "s"
+ellipse = "e"
+text = "t"
+marker = "m"
+blur = "u"
+highlight = "g"
+
+[color-palette]
+palette = ["#dc143c", "#008000", "#a52a2a", "#ff1493", "#ffd700", "#00ffff"]

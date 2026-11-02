@@ -1,0 +1,16 @@
+[Unit]
+Description=ActivityWatch Qt UI
+After=graphical-session.target aw-server-rust.service
+Requires=aw-server-rust.service
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus
+ExecStart=/usr/bin/aw-qt
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

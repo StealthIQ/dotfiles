@@ -1,0 +1,16 @@
+{{- if or .private .packages -}}
+#!/usr/bin/env bash
+# Runs after `chezmoi apply`. Your answers from `chezmoi init` are in
+# ~/.config/chezmoi/chezmoi.toml; change them with `chezmoi init --prompt`.
+set -uo pipefail
+export PATH="$HOME/.local/bin:$PATH"
+{{- if .packages }}
+if [[ ! -e "$HOME/.local/state/dotfiles-packages-installed" ]]; then
+    install-dotfiles-packages "{{ .chezmoi.sourceDir }}/packages" \
+        && mkdir -p "$HOME/.local/state" && touch "$HOME/.local/state/dotfiles-packages-installed"
+fi
+{{- end }}
+{{- if .private }}
+dotfiles-private apply{{ if .packages }} --packages{{ end }}
+{{- end }}
+{{- end }}

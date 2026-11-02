@@ -1,0 +1,410 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+INTERNAL_MONITOR="eDP-1"
+HYPR_DIR="${HOME}/.config/hypr"
+MONITORS_CONF="${HYPR_DIR}/monitors.conf"
+AUTO_WS_CONF="${HYPR_DIR}/hyprland.conf.d/auto-workspaces.conf"
+SCRIPT_TITLE="Power Cut Display Fix"
+DEFAULT_MODE="1920x1200@60"
+DEFAULT_SCALE="1"
+
+on_error() {
+  local line_no="$1"
+  local exit_code="$2"
+  printf "Error: command failed at line %s (exit %s)\n" "$line_no" "$exit_code" >&2
+}
+
+trap 'on_error "$LINENO" "$?"' ERR
+
+require_cmd() {
+  local cmd="$1"
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    printf "Missing dependency: %s\n" "$cmd" >&2
+    exit 1
+  fi
+}
+
+ensure_hyprland() {
+  if [[ -z "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+    printf "This script must run inside a Hyprland session.\n" >&2
+    exit 1
+  fi
+}
+
+expected_monitors() {
+  if [[ ! -f "$MONITORS_CONF" ]]; then
+    return 0
+  fi
+  awk -F'[=,]' '/^[[:space:]]*monitor=/{gsub(/[[:space:]]+/,"",$2); print $2}' "$MONITORS_CONF"
+}
+
+join_csv() {
+  local out=""
+  local item
+  for item in "$@"; do
+    if [[ -z "$out" ]]; then
+      out="$item"
+    else
+      out+=", $item"
+    fi
+  done
+  printf "%s" "$out"
+}
+
+get_active_monitors() {
+  hyprctl monitors all | awk '
+    /^Monitor / { name = $2 }
+    /^[[:space:]]*disabled:/ {
+      if ($2 == "false" || $2 == "0") {
+        print name
+      }
+    }
+  '
+}
+
+get_connected_monitors() {
+  hyprctl monitors all | awk '/^Monitor / { print $2 }'
+}
+
+monitor_exists() {
+  local needle="$1"
+  shift
+  local item
+  for item in "$@"; do
+    [[ "$item" == "$needle" ]] && return 0
+  done
+  return 1
+}
+
+derive_power_status() {
+  local active_list connected_list expected_list
+  mapfile -t active_list < <(get_active_monitors)
+  mapfile -t connected_list < <(get_connected_monitors)
+  mapfile -t expected_list < <(expected_monitors)
+
+  if ((${#connected_list[@]} == 0)); then
+    printf "Unknown (no monitors reported by Hyprland)"
+    return
+  fi
+
+  if ((${#expected_list[@]} <= 1)); then
+    printf "Single-display setup or no baseline config"
+    return
+  fi
+
+  local missing=0
+  local disabled_connected=0
+  local m
+  for m in "${expected_list[@]}"; do
+    if ! monitor_exists "$m" "${connected_list[@]}"; then
+      ((missing+=1))
+    fi
+  done
+
+  for m in "${connected_list[@]}"; do
+    if ! monitor_exists "$m" "${active_list[@]}"; then
+      ((disabled_connected+=1))
+    fi
+  done
+
+  if ((missing == 0 && disabled_connected == 0)); then
+    printf "Likely normal power state (all expected outputs active)"
+  elif ((missing == 0 && disabled_connected > 0)); then
+    printf "Connected outputs found, but %s output(s) are disabled in Hyprland" "$disabled_connected"
+  else
+    printf "Possible power-cut/dock issue (%s expected output(s) missing)" "$missing"
+  fi
+}
+
+mode_for_monitor() {
+  local monitor="$1"
+  if [[ -f "$MONITORS_CONF" ]]; then
+    local mode
+    mode="$(awk -F',' -v mon="$monitor" '
+      $1 ~ "monitor=" mon {
+        gsub(/[[:space:]]+/, "", $2)
+        print $2
+        exit
+      }
+    ' "$MONITORS_CONF")"
+    if [[ -n "$mode" ]]; then
+      printf "%s" "$mode"
+      return
+    fi
+  fi
+  printf "%s" "$DEFAULT_MODE"
+}
+
+scale_for_monitor() {
+  local monitor="$1"
+  if [[ -f "$MONITORS_CONF" ]]; then
+    local scale
+    scale="$(awk -F',' -v mon="$monitor" '
+      $1 ~ "monitor=" mon {
+        gsub(/[[:space:]]+/, "", $4)
+        print $4
+        exit
+      }
+    ' "$MONITORS_CONF")"
+    if [[ -n "$scale" ]]; then
+      printf "%s" "$scale"
+      return
+    fi
+  fi
+  printf "%s" "$DEFAULT_SCALE"
+}
+
+mode_width() {
+  local mode="$1"
+  local width
+  width="$(printf "%s" "$mode" | awk -F'[@x]' '{print $1}')"
+  if [[ "$width" =~ ^[0-9]+$ ]]; then
+    printf "%s" "$width"
+  else
+    printf "1920"
+  fi
+}
+
+rebind_workspaces_dynamic() {
+  local first_external="${1:-}"
+  local second_external="${2:-}"
+
+  hyprctl keyword workspace "1,monitor:${INTERNAL_MONITOR},default:true" >/dev/null || true
+
+  if [[ -n "$first_external" ]]; then
+    hyprctl keyword workspace "2,monitor:${first_external},default:true" >/dev/null || true
+  else
+    hyprctl keyword workspace "2,monitor:${INTERNAL_MONITOR}" >/dev/null || true
+  fi
+
+  if [[ -n "$second_external" ]]; then
+    hyprctl keyword workspace "3,monitor:${second_external},default:true" >/dev/null || true
+  elif [[ -n "$first_external" ]]; then
+    hyprctl keyword workspace "3,monitor:${first_external}" >/dev/null || true
+  else
+    hyprctl keyword workspace "3,monitor:${INTERNAL_MONITOR}" >/dev/null || true
+  fi
+
+  hyprctl dispatch workspace 1 >/dev/null || true
+}
+
+print_status() {
+  local power_state
+  local active_list connected_list expected_list
+  mapfile -t active_list < <(get_active_monitors)
+  mapfile -t connected_list < <(get_connected_monitors)
+  mapfile -t expected_list < <(expected_monitors)
+
+  local active connected expected
+  active="$(join_csv "${active_list[@]}")"
+  connected="$(join_csv "${connected_list[@]}")"
+  expected="$(join_csv "${expected_list[@]}")"
+  power_state="$(derive_power_status)"
+
+  [[ -z "$active" ]] && active="none"
+  [[ -z "$connected" ]] && connected="none"
+  [[ -z "$expected" ]] && expected="none"
+
+  gum style --foreground 212 --bold "$SCRIPT_TITLE"
+  gum style --border rounded --padding "1 2" --margin "1 0" "$(printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s' \
+    "Session Detection" \
+    "Power-state guess : $power_state" \
+    "Connected outputs : $connected" \
+    "Active outputs    : $active" \
+    "Expected outputs  : $expected" \
+    "Internal display  : $INTERNAL_MONITOR" \
+    "Monitors config   : $MONITORS_CONF" \
+    "Workspace config  : $AUTO_WS_CONF")"
+}
+
+confirm_or_exit() {
+  local prompt="$1"
+  if ! gum confirm "$prompt"; then
+    printf "Cancelled by user.\n"
+    exit 0
+  fi
+}
+
+apply_laptop_only() {
+  local ws
+  gum spin --title "Applying laptop-only recovery..." -- \
+    bash -c '
+      set -Eeuo pipefail
+      hyprctl keyword monitor "eDP-1,1920x1200@60,0x0,1" >/dev/null
+      hyprctl keyword monitor "DP-1,disable" >/dev/null || true
+      hyprctl keyword monitor "HDMI-A-1,disable" >/dev/null || true
+      hyprctl keyword monitor "HDMI-1,disable" >/dev/null || true
+    '
+
+  hyprctl keyword workspace "1,monitor:${INTERNAL_MONITOR},default:true" >/dev/null
+  for ws in $(seq 2 10); do
+    hyprctl keyword workspace "${ws},monitor:${INTERNAL_MONITOR}" >/dev/null
+  done
+  hyprctl dispatch workspace 1 >/dev/null || true
+}
+
+apply_auto_detected_layout() {
+  # Reset dynamic workspace rules from prior recovery runs.
+  hyprctl reload config-only >/dev/null || true
+
+  local connected expected ordered externals remaining
+  local m
+  mapfile -t connected < <(get_connected_monitors)
+  mapfile -t expected < <(expected_monitors)
+
+  if ((${#connected[@]} == 0)); then
+    printf "No connected monitors were detected by Hyprland.\n" >&2
+    return 1
+  fi
+
+  ordered=()
+  externals=()
+  remaining=()
+
+  if monitor_exists "$INTERNAL_MONITOR" "${connected[@]}"; then
+    ordered+=("$INTERNAL_MONITOR")
+  fi
+
+  for m in "${expected[@]}"; do
+    if [[ "$m" == "$INTERNAL_MONITOR" ]]; then
+      continue
+    fi
+    if monitor_exists "$m" "${connected[@]}"; then
+      ordered+=("$m")
+      externals+=("$m")
+    fi
+  done
+
+  for m in "${connected[@]}"; do
+    if ! monitor_exists "$m" "${ordered[@]}"; then
+      ordered+=("$m")
+      if [[ "$m" != "$INTERNAL_MONITOR" ]]; then
+        remaining+=("$m")
+      fi
+    fi
+  done
+
+  if ((${#ordered[@]} == 0)); then
+    ordered=("${connected[0]}")
+  fi
+
+  # Phase 1: clear potential overlap by disabling externals first.
+  for m in "${connected[@]}"; do
+    if [[ "$m" != "$INTERNAL_MONITOR" ]]; then
+      hyprctl keyword monitor "${m},disable" >/dev/null || true
+    fi
+  done
+
+  for m in "${expected[@]}"; do
+    if ! monitor_exists "$m" "${connected[@]}"; then
+      hyprctl keyword monitor "${m},disable" >/dev/null || true
+    fi
+  done
+
+  # Phase 2: apply final positions left-to-right.
+  local x=0
+  local mode scale width
+  for m in "${ordered[@]}"; do
+    mode="$(mode_for_monitor "$m")"
+    scale="$(scale_for_monitor "$m")"
+    hyprctl keyword monitor "${m},${mode},${x}x0,${scale}" >/dev/null || true
+    width="$(mode_width "$mode")"
+    x=$((x + width))
+  done
+
+  local first_external=""
+  local second_external=""
+
+  if ((${#externals[@]} > 0)); then
+    first_external="${externals[0]}"
+    if ((${#externals[@]} > 1)); then
+      second_external="${externals[1]}"
+    fi
+  elif ((${#remaining[@]} > 0)); then
+    first_external="${remaining[0]}"
+    if ((${#remaining[@]} > 1)); then
+      second_external="${remaining[1]}"
+    fi
+  fi
+
+  if [[ "${ordered[0]}" != "$INTERNAL_MONITOR" ]]; then
+    first_external="${ordered[0]}"
+    second_external=""
+  fi
+
+  rebind_workspaces_dynamic "$first_external" "$second_external"
+}
+
+run_menu() {
+  require_cmd gum
+  require_cmd hyprctl
+  ensure_hyprland
+
+  print_status
+
+  local choice
+  choice="$(gum choose \
+    "Laptop only recovery (disable externals + rebind WS 1-10)" \
+    "Restore using currently connected monitors (auto layout)" \
+    "Refresh status only" \
+    "Quit" || true)"
+
+  if [[ -z "${choice}" ]]; then
+    printf "No changes made.\n"
+    return 0
+  fi
+
+  case "$choice" in
+    "Laptop only recovery (disable externals + rebind WS 1-10)")
+      confirm_or_exit "Apply laptop-only recovery now?"
+      apply_laptop_only
+      print_status
+      printf "Done: laptop-only recovery applied.\n"
+      ;;
+    "Restore using currently connected monitors (auto layout)")
+      confirm_or_exit "Restore layout for currently connected monitors now?"
+      gum spin --title "Applying auto-detected layout..." -- "${BASH_SOURCE[0]}" --apply-auto
+      print_status
+      printf "Done: auto-detected layout applied.\n"
+      ;;
+    "Refresh status only")
+      print_status
+      ;;
+    "Quit")
+      printf "No changes made.\n"
+      ;;
+    *)
+      printf "Unknown choice.\n" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main() {
+  require_cmd hyprctl
+  ensure_hyprland
+
+  case "${1:-}" in
+    --apply-auto)
+      apply_auto_detected_layout
+      ;;
+    --laptop-only)
+      apply_laptop_only
+      ;;
+    --status)
+      require_cmd gum
+      print_status
+      ;;
+    "" )
+      run_menu
+      ;;
+    *)
+      printf "Unknown argument: %s\n" "$1" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

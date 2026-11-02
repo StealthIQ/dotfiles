@@ -1,0 +1,208 @@
+#!/usr/bin/env bash
+
+set -u
+
+SCRIPT_NAME="bluetooth-fix"
+
+red() { printf "\033[31m%s\033[0m\n" "$1"; }
+green() { printf "\033[32m%s\033[0m\n" "$1"; }
+yellow() { printf "\033[33m%s\033[0m\n" "$1"; }
+
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+has_root() {
+  [[ "${EUID:-$(id -u)}" -eq 0 ]]
+}
+
+run_step() {
+  local label="$1"
+  shift
+
+  if "$@" >/dev/null 2>&1; then
+    green "[ok] $label"
+    return 0
+  fi
+
+  yellow "[warn] $label"
+  return 1
+}
+
+ensure_linux() {
+  if [[ "$(uname -s)" != "Linux" ]]; then
+    red "This script currently supports Linux only."
+    exit 1
+  fi
+}
+
+check_requirements() {
+  if ! need_cmd gum; then
+    red "gum is required but not found in PATH."
+    red "Install gum, then re-run ${SCRIPT_NAME}."
+    exit 1
+  fi
+
+  local missing=()
+  local required=(rfkill bluetoothctl systemctl)
+  local cmd
+
+  for cmd in "${required[@]}"; do
+    if ! need_cmd "$cmd"; then
+      missing+=("$cmd")
+    fi
+  done
+
+  if (( ${#missing[@]} > 0 )); then
+    red "Missing required commands: ${missing[*]}"
+    red "Install them, then re-run ${SCRIPT_NAME}."
+    exit 1
+  fi
+}
+
+print_permissions_hint() {
+  yellow "Some repair actions need root privileges."
+  yellow "If steps fail due to permissions, run this script as root."
+}
+
+show_status() {
+  printf "\n"
+  gum style --bold --foreground 212 "Bluetooth quick status"
+
+  if need_cmd rfkill; then
+    rfkill list bluetooth 2>/dev/null || yellow "rfkill could not read Bluetooth state"
+  fi
+
+  if need_cmd systemctl; then
+    printf "\nService: "
+    systemctl is-active bluetooth 2>/dev/null || printf "unknown\n"
+  fi
+
+  if need_cmd bluetoothctl; then
+    printf "\nControllers:\n"
+    bluetoothctl list 2>/dev/null || true
+  fi
+}
+
+unblock_bluetooth() {
+  run_step "Unblocking Bluetooth (rfkill)" rfkill unblock bluetooth
+}
+
+start_service() {
+  run_step "Starting bluetooth.service" systemctl start bluetooth
+  run_step "Enabling bluetooth.service on boot" systemctl enable bluetooth
+}
+
+restart_service() {
+  run_step "Restarting bluetooth.service" systemctl restart bluetooth
+}
+
+reload_modules() {
+  if ! need_cmd modprobe; then
+    yellow "[skip] modprobe not available"
+    return 0
+  fi
+
+  run_step "Loading bluetooth kernel module" modprobe bluetooth
+  run_step "Loading btusb kernel module" modprobe btusb
+}
+
+power_on_controller() {
+  local controller
+  controller="$(bluetoothctl list 2>/dev/null | awk '/^Controller / {print $2; exit}')"
+
+  if [[ -z "$controller" ]]; then
+    yellow "[warn] No Bluetooth controller detected by bluetoothctl"
+    return 1
+  fi
+
+  run_step "Selecting controller $controller" bluetoothctl select "$controller"
+  run_step "Powering on controller" bluetoothctl power on
+  run_step "Enabling pairable mode" bluetoothctl pairable on
+  run_step "Enabling discoverable mode" bluetoothctl discoverable on
+}
+
+soft_reset_controller() {
+  local controller
+  controller="$(bluetoothctl list 2>/dev/null | awk '/^Controller / {print $2; exit}')"
+
+  if [[ -z "$controller" ]]; then
+    yellow "[warn] No Bluetooth controller detected to reset"
+    return 1
+  fi
+
+  run_step "Selecting controller $controller" bluetoothctl select "$controller"
+  run_step "Controller power cycle (off)" bluetoothctl power off
+  sleep 1
+  run_step "Controller power cycle (on)" bluetoothctl power on
+}
+
+auto_fix() {
+  gum style --bold --foreground 42 "Running automatic Bluetooth repair..."
+  print_permissions_hint
+
+  unblock_bluetooth
+  reload_modules
+  start_service
+  restart_service
+  soft_reset_controller
+  power_on_controller
+
+  gum style --bold --foreground 42 "Automatic repair routine finished."
+  show_status
+}
+
+turn_on_bluetooth() {
+  gum style --bold --foreground 42 "Turning Bluetooth fully ON..."
+  print_permissions_hint
+
+  unblock_bluetooth
+  start_service
+  power_on_controller
+
+  gum style --bold --foreground 42 "Bluetooth turn-on routine finished."
+  show_status
+}
+
+reset_bluetooth_stack() {
+  gum style --bold --foreground 42 "Resetting Bluetooth stack..."
+  print_permissions_hint
+
+  restart_service
+  reload_modules
+  soft_reset_controller
+  power_on_controller
+
+  gum style --bold --foreground 42 "Bluetooth reset routine finished."
+  show_status
+}
+
+main_menu() {
+  gum style --bold --foreground 212 "Bluetooth Fix Assistant"
+
+  local choice
+  choice="$(gum choose \
+    "Bluetooth not working -> Fix automatically" \
+    "Turn ON Bluetooth completely" \
+    "Reset / restart Bluetooth stack")"
+
+  case "$choice" in
+    "Bluetooth not working -> Fix automatically")
+      auto_fix
+      ;;
+    "Turn ON Bluetooth completely")
+      turn_on_bluetooth
+      ;;
+    "Reset / restart Bluetooth stack")
+      reset_bluetooth_stack
+      ;;
+    *)
+      yellow "No option selected. Exiting."
+      exit 0
+      ;;
+  esac
+}
+
+ensure_linux
+check_requirements
+main_menu

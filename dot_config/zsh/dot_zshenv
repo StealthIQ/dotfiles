@@ -1,0 +1,13 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Zsh Environment Variables
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# This file is loaded first, before .zshrc
+# Use this to set ZDOTDIR for XDG Base Directory compliance
+
+# Set ZDOTDIR to use XDG-compliant config location
+export ZDOTDIR="$HOME/.config/zsh"
+
+# Source the main zshrc if this file is being loaded directly
+if [[ -f "$ZDOTDIR/.zshrc" ]]; then
+    source "$ZDOTDIR/.zshrc"
+fi

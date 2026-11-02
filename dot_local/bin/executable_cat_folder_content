@@ -1,0 +1,42 @@
+#!/bin/bash
+# Usage: ./list_and_cat.sh [directory]
+# If no directory is provided, it defaults to the current directory.
+
+# Set the target directory.
+TARGET_DIR="${1:-.}"
+
+# Define patterns to ignore.
+# This regex now excludes directories such as:
+# - .git, node_modules, .idea: common version control and editor folders.
+# - .terraform: Terraform configuration directories.
+# - ansible: Ansible playbooks or roles.
+# - venv, env, __pycache__: Python virtual environments and cache.
+# - *.pyc, *.pyo: Compiled Python files.
+IGNORE_DIRS="(.git|node_modules|.idea|\.terraform|ansible|venv|env|__pycache__)"
+IGNORE_FILES_EXT="(\.pyc|\.pyo)"
+
+echo "=== File Tree ==="
+if command -v tree &> /dev/null; then
+    # If tree is installed, use its ignore option.
+    tree -I "$IGNORE_DIRS" "$TARGET_DIR"
+else
+    # Fallback: a simple tree using find.
+    find "$TARGET_DIR" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+fi
+
+echo -e "\n=== Files and Their Contents ==="
+
+# Find and process files.
+# This loop iterates through each file and prints the filename and its contents.
+find "$TARGET_DIR" -type f | while IFS= read -r file; do
+    # Skip files in directories that match the ignore pattern.
+    if [[ "$file" =~ $IGNORE_DIRS ]]; then
+        continue
+    fi
+    # Skip files with unwanted extensions.
+    if [[ "$file" =~ $IGNORE_FILES_EXT ]]; then
+        continue
+    fi
+    echo -e "\n--- File: $file ---"
+    cat "$file"
+done

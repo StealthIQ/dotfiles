@@ -1,0 +1,14 @@
+[Unit]
+Description=ActivityWatch watcher: media
+After=aw-server-rust.service
+Requires=aw-server-rust.service
+
+[Service]
+Type=simple
+# If a watcher is missing or unsupported, don't fail hard:
+ExecStart=/bin/sh -lc 'command -v aw-watcher-media >/dev/null 2>&1 && exec aw-watcher-media || exit 0'
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

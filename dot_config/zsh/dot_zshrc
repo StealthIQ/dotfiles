@@ -1,0 +1,188 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#!/usr/bin/env zsh
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Zsh Configuration - Main Entry Point
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Migrated from Fish shell configuration
+# For use with Oh My Zsh
+#
+# Installation:
+#   1. Install Oh My Zsh: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#   2. Create symlink: ln -s ~/.config/zsh/.zshrc ~/.zshrc
+#   3. Set ZDOTDIR (optional, for XDG compliance): export ZDOTDIR="$HOME/.config/zsh"
+#
+# Or for XDG compliance (recommended), add to ~/.zshenv:
+#   export ZDOTDIR="$HOME/.config/zsh"
+#   source "$ZDOTDIR/.zshrc"
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# -----------------------------------------------------------------------------
+# Oh My Zsh Configuration
+# -----------------------------------------------------------------------------
+
+# Path to Oh My Zsh installation
+export ZSH="$HOME/.oh-my-zsh"
+
+# Theme - Powerlevel10k
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Uncomment the following line to use case-sensitive completion
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion
+# Case-sensitive completion must be off. _ and - will be interchangeable
+# HYPHEN_INSENSITIVE="true"
+
+# Update automatically without asking
+zstyle ':omz:update' mode auto
+
+# Update every 7 days
+zstyle ':omz:update' frequency 7
+
+# Display red dots whilst waiting for completion
+COMPLETION_WAITING_DOTS="true"
+
+# Plugins
+# Standard plugins: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
+# Add wisely, as too many plugins slow down shell startup
+plugins=(
+    git
+    archlinux
+    command-not-found
+    copypath
+    copyfile
+    dirhistory
+    encode64
+    extract
+    history
+    sudo
+    systemd
+    tmux
+    web-search
+    z
+)
+
+# Load Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+# -----------------------------------------------------------------------------
+# Modular Configuration Loading (similar to Fish's conf.d)
+# -----------------------------------------------------------------------------
+
+# Determine config directory
+ZSH_CONFIG_DIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+# Load all configuration files from conf.d directory
+# Files are loaded in alphabetical order
+if [[ -d "$ZSH_CONFIG_DIR/conf.d" ]]; then
+    for config_file in "$ZSH_CONFIG_DIR/conf.d"/*.zsh(N); do
+        if [[ -f "$config_file" ]]; then
+            source "$config_file"
+        fi
+    done
+fi
+
+# Load custom functions
+if [[ -d "$ZSH_CONFIG_DIR/functions" ]]; then
+    fpath=("$ZSH_CONFIG_DIR/functions" $fpath)
+    for func_file in "$ZSH_CONFIG_DIR/functions"/*.zsh(N); do
+        if [[ -f "$func_file" ]]; then
+            source "$func_file"
+        fi
+    done
+fi
+
+# Load completions
+if [[ -d "$ZSH_CONFIG_DIR/completions" ]]; then
+    fpath=("$ZSH_CONFIG_DIR/completions" $fpath)
+fi
+
+# Completions are initialized by Oh My Zsh
+# Skip manual compinit to avoid conflicts
+
+# -----------------------------------------------------------------------------
+# User Configuration
+# -----------------------------------------------------------------------------
+
+# Disable beep
+unsetopt BEEP
+
+# Enable extended glob patterns
+setopt EXTENDED_GLOB
+
+# Better history
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY
+
+# Key bindings (similar to Fish)
+# Use emacs key bindings by default (can change to vi with: bindkey -v)
+bindkey -e
+
+# Up/down arrow for history search
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
+# Ctrl+arrow for word navigation
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
+# Ctrl+Backspace and Ctrl+Delete for word deletion
+bindkey "^H" backward-delete-word
+bindkey "^[[3;5~" delete-word
+
+# -----------------------------------------------------------------------------
+# Post-Initialization
+# -----------------------------------------------------------------------------
+
+# Disable greeting
+DISABLE_AUTO_UPDATE=true
+
+# Final initialization messages (optional)
+# echo "Zsh configuration loaded successfully"
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+# Standard zsh completion (Tab shows menu)
+setopt AUTO_LIST              # Show list on ambiguous
+setopt AUTO_MENU              # Use menu on second Tab
+setopt LIST_PACKED            # Compact list
+unsetopt MENU_COMPLETE        # Don't auto-accept first match
+
+# Menu selection with highlighting
+zstyle ':completion:*' menu select
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' format ' %F{blue}-- %d --%f'
+zstyle ':completion:*' verbose true
+
+# Tab behavior
+bindkey '^I' expand-or-complete
+bindkey -M menuselect '^I' menu-complete
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+# pnpm
+export PNPM_HOME="/home/stealthiq/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PATH:$PNPM_HOME" ;;
+esac
+# pnpm end
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# Normalize PATH order and avoid duplicate entries.
+typeset -U path PATH
+if [[ -n "$PNPM_HOME" ]]; then
+  path=(${path:#$PNPM_HOME} $PNPM_HOME)
+fi
+

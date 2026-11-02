@@ -1,0 +1,43 @@
+# Repo-only files (not applied to $HOME)
+README.md
+LICENSE
+misc
+misc/**
+
+# Never commit: secrets, machine state, caches
+.config/zsh/host/*.env.zsh*
+.config/fish/conf.d/host/*.env.fish
+.config/fish/fish_variables
+.config/zsh/.oh-my-zsh
+.config/zsh/.oh-my-zsh/**
+.config/zsh/.zcompdump*
+.config/zsh/.histfile
+.config/zsh/backup
+.config/zsh/backup/**
+.config/nvim/.git
+.config/nvim/.git/**
+.config/nvim/trash
+.config/nvim/trash/**
+**/.hive
+**/.hive/**
+**/.omo
+**/.omo/**
+**/node_modules
+**/node_modules/**
+**/*.log
+**/*.bak
+**/*.bak.*
+.github
+.gitleaksignore
+packages
+packages/**
+**/__pycache__
+**/__pycache__/**
+
+# Managed by the optional private repo (see dotfiles-private)
+.config/hypr/custom/private
+.config/hypr/custom/private/**
+.config/zsh/conf.d/90-private.zsh
+.config/fish/conf.d/90-private.fish
+.config/nvim/lua/plugins/private.lua
+.config/nvim/lazy-lock.json

@@ -1,0 +1,13 @@
+[Unit]
+Description=ActivityWatch sync daemon
+After=aw-server-rust.service
+Requires=aw-server-rust.service
+
+[Service]
+Type=simple
+ExecStart=aw-sync
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=Start ncmpcpp in tmux session
+After=mpd.service
+Requires=mpd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/sh -c '/usr/bin/tmux has-session -t music 2>/dev/null || /usr/bin/tmux new-session -d -s music "ncmpcpp"'
+ExecStop=/usr/bin/sh -c '/usr/bin/tmux has-session -t music 2>/dev/null && /usr/bin/tmux kill-session -t music || true'
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Install the package lists from a dotfiles repo: install-dotfiles-packages <dir with native.txt/aur.txt>
+# Uses sudo pacman for native packages and paru (or yay) for AUR ones. Skips
+# packages that are already installed or no longer exist, and reports them.
+set -uo pipefail
+
+DIR="${1:-}"
+[[ -d "$DIR" ]] || { echo "usage: install-dotfiles-packages <packages dir>" >&2; exit 2; }
+rc=0
+
+if [[ -s "$DIR/native.txt" ]]; then
+    mapfile -t wanted < <(grep -vE '^\s*(#|$)' "$DIR/native.txt")
+    # Keep only names the sync repos still have (pacman -Slq is read-only).
+    mapfile -t known < <(comm -12 <(printf '%s\n' "${wanted[@]}" | sort -u) <(pacman -Slq | sort -u))
+    missing=$(comm -23 <(printf '%s\n' "${wanted[@]}" | sort -u) <(printf '%s\n' "${known[@]}" | sort -u))
+    [[ -n "$missing" ]] && echo "not in the repos, skipped: $(echo $missing)"
+    if ((${#known[@]})); then
+        sudo pacman -S --needed "${known[@]}" || { echo "pacman failed" >&2; rc=1; }
+    fi
+fi
+
+if [[ -s "$DIR/aur.txt" ]]; then
+    helper=$(command -v paru || command -v yay || true)
+    if [[ -z "$helper" ]]; then
+        echo "no AUR helper (paru/yay) found; skipped $DIR/aur.txt" >&2
+        rc=1
+    else
+        grep -vE '^\s*(#|$)|-debug$' "$DIR/aur.txt" | "$helper" -S --needed - || { echo "$helper failed" >&2; rc=1; }
+    fi
+fi
+exit "$rc"

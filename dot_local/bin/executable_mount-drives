@@ -1,0 +1,257 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+# ---------------- CONFIG ----------------
+BASE_MOUNT="/mnt"
+LOG_FILE="/tmp/drive-manager.log"
+# ----------------------------------------
+
+# ---------------- LOGGING ----------------
+log() { echo "[*] $*" | tee -a "$LOG_FILE"; }
+ok() { echo "[+] $*" | tee -a "$LOG_FILE"; }
+warn() { echo "[!] $*" | tee -a "$LOG_FILE"; }
+error() { echo "[x] $*" | tee -a "$LOG_FILE" >&2; }
+
+trap 'error "Script failed at line $LINENO"' ERR
+
+# ---------------- REQUIREMENTS ----------------
+require() {
+  command -v "$1" >/dev/null 2>&1 || {
+    error "$1 is not installed"
+    exit 1
+  }
+}
+
+require lsblk
+require findmnt
+require gum
+require mount
+require umount
+
+# optional but recommended
+command -v ntfs-3g >/dev/null || warn "ntfs-3g not installed (NTFS fallback limited)"
+command -v ntfsfix >/dev/null || warn "ntfsfix not installed"
+
+# ---------------- HELPERS ----------------
+
+is_mounted() {
+  findmnt -rn -S "$1" >/dev/null
+}
+
+get_mountpoint() {
+  findmnt -rn -S "$1" -o TARGET || true
+}
+
+safe_mkdir() {
+  sudo mkdir -p "$1"
+}
+
+# ---------------- DEVICE DISCOVERY ----------------
+
+get_partitions() {
+  root_disk=$(lsblk -no PKNAME "$(findmnt -n -o SOURCE /)")
+
+  lsblk -rpno NAME,PKNAME,TYPE,SIZE,FSTYPE,LABEL |
+    awk -v root="$root_disk" '$2!=root && $3=="part" {print}'
+}
+
+# ---------------- NTFS HANDLING ----------------
+
+mount_ntfs() {
+  local dev="$1"
+  local mount_point="$2"
+
+  log "NTFS detected → attempting ntfs3"
+
+  if command -v ntfsfix >/dev/null; then
+    log "Running ntfsfix (non-destructive)"
+    sudo ntfsfix "$dev" || warn "ntfsfix failed (continuing)"
+  fi
+
+  # Try ntfs3 first (fast)
+  if sudo mount -t ntfs3 -o rw,noatime "$dev" "$mount_point"; then
+    ok "Mounted with ntfs3"
+    return 0
+  fi
+
+  warn "ntfs3 failed → checking kernel messages"
+  dmesg | tail -20 | tee -a "$LOG_FILE"
+
+  # Fallback to ntfs-3g
+  if command -v ntfs-3g >/dev/null; then
+    warn "Falling back to ntfs-3g (handles hibernation)"
+
+    sudo umount "$mount_point" 2>/dev/null || true
+
+    if sudo mount -t ntfs-3g -o remove_hiberfile,uid=$UID,gid=$(id -g) "$dev" "$mount_point"; then
+      ok "Mounted with ntfs-3g (hibernation removed)"
+      return 0
+    fi
+
+    warn "ntfs-3g normal mount..."
+    if sudo ntfs-3g "$dev" "$mount_point"; then
+      ok "Mounted with ntfs-3g (standard)"
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+# ---------------- GENERIC MOUNT ----------------
+
+mount_generic() {
+  local dev="$1"
+  local mount_point="$2"
+  local fstype="$3"
+
+  log "Mounting $fstype filesystem"
+
+  case "$fstype" in
+  vfat | exfat)
+    sudo mount -o uid=$UID,gid=$(id -g),rw,noatime "$dev" "$mount_point"
+    ;;
+  ext4 | ext3 | ext2 | btrfs | xfs)
+    sudo mount -o rw,noatime "$dev" "$mount_point"
+    ;;
+  *)
+    warn "Unknown FS → using auto mount"
+    sudo mount "$dev" "$mount_point"
+    ;;
+  esac
+}
+
+# ---------------- MAIN MOUNT ----------------
+
+mount_partition() {
+  local dev="$1"
+
+  if is_mounted "$dev"; then
+    mp=$(get_mountpoint "$dev")
+    warn "$dev already mounted at $mp"
+    return
+  fi
+
+  local fstype size label name mount_point
+
+  fstype=$(lsblk -no FSTYPE "$dev")
+  size=$(lsblk -no SIZE "$dev")
+  label=$(lsblk -no LABEL "$dev")
+  name=$(basename "$dev")
+
+  mount_point="$BASE_MOUNT/drive-$name"
+
+  safe_mkdir "$mount_point"
+
+  log "Mounting $dev ($size ${fstype:-unknown} ${label:-no-label})"
+
+  if [[ -z "$fstype" ]]; then
+    warn "No filesystem detected → trying udisksctl"
+    sudo udisksctl mount -b "$dev" && return
+    error "Failed: unknown filesystem"
+    return 1
+  fi
+
+  case "$fstype" in
+  ntfs)
+    mount_ntfs "$dev" "$mount_point" || {
+      error "NTFS mount failed → falling back to udisksctl"
+      sudo udisksctl mount -b "$dev"
+    }
+    ;;
+  *)
+    mount_generic "$dev" "$mount_point" "$fstype" || {
+      warn "Standard mount failed → trying udisksctl"
+      sudo udisksctl mount -b "$dev"
+    }
+    ;;
+  esac
+
+  ok "Mounted at $mount_point"
+}
+
+# ---------------- UNMOUNT ----------------
+
+unmount_partition() {
+  local dev="$1"
+
+  if ! is_mounted "$dev"; then
+    warn "$dev is not mounted"
+    return
+  fi
+
+  mp=$(get_mountpoint "$dev")
+
+  log "Unmounting $dev from $mp"
+
+  if sudo umount "$dev"; then
+    ok "Unmounted successfully"
+  else
+    warn "umount failed → trying lazy unmount"
+    sudo umount -l "$dev" || sudo udisksctl unmount -b "$dev"
+  fi
+}
+
+# ---------------- TUI ----------------
+
+tui() {
+  gum style --border rounded --padding "1 2" --margin "1 0" \
+    "Drive Manager — Robust Edition"
+
+  mapfile -t entries < <(get_partitions)
+
+  if [[ ${#entries[@]} -eq 0 ]]; then
+    error "No removable partitions found"
+    exit 0
+  fi
+
+  choices=()
+  devices=()
+
+  for line in "${entries[@]}"; do
+    dev=$(echo "$line" | awk '{print $1}')
+    size=$(echo "$line" | awk '{print $4}')
+    fs=$(echo "$line" | awk '{print $5}')
+    label=$(echo "$line" | awk '{print $6}')
+
+    status="unmounted"
+    if is_mounted "$dev"; then
+      status="mounted"
+    fi
+
+    display="$dev • $size • ${fs:-unknown} • ${label:-no-label} • $status"
+
+    choices+=("$display")
+    devices+=("$dev")
+  done
+
+  selected=$(gum choose --header "Select partition" "${choices[@]}")
+  [[ -z "$selected" ]] && exit 0
+
+  index=0
+  for i in "${!choices[@]}"; do
+    [[ "${choices[$i]}" == "$selected" ]] && index=$i
+  done
+
+  dev="${devices[$index]}"
+
+  action=$(gum choose --header "Action" "Mount" "Unmount" "Inspect (dmesg)")
+  [[ -z "$action" ]] && exit 0
+
+  case "$action" in
+  Mount) mount_partition "$dev" ;;
+  Unmount) unmount_partition "$dev" ;;
+  Inspect*)
+    dmesg | tail -50 | less
+    ;;
+  esac
+}
+
+# ---------------- ENTRY ----------------
+
+if [[ $# -eq 0 ]]; then
+  tui
+else
+  error "Run without arguments"
+fi

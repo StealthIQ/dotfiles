@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# Copy the live configs into both dotfiles repos, scan for secrets, commit and push.
+#   public : ~/.local/share/chezmoi          -> github.com/StealthIQ/dotfiles
+#   private: ~/.local/share/chezmoi-private  -> github.com/StealthIQ/dotfiles-private
+# Private paths: ~/.config/dotfiles/private-paths.txt
+# Private-only packages (regexes): ~/.config/dotfiles/private-packages.txt
+# Run weekly by chezmoi-push.timer; safe to run by hand any time.
+# Log: ~/.local/state/dotfiles-autopush.log
+set -uo pipefail
+
+PUB="$HOME/.local/share/chezmoi"
+PRIV="$HOME/.local/share/chezmoi-private"
+PRIV_PATHS="$HOME/.config/dotfiles/private-paths.txt"
+PRIV_PKGS="$HOME/.config/dotfiles/private-packages.txt"
+LOG="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-autopush.log"
+LOCK="${XDG_RUNTIME_DIR:-/tmp}/dotfiles-autopush.lock"
+mkdir -p "$(dirname "$LOG")"
+
+log() { printf '[%s] %s\n' "$(date '+%F %T')" "$*" | tee -a "$LOG"; }
+fail() {
+    log "ERROR: $*"
+    notify-send -a Dotfiles -u critical "Dotfiles push failed" "$* (log: $LOG)" 2>/dev/null || true
+    exit 1
+}
+
+# Folders and files for the PUBLIC repo. New files inside them are picked up too;
+# the repo's .chezmoiignore keeps secrets and the private files out.
+PUBLIC_PATHS=(
+    .config/hypr .config/quickshell .config/illogical-impulse .config/kitty .config/fish .config/zsh .config/nvim
+    .config/matugen .config/Kvantum .config/fontconfig .config/mpv .config/fuzzel .config/wlogout
+    .config/kde-material-you-colors .config/satty .config/starship.toml
+    .config/systemd/user/aw-qt.service .config/systemd/user/aw-sync.service
+    .config/systemd/user/aw-watcher-media.service .config/systemd/user/quickshell-ii.service
+    .config/systemd/user/ncmpcpp-tmux.service .config/systemd/user/espanso.service
+    .config/systemd/user/chezmoi-push.service .config/systemd/user/chezmoi-push.timer
+    .zshenv .tmux.conf
+)
+for s in bluetooth-fix cat_folder_content git-auto-push gitingest-tool mount-drives \
+    network-performance-booster.sh ocr-text-to-image.sh power-cut-display-fix rofi-script-menu.sh \
+    smart-link.sh split_video_to_3_part_audio swap_manager.sh webapp-create webapp-launch chezsync \
+    auto-system-upgrader.sh dotfiles-autopush dotfiles-private install-dotfiles-packages; do
+    PUBLIC_PATHS+=(".local/bin/$s")
+done
+
+# sync_repo <label> <source dir> <state file> <package filter: public|private> <paths...>
+sync_repo() {
+    local label="$1" src="$2" state="$3" filter="$4"
+    shift 4
+    local cz=(chezmoi --source "$src" --persistent-state "$state" --no-tty)
+
+    [[ -d "$src/.git" ]] || fail "$label: $src is not a git repo"
+    cd "$src" || fail "$label: cannot cd to $src"
+    git pull --rebase --autostash -q origin main >>"$LOG" 2>&1 || fail "$label: git pull failed (resolve in $src)"
+
+    local p
+    for p in "$@"; do
+        [[ -e "$HOME/$p" || -L "$HOME/$p" ]] || continue
+        "${cz[@]}" add --force "$HOME/$p" >/dev/null 2>>"$LOG" || log "$label: warning: could not add $p"
+    done
+
+    # Package lists (pacman -Q only reads the local database).
+    mkdir -p packages
+    local pats
+    pats="$(grep -vE '^\s*(#|$)' "$PRIV_PKGS" 2>/dev/null)"
+    [[ -n "$pats" ]] || pats='^$'
+    local flag=-v
+    [[ "$filter" == private ]] && flag=
+    pacman -Qqen 2>>"$LOG" | grep -E $flag -e "$pats" >packages/native.txt || true
+    pacman -Qqem 2>>"$LOG" | grep -E $flag -e "$pats" >packages/aur.txt || true
+
+    git add -A || fail "$label: git add failed"
+    if git diff --cached --quiet; then
+        log "$label: no changes"
+        return 0
+    fi
+    # Block the push if anything that looks like a secret is staged.
+    if ! gitleaks git . --pre-commit --staged --no-banner --redact >>"$LOG" 2>&1; then
+        git reset -q
+        fail "$label: gitleaks found a possible secret; nothing was committed"
+    fi
+    local changed
+    changed=$(git diff --cached --name-only | wc -l)
+    git commit -q -m "auto: weekly dotfiles update $(date +%F) ($changed files)" || fail "$label: git commit failed"
+    git push -q origin main >>"$LOG" 2>&1 || fail "$label: git push failed"
+    log "$label: pushed $changed changed files"
+    PUSHED+=("$label $changed")
+}
+
+exec 9>"$LOCK" || fail "cannot open lock $LOCK"
+flock -n 9 || { log "already running, skipped"; exit 0; }
+for cmd in chezmoi git gitleaks pacman; do
+    command -v "$cmd" >/dev/null || fail "missing command: $cmd"
+done
+
+PUSHED=()
+log "start"
+sync_repo public "$PUB" "$HOME/.config/chezmoi/chezmoistate.boltdb" public "${PUBLIC_PATHS[@]}"
+
+if [[ -d "$PRIV/.git" ]]; then
+    [[ -f "$PRIV_PATHS" ]] || fail "private: missing $PRIV_PATHS"
+    mapfile -t private_paths < <(grep -vE '^\s*(#|$)' "$PRIV_PATHS")
+    sync_repo private "$PRIV" "$HOME/.config/chezmoi/private.boltdb" private "${private_paths[@]}"
+else
+    log "private: $PRIV not found, skipped (run: dotfiles-private apply)"
+fi
+
+if ((${#PUSHED[@]})); then
+    notify-send -a Dotfiles "Dotfiles pushed" "$(printf '%s files\n' "${PUSHED[@]}")" 2>/dev/null || true
+fi

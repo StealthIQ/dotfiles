@@ -1,0 +1,9 @@
+# The global git ignore (~/.config/git/ignore) has `bin/`, which hides dot_local/bin.
+# Re-include only scripts that have been reviewed for secrets; the rest stay ignored.
+!dot_local/bin/
+dot_local/bin/*
+# Scripts copied by dotfiles-autopush (gitleaks-scanned 2026-11-02)
+!dot_local/bin/executable_*
+!dot_local/bin/ocr-text-to-image.sh
+# ~/.config/git/ignore has `prompts/`, which hides the Quickshell AI prompts
+!dot_config/quickshell/ii/defaults/ai/prompts/

@@ -1,0 +1,15 @@
+[Unit]
+Description=Quickshell ii (illogical-impulse)
+PartOf=graphical-session.target
+After=graphical-session.target
+Wants=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=/usr/bin/qs -c ii
+Restart=on-failure
+RestartSec=2
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

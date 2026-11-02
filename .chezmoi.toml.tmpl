@@ -1,0 +1,5 @@
+{{- $private := promptBoolOnce . "private" "Also download the private configs (needs access to the private repo)" false -}}
+{{- $packages := promptBoolOnce . "packages" "Install the package lists with pacman/paru after applying" false -}}
+[data]
+    private = {{ $private }}
+    packages = {{ $packages }}

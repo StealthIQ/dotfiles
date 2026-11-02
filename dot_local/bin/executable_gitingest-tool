@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+"""
+gitingest CLI wrapper
+
+A professional command-line interface for the gitingest Python package.
+
+Usage:
+  gitingest [OPTIONS] <target>
+
+Options:
+  -f, --file TEXT             Write output to the specified text file (default: digest.txt)
+  -c, --copy                  Copy the digest to the clipboard after generation
+  --overwrite                 Overwrite the output file if it exists
+  --pretty                    Print a formatted summary to stdout
+  -h, --help                  Show this message and exit
+
+Features:
+  • Accepts local directories or GitHub URLs
+  • Outputs summary, tree, and full content digest
+  • Optional file output and clipboard copy
+"""
+import sys
+import os
+import click
+try:
+    import pyperclip
+    _HAS_CLIP = True
+except ImportError:
+    _HAS_CLIP = False
+from gitingest import ingest
+
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.argument('target', nargs=1)
+@click.option('-f', '--file', 'outfile', default='digest.txt', show_default=True,
+              help='Write the digest to this file')
+@click.option('-c', '--copy', is_flag=True,
+              help='Copy the digest text to clipboard (requires pyperclip)')
+@click.option('--overwrite', is_flag=True,
+              help='Overwrite existing output file if present')
+@click.option('--pretty', is_flag=True,
+              help='Print a human-friendly summary and tree to stdout')
+def main(target, outfile, copy, overwrite, pretty):
+    """Generate a prompt-friendly text ingest from a Git repository or directory."""
+    if os.path.exists(outfile) and not overwrite:
+        click.secho(f"Error: '{outfile}' already exists. Use --overwrite to replace.", fg='red', err=True)
+        sys.exit(1)
+
+    click.secho(f"Ingesting '{target}'...", fg='cyan')
+    try:
+        summary, tree, content = ingest(target)
+    except Exception as e:
+        click.secho(f"Ingest failed: {e}", fg='red', err=True)
+        sys.exit(1)
+
+    digest = []
+    digest.append("# Summary")
+    digest.append(summary.strip())
+    digest.append("\n# File Tree")
+    digest.append(tree.strip())
+    digest.append("\n# Full Content Digest")
+    digest.append(content.strip())
+    text = "\n\n".join(digest)
+
+    # Write to file
+    with open(outfile, 'w', encoding='utf-8') as fp:
+        fp.write(text)
+    click.secho(f"Digest written to '{outfile}'", fg='green')
+
+    # Clipboard
+    if copy:
+        if not _HAS_CLIP:
+            click.secho("pyperclip not installed; cannot copy to clipboard.", fg='yellow')
+        else:
+            pyperclip.copy(text)
+            click.secho("Digest copied to clipboard.", fg='green')
+
+    # Pretty print summary/tree
+    if pretty:
+        click.secho("\n--- SUMMARY ---", fg='blue')
+        click.echo(summary.strip())
+        click.secho("\n--- FILE TREE ---", fg='blue')
+        click.echo(tree.strip())
+
+if __name__ == '__main__':
+    main()

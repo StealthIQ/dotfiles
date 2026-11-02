@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Install or update the optional private dotfiles on top of the public ones.
+#   dotfiles-private apply              clone (first time) or pull, then apply them
+#   dotfiles-private apply --packages   same, then install the private package lists
+# chezmoi runs this after `chezmoi apply` when you answered "yes" at `chezmoi init`.
+# Without access to the private repo it prints a note and exits 0, so the
+# public install still finishes.
+set -uo pipefail
+
+REPO="${DOTFILES_PRIVATE_REPO:-https://github.com/StealthIQ/dotfiles-private.git}"
+SRC="$HOME/.local/share/chezmoi-private"
+STATE="$HOME/.config/chezmoi/private.boltdb"
+CZ=(chezmoi --source "$SRC" --persistent-state "$STATE")
+
+note() { printf 'dotfiles-private: %s\n' "$*" >&2; }
+
+ensure_auth() {
+    command -v gh >/dev/null || return 0
+    gh auth status >/dev/null 2>&1 && { gh auth setup-git >/dev/null 2>&1; return 0; }
+    if [[ -t 0 ]]; then
+        note "sign in to GitHub to download the private configs"
+        gh auth login --git-protocol https --web && gh auth setup-git
+    fi
+}
+
+fetch() {
+    if [[ -d "$SRC/.git" ]]; then
+        git -C "$SRC" pull --rebase --autostash -q || { note "git pull failed in $SRC"; return 1; }
+    else
+        ensure_auth
+        git clone -q "$REPO" "$SRC" || { note "no access to $REPO, skipped"; return 2; }
+    fi
+}
+
+case "${1:-apply}" in
+    apply)
+        command -v chezmoi >/dev/null || { note "chezmoi is not installed"; exit 1; }
+        fetch
+        rc=$?
+        ((rc == 2)) && exit 0
+        ((rc != 0)) && exit 1
+        mkdir -p "$(dirname "$STATE")"
+        "${CZ[@]}" apply || { note "chezmoi apply of the private configs failed"; exit 1; }
+        note "private configs applied"
+        if [[ "${2:-}" == --packages ]]; then
+            install-dotfiles-packages "$SRC/packages" || { note "package install failed"; exit 1; }
+        fi
+        ;;
+    *)
+        echo "usage: dotfiles-private [apply [--packages]]" >&2
+        exit 2
+        ;;
+esac

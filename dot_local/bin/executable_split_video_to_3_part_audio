@@ -1,0 +1,198 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+CHUNK_SECONDS=1790 # 29 minutes 50 seconds
+
+MEDIA_EXTENSIONS=(
+  mp4 mkv mov avi webm m4v flv wmv mpg mpeg 3gp ts m2ts ogv
+  mp3 m4a aac wav flac ogg opus wma alac aiff aif
+)
+
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || {
+    echo "Missing dependency: $1"
+    echo "Install it with: sudo pacman -S ffmpeg"
+    exit 1
+  }
+}
+
+format_duration() {
+  local seconds="$1"
+
+  if [[ -z "$seconds" || "$seconds" == "N/A" ]]; then
+    echo "unknown"
+    return
+  fi
+
+  awk -v s="$seconds" '
+    BEGIN {
+      s = int(s + 0.5)
+      h = int(s / 3600)
+      m = int((s % 3600) / 60)
+      sec = s % 60
+
+      if (h > 0)
+        printf "%02d:%02d:%02d", h, m, sec
+      else
+        printf "%02d:%02d", m, sec
+    }
+  '
+}
+
+get_duration() {
+  ffprobe \
+    -v error \
+    -show_entries format=duration \
+    -of default=noprint_wrappers=1:nokey=1 \
+    "$1" 2>/dev/null || echo "N/A"
+}
+
+truncate_name() {
+  local name="$1"
+  local max=52
+
+  if (( ${#name} > max )); then
+    echo "${name:0:max-3}..."
+  else
+    echo "$name"
+  fi
+}
+
+build_find_expr() {
+  local expr=()
+
+  for ext in "${MEDIA_EXTENSIONS[@]}"; do
+    expr+=( -iname "*.${ext}" -o )
+  done
+
+  unset 'expr[${#expr[@]}-1]'
+  printf '%s\0' "${expr[@]}"
+}
+
+need_cmd ffmpeg
+need_cmd ffprobe
+need_cmd find
+need_cmd sort
+need_cmd head
+need_cmd stat
+
+mapfile -d '' recent_files < <(
+  find . -maxdepth 1 -type f \( \
+    -iname "*.mp4" -o \
+    -iname "*.mkv" -o \
+    -iname "*.mov" -o \
+    -iname "*.avi" -o \
+    -iname "*.webm" -o \
+    -iname "*.m4v" -o \
+    -iname "*.flv" -o \
+    -iname "*.wmv" -o \
+    -iname "*.mpg" -o \
+    -iname "*.mpeg" -o \
+    -iname "*.3gp" -o \
+    -iname "*.ts" -o \
+    -iname "*.m2ts" -o \
+    -iname "*.ogv" -o \
+    -iname "*.mp3" -o \
+    -iname "*.m4a" -o \
+    -iname "*.aac" -o \
+    -iname "*.wav" -o \
+    -iname "*.flac" -o \
+    -iname "*.ogg" -o \
+    -iname "*.opus" -o \
+    -iname "*.wma" -o \
+    -iname "*.alac" -o \
+    -iname "*.aiff" -o \
+    -iname "*.aif" \
+  \) -printf '%T@\t%p\0' \
+  | sort -z -nr \
+  | head -z -n 2
+)
+
+if (( ${#recent_files[@]} == 0 )); then
+  echo "No media files found in the current folder."
+  exit 1
+fi
+
+echo
+echo "Two most recent media files:"
+echo
+
+printf '┌────┬─────────────────────┬──────────────┬──────────────────────────────────────────────────────┐\n'
+printf '│ %-2s │ %-19s │ %-12s │ %-52s │\n' "#" "Modified" "Duration" "Name"
+printf '├────┼─────────────────────┼──────────────┼──────────────────────────────────────────────────────┤\n'
+
+files=()
+
+for i in "${!recent_files[@]}"; do
+  entry="${recent_files[$i]}"
+  file="${entry#*$'\t'}"
+  file="${file#./}"
+
+  files+=( "$file" )
+
+  modified="$(stat -c '%y' "$file" | cut -d'.' -f1)"
+  raw_duration="$(get_duration "$file")"
+  duration="$(format_duration "$raw_duration")"
+  short_name="$(truncate_name "$file")"
+
+  printf '│ %-2s │ %-19s │ %-12s │ %-52s │\n' \
+    "$((i + 1))" "$modified" "$duration" "$short_name"
+done
+
+printf '└────┴─────────────────────┴──────────────┴──────────────────────────────────────────────────────┘\n'
+echo
+
+while true; do
+  read -rp "Select file to split [1-${#files[@]}]: " choice
+
+  if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#files[@]} )); then
+    break
+  fi
+
+  echo "Invalid choice."
+done
+
+input="${files[$((choice - 1))]}"
+filename="$(basename -- "$input")"
+base="${filename%.*}"
+
+output_dir="./${base}"
+full_audio="${output_dir}/${base}_full_audio.mp3"
+chunk_pattern="${output_dir}/${base}_part_%03d.mp3"
+
+mkdir -p "$output_dir"
+
+echo
+echo "Selected: $input"
+echo "Output folder: $output_dir"
+echo
+
+echo "Converting full file to MP3 audio..."
+ffmpeg \
+  -hide_banner \
+  -y \
+  -i "$input" \
+  -vn \
+  -map 0:a:0 \
+  -codec:a libmp3lame \
+  -q:a 2 \
+  "$full_audio"
+
+echo
+echo "Splitting audio into 29m50s chunks..."
+ffmpeg \
+  -hide_banner \
+  -y \
+  -i "$full_audio" \
+  -f segment \
+  -segment_time "$CHUNK_SECONDS" \
+  -reset_timestamps 1 \
+  -c copy \
+  "$chunk_pattern"
+
+echo
+echo "Done."
+echo
+echo "Created files:"
+find "$output_dir" -maxdepth 1 -type f -name "${base}_part_*.mp3" | sort
