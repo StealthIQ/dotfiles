@@ -7,7 +7,7 @@ if status is-interactive
     function starship_transient_prompt_func
         starship module character
     end
-    if test "$TERM" != "linux"
+    if test "$TERM" != "linux"; and type -q starship
         starship init fish | source
         enable_transience
     end
